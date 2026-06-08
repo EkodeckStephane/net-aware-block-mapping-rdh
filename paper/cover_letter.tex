@@ -1,65 +1,108 @@
-\documentclass[10pt]{letter}
+\documentclass[11pt,a4paper]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[margin=0.78in]{geometry}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
 \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
 
-\signature{St\'ephane Ga\"el R. Ekodeck\\Corresponding author\\
-University of Yaound\'e I, Cameroon\\
-\href{mailto:stephane-gael.ekodeck@facsciences-uy1.cm}
-{stephane-gael.ekodeck@facsciences-uy1.cm}}
-\address{St\'ephane Ga\"el R. Ekodeck\\
-Department of Computer Science\\
-University of Yaound\'e I\\
-Yaound\'e, Cameroon}
-\date{June 8, 2026}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.5pt}
+\setlength{\emergencystretch}{2em}
+\linespread{0.94}
+\definecolor{sectionblue}{RGB}{47,126,181}
+\newcommand{\letterheading}[1]{\textbf{\textcolor{sectionblue}{#1}}}
+\setlist[itemize]{
+  leftmargin=5.5mm,
+  itemsep=0pt,
+  topsep=0.5pt,
+  parsep=0pt,
+  partopsep=0pt
+}
 
 \begin{document}
 
-\begin{letter}{Editor-in-Chief\\
-Journal of Visual Communication and Image Representation\\
-Elsevier}
+\begin{flushright}
+\textbf{St\'ephane Ga\"el R. Ekodeck}\\
+Department of Computer Science, University of Yaound\'e I, Cameroon\\
+\href{mailto:stephane-gael.ekodeck@facsciences-uy1.cm}
+{stephane-gael.ekodeck@facsciences-uy1.cm}\\
+June 8, 2026
+\end{flushright}
 
-\opening{Dear Editor,}
+\vspace{-4mm}
+The Editor-in-Chief\\
+\emph{Journal of Visual Communication and Image Representation}\\
+Elsevier
 
-Please consider our manuscript, ``Net-Aware Learned Block Mapping for
-Reversible Data Hiding in Binary Images,'' for publication as a Research
-Article in the \emph{Journal of Visual Communication and Image
-Representation}.
+\textbf{Dear Editor-in-Chief,}
 
-The manuscript addresses a practical gap in binary-image reversible data
-hiding: reported capacity often excludes the side information required for
-exact extraction and restoration. We introduce a net-aware block-mapping
-framework combining globally injective distance-one substitutions,
-CNN-based perceptual ranking, and enumerative coding of the active mapping
-set, with formal reversibility arguments and wire-level payload accounting.
+We respectfully submit our manuscript, \textbf{``Net-Aware Learned Block
+Mapping for Reversible Data Hiding in Binary Images,''} for consideration as
+a \textbf{Research Article} in the \emph{Journal of Visual Communication and
+Image Representation}.
 
-PPOCP, Huynh--Nguyen, Dong, and the proposed method are evaluated with
-identical images, messages, payloads, distortion computation, auxiliary-bit
-accounting, and round-trip checks. On matched BOSSbase images, the proposed
-method reaches the highest observed net-payload point among the evaluated
-implementations. Leave-one-image-out validation covers 13,808 held-out
-candidates, and a separate held-out placement experiment reduces mean DRD
-from 0.8054 to 0.7663. The study also reports availability, paired inference,
-runtime, memory, and grouped steganalysis.
+\letterheading{Scope Fitness Assessment.}
+The manuscript addresses reversible visual-data representation in binary
+images through perceptual distortion control, exact restoration, learned
+content analysis, and auditable payload measurement:
+\begin{itemize}
+  \item \textbf{Image representation problem:} application data are embedded
+  in binary images with bitwise recovery of the message and original cover.
+  \item \textbf{Technical contribution:} globally injective distance-one
+  substitutions, CNN perceptual ranking, and enumerative coding measure useful
+  capacity after serialized metadata.
+  \item \textbf{Common protocol:} ABM, PPOCP, Huynh--Nguyen, and Dong use
+  identical covers, messages, payloads, distortion, accounting, and
+  round-trip checks.
+\end{itemize}
 
-The manuscript fits JVCIR through its combination of image representation,
-perceptual distortion modeling, learned content analysis, and experimental
-evaluation of reversible visual-data embedding. It establishes net capacity
-as an auditable quantity and supplies an exactly reversible implementation
-and reproducibility package.
+\letterheading{Scientific Novelty and Evidence.}
+The central contribution is the systematic criterion
+$C_{\mathrm{net}}=C_{\mathrm{gross}}-|A_{\mathrm{wire}}|$, which prevents
+side information from being excluded from capacity claims. Eight-fold
+leave-one-image-out validation covers 13,808 candidates ($r=0.989$); held-out
+placement reduces mean DRD from 0.8054 to 0.7663 (4.85\%) and improves every
+document image. The mapping layer carries 2245 net bits on average on eight
+document benchmarks and reaches the highest observed net-payload operating
+point on matched BOSSbase images. Availability, Holm-corrected inference,
+runtime, memory, and grouped steganalysis are also reported.
 
-The manuscript is original, unpublished, and not under consideration
-elsewhere. All authors approved its submission. We declare no competing
-interests or external funding; the study involves neither humans nor animals.
+\letterheading{Practical and Reproducibility Value.}
+The work provides reversibility proofs, deterministic algorithms, an exact
+wire format, model weights, tests, per-image results, plotting scripts, and
+fixed seeds. The reproducibility package is available at
+\href{https://github.com/EkodeckStephane/net-aware-block-mapping-rdh}
+{github.com/EkodeckStephane/net-aware-block-mapping-rdh}.
 
-St\'ephane Ga\"el R. Ekodeck is the first and corresponding author. The
-co-authors are Vivien Beyala Kamgang, Serge Alain Eb\'el\'e, and Julius
-Marcellin Nkenlifack.
+\letterheading{Mandatory Author Declarations.}
+\begin{itemize}
+  \item \textbf{Originality and exclusivity:} the manuscript is original,
+  unpublished, and not under consideration elsewhere.
+  \item \textbf{Author approval:} all authors approved the manuscript,
+  authorship order, contributions, and submission.
+  \item \textbf{Interests and funding:} there are no competing interests or
+  external funding.
+  \item \textbf{Ethics:} no humans, animals, clinical interventions, or
+  sensitive personal data are involved.
+\end{itemize}
 
-Thank you for considering our manuscript.
+The manuscript will interest JVCIR readers working on image representation,
+reversible data hiding, perceptual quality, and learned image analysis. Thank
+you for considering our submission.
 
-\closing{Sincerely,}
+\begin{center}
+Yours sincerely,
+\end{center}
 
-\end{letter}
+\vspace{1mm}
+\textbf{St\'ephane Ga\"el R. Ekodeck} (First and Corresponding Author)\\
+ORCID: 0000-0002-8094-8832\\
+Department of Computer Science, University of Yaound\'e I, Cameroon\\
+\href{mailto:stephane-gael.ekodeck@facsciences-uy1.cm}
+{stephane-gael.ekodeck@facsciences-uy1.cm}\\
+\textbf{Co-authors:} Vivien Beyala Kamgang, Serge Alain Eb\'el\'e,
+and Julius Marcellin Nkenlifack.
+
 \end{document}
