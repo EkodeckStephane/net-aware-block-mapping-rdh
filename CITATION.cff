@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated article."
+title: "Net-Aware Learned Block Mapping for Reversible Data Hiding in Binary Images"
+type: software
+authors:
+  - family-names: Ekodeck
+    given-names: "Stéphane Gaël R."
+    orcid: "https://orcid.org/0000-0002-8094-8832"
+  - family-names: Kamgang
+    given-names: "Vivien Beyala"
+    orcid: "https://orcid.org/0000-0002-3644-1866"
+  - family-names: Ebélé
+    given-names: "Serge Alain"
+    orcid: "https://orcid.org/0000-0001-7036-7068"
+  - family-names: Nkenlifack
+    given-names: "Julius Marcellin"
+    orcid: "https://orcid.org/0000-0003-3322-4687"
+repository-code: "https://github.com/EkodeckStephane/net-aware-block-mapping-rdh"
+license: MIT
+date-released: 2026-06-08

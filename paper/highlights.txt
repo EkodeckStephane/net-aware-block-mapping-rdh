@@ -1,0 +1,5 @@
+Net capacity includes every serialized synchronization bit.
+CNN ranking lowers held-out placement DRD by 4.85%.
+All available runs recover the payload and cover exactly.
+Four methods use identical messages and distortion metrics.
+ABM reaches the highest observed net-payload operating point.

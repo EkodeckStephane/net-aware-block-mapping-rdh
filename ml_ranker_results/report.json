@@ -1,0 +1,6 @@
+{
+  "validation_mae": 0.08081352710723877,
+  "validation_pearson": 0.9496660828590393,
+  "training_samples": 9485,
+  "validation_samples": 4323
+}

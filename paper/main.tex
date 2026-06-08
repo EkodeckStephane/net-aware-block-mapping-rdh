@@ -1,0 +1,1399 @@
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[expansion=false]{microtype}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\PassOptionsToPackage{compatibility=false}{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{ragged2e}
+\usepackage{placeins}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{tikz}
+
+\usetikzlibrary{
+    arrows.meta,
+    positioning,
+    shapes.geometric,
+    shapes.misc,
+    calc
+}
+
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Net-Aware Learned Block Mapping for Binary-Image RDH}
+\shortauthors{Ekodeck \textit{et al.}}
+
+\title[mode=title]{Net-Aware Learned Block Mapping for Reversible Data Hiding in Binary Images}
+
+\author[1,2,3]{St\'ephane Ga\"el R. Ekodeck}[
+  orcid=0000-0002-8094-8832]
+\cormark[1]
+\ead{stephane-gael.ekodeck@facsciences-uy1.cm}
+\credit{Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Visualization, Writing -- original draft}
+
+\author[4,5]{Vivien Beyala Kamgang}[
+  orcid=0000-0002-3644-1866]
+\ead{vivsxx@univ-bertoua.cm}
+\credit{Conceptualization, Methodology, Writing -- review and editing}
+
+\author[1,2,3]{Serge Alain Eb\'el\'e}[
+  orcid=0000-0001-7036-7068]
+\ead{serge-alain.ebele@facsciences-uy1.cm}
+\credit{Conceptualization, Methodology, Validation, Writing -- review and editing}
+
+\author[5,4]{Julius Marcellin Nkenlifack}[
+  orcid=0000-0003-3322-4687]
+\ead{marcellin.nkenlifack@gmail.com}
+\credit{Supervision, Project administration, Writing -- review and editing}
+
+\affiliation[1]{
+  organization={Department of Computer Science, LIRIMA, TEAM GRIMCAPE, University of Yaound\'e I},
+  addressline={P.O. Box 812},
+  city={Yaound\'e},
+  country={Cameroon}
+}
+\affiliation[2]{
+  organization={IRD, UMI 209 UMMISCO, IRD France Nord},
+  city={Bondy},
+  postcode={F-93143},
+  country={France}
+}
+\affiliation[3]{
+  organization={Sorbonne Universit\'e, UMI 209 UMMISCO},
+  city={Paris},
+  postcode={F-75005},
+  country={France}
+}
+\affiliation[4]{
+  organization={RTU Mathematics and Computer Science, The University of Bertoua},
+  addressline={P.O. Box 416},
+  city={Bertoua},
+  country={Cameroon}
+}
+\affiliation[5]{
+  organization={RUFCEA (UR-IFIA), University of Dschang},
+  addressline={P.O. Box 96},
+  city={Dschang},
+  country={Cameroon}
+}
+
+\cortext[1]{Corresponding author}
+
+\begin{abstract}
+This paper presents a net-aware learned block-mapping framework for exactly
+reversible data hiding in binary images. It combines Gaussian-process
+exploration, a convolutional ranker for Hamming-distance-one substitutions,
+and an enumerative auxiliary codec that selects mapping pairs by useful
+payload after metadata. Eight-fold leave-one-image-out validation gives pooled
+Pearson correlation 0.989 and mean absolute error 0.0367 on 13,808 candidates.
+A separate held-out placement evaluation reduces mean DRD from 0.8054 to
+0.7663 (4.85\%), improving every image. On eight $512\times512$ document
+images, the integrated mapping layer carries 2874 gross and 2245 net bits on
+average at mean DRD 0.760. On 100 disjoint thresholded BOSSbase test images, it
+carries 516.1 net bits on average. PPOCP, Huynh--Nguyen, Dong, and the proposed
+method are evaluated with identical messages, payload targets, distortion
+computation, reversibility checks, and auxiliary-bit accounting at 64, 128,
+256, and 512 bits. On all-method matched images, the proposed method obtains
+mean net payloads of $-57$, $-7$, $93$, and $309$ bits, respectively, with a
+significant paired advantage over every baseline after Holm correction. At
+256 bits, median runtime is 3.56 s and median incremental peak RSS is
+2.56 MiB. Grouped steganalysis quantifies the security--payload frontier; the
+logistic AUC rises from 0.706 at 64 bits to 0.957 at 512 bits. Every available
+run recovers both message and cover exactly. The resulting contribution is a
+reproducible benchmark and the highest observed net-payload operating point
+among the evaluated implementations.
+\end{abstract}
+
+\begin{keywords}
+Reversible data hiding \sep Binary images \sep Block mapping \sep Net capacity
+\sep Machine learning \sep Steganalysis
+\end{keywords}
+
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+
+The proliferation of digital archives has increased the need to associate
+authentication data, annotations, and integrity evidence with images while
+preserving the original content. Cryptography protects message content
+\cite{cryptographie}, whereas steganography conceals its presence
+\cite{generalite}. Reversible data hiding (RDH) combines these objectives with
+exact cover restoration, a property that is especially valuable for medical,
+legal, and administrative binary documents.
+
+Binary images provide only two pixel states, so every modification can alter
+stroke continuity, topology, or local readability. Specialized RDH methods
+therefore rely on pattern statistics, overlapping neighborhoods, or reversible
+block substitutions rather than direct grayscale-domain operations
+\cite{Chhajed2023BlockDiagonal,Huynh2025BlockMapping,Yang2023Large,
+Ren2022Sliding,Dong2020Adaptive,Zhang2022Magnification,Yin2020PPOCP,
+23,Ren2019Encrypted,Feng2015Secure,69}. Their practical performance depends
+on three coupled quantities: visual distortion, the side information required
+for exact synchronization, and the statistical footprint visible to a
+steganalyst.
+
+The literature offers complementary operating points. Magnification-based
+embedding provides low distortion at increased image size
+\cite{Zhang2022Magnification}; PPOCP
+uses overlapping opposite-center pairs for perceptually selective changes
+\cite{Yin2020PPOCP}; Huynh--Nguyen exploit the combinatorial capacity of
+$3\times3$ block mapping \cite{Huynh2025BlockMapping}; and Dong et al.\ adapt
+overlapping patterns to image statistics \cite{Dong2020Adaptive}. These
+contributions motivate a unified evaluation in
+which useful payload is measured after serialized metadata and all methods use
+the same messages, images, and distortion computation.
+
+The proposed framework begins with adaptive block mapping and then makes the
+complete transmission cost explicit. Gaussian-process Bayesian optimization
+characterizes the threshold trade-off, a convolutional neural network ranks
+distance-one ZERO candidates by predicted perceptual cost, and an enumerative
+codec compresses the active PEAK set and flip positions. A Random Forest
+uniform-block layer is also implemented and evaluated, providing measured
+evidence about when added gross capacity is outweighed by synchronization
+metadata. Gaussian-process threshold exploration and the Random Forest agent
+are therefore reported as diagnostic ablations rather than components of the
+deployed distance-one codec.
+
+The main scientific contributions of this paper are:
+\begin{enumerate}
+    \item A methodological net-capacity criterion,
+    $C_{\mathrm{net}}=C_{\mathrm{gross}}-|A_{\mathrm{wire}}|_2$, applied
+    systematically to reversible block mapping through CNN-ranked
+    distance-one substitutions, enumerative auxiliary coding, and table-prefix
+    selection by useful payload.
+    \item A formal wire-level treatment of payload length, globally injective
+    PEAK/ZERO assignment, border preservation, and exact restoration.
+    \item Independently implemented conservative versions of PPOCP,
+    Huynh--Nguyen, and Dong under a common-message protocol at four payloads
+    on a disjoint BOSSbase test split.
+    \item A multi-objective evaluation covering net payload, DRD, availability,
+    paired significance, runtime, memory, and grouped steganalysis.
+\end{enumerate}
+
+Section~\ref{sec:relatedwork} positions the work in binary RDH and
+steganalysis. Section~\ref{sec:proposedmethod} defines the reversible mapping,
+learned ranking, and net-capacity codec. Section~\ref{sec:experimental}
+describes the common protocol and reports document-image and BOSSbase results.
+Section~\ref{sec:discussion} synthesizes the practical operating region, and
+Section~\ref{sec:conclusion} concludes the study.
+
+
+\section{Related Work}
+\label{sec:relatedwork}
+
+Reversible data hiding (RDH) in binary images draws on four research traditions that have advanced substantially since 2018: modern high-capacity general-image RDH, binary-image-specific pattern manipulation, deep-learning-based steganalysis, and machine-learning-driven optimisation of steganographic parameters. This section surveys these developments and positions the proposed method within the contemporary landscape.
+
+\subsection{Modern Advances in Reversible Data Hiding for General Images}
+
+\subsubsection{Prediction-Based High-Fidelity Embedding}
+
+Difference expansion \cite{11}, histogram shifting \cite{18}, and
+interpolation-based methods \cite{24} provide the classical foundation of RDH.
+Their recent descendants improve the capacity--distortion trade-off through
+adaptive prediction.
+
+Puteaux and Puech \cite{Puteaux2018MSB} proposed a reversible data hiding scheme based on most-significant-bit (MSB) prediction of pixel values, achieving near-lossless quality (PSNR above 51 dB) at payloads exceeding 0.5 bpp. The key insight is that the MSB of each pixel is highly predictable from its neighbourhood in natural images; embedding in the predictable MSBs rather than the less-predictable LSBs concentrates modifications where they are statistically expected and thus invisible. This prediction philosophy directly motivates the block-mapping approach: frequent patterns (PEAKs) are precisely those whose occurrence is predictable from the image's block statistics.
+
+Li et al. \cite{Li2019MultiHist} extend histogram shifting to multiple simultaneous histograms, identifying several peak-zero pairs rather than a single pair and embedding independently into each histogram. Their method achieves up to 0.48 bpp at PSNR above 43 dB on natural images, substantially outperforming single-histogram HS. The multi-histogram framework is structurally analogous to the proposed method's multi-PEAK strategy (\S\ref{subsec:multi_pattern}): by exploiting several frequent states simultaneously rather than a single dominant one, both methods increase capacity without proportionally increasing per-element distortion.
+
+\subsubsection{Surveys of the Contemporary RDH Landscape}
+
+Shi et al. \cite{Shi2019Survey} provide a comprehensive survey of RDH techniques from 2003 to 2019, documenting the evolution from single-layer DE and HS to multi-layer, content-adaptive, and deep-learning-assisted methods. Their taxonomy identifies three persistent bottlenecks that the proposed adaptive block-mapping directly targets: static threshold selection (addressed by the $\mu_i + \alpha\sigma_i$ mechanism), uniform-region use (evaluated in Section~\ref{subsec:rf-layer}), and adaptive capacity allocation across image regions (addressed by the multi-PEAK strategy).
+
+\subsection{Perceptual Quality Metrics for Binary Document Images}
+
+The evaluation of visual distortion in binary document images requires metrics that account for spatially non-uniform perceptual sensitivity. A pixel flip at the centre of a text stroke produces far greater visual annoyance than an identical flip in a background region, but PSNR assigns both the same penalty. The community-standard measure for binary document image quality is the Distance-Reciprocal Distortion (DRD) measure \cite{3535}, which weights pixel modifications by an inverse-distance neighbourhood function normalised over non-uniform $8\times8$ blocks. The threshold $\text{DRD} \leq 1$ for negligible distortion derives from the human perceptual study accompanying the original DRD publication \cite{3535}.
+
+Recent binary RDH papers have consistently adopted DRD alongside PSNR as the dual quality benchmark. Dong et al. \cite{Dong2020Adaptive} report DRD values below 0.5 for their adaptive overlapping scheme, establishing this as the competitive target. Zhang et al. \cite{Zhang2022Magnification} report $\text{DRD} = 0.08$ average at the cost of quadrupled image size, confirming the inverse relationship between resolution increase and visual distortion. Yin et al. \cite{Yin2020PPOCP} achieve $\text{DRD} = 0.23$ at 1157-bit average capacity on the same benchmark dataset, providing a reference point for capacity-distortion trade-offs.
+
+Feng, Lu, and Sun \cite{Feng2015Secure} established that the perceptual impact of binary image modification is governed by run-length statistics and connectivity. Their distortion model, which penalises modifications that disrupt run continuity or create isolated pixels, provides a principled alternative to pure Hamming-distance-based candidate selection. Although this paper predates 2018, its distortion framework was adopted and extended by subsequent works including \cite{Dong2020Adaptive, Zhang2022Magnification, Yin2020PPOCP}, making it an essential reference for contextualising candidate selection criteria.
+
+\subsection{Pattern-Based RDH for Binary Images}
+
+\subsubsection{The Block-Mapping Paradigm and Its Variants}
+
+The block-mapping RDH paradigm partitions a binary image into non-overlapping $3\times3$ blocks, identifies frequent (PEAK) and absent (ZERO) patterns from the block histogram, and embeds data by mapping PEAK blocks to ZERO blocks within a controlled Hamming distance. Huynh and Nguyen \cite{Huynh2025BlockMapping} establish the current state of the art in this paradigm, achieving an average capacity of 2070 bits on eight standard $512\times512$ benchmark images using a fixed Hamming distance threshold. Their method exploits the combinatorial structure of the block pattern space more systematically than previous approaches but is constrained by the static threshold and the exclusion of uniform blocks.
+
+Chhajed and Garg \cite{Chhajed2023BlockDiagonal} generalise the block representation to diagonal partition patterns, demonstrating that the choice of within-block structure creates a design space for capacity-distortion trade-offs. By restricting embedding to diagonally symmetric configurations, their method reduces the number of modified pixels per block while preserving reversibility. This work confirms that the $3\times3$ full-index encoding used by Huynh-Nguyen and the proposed method is not the only viable block representation.
+
+\subsubsection{Overlapping and Sliding-Window Approaches}
+
+An alternative to fixed non-overlapping blocks is the use of overlapping windows that scan the image to identify eligible patterns more densely.
+
+Yin et al. \cite{Yin2020PPOCP} operate on overlapping $3\times3$ blocks and identify pattern pairs with opposite centre pixels (PPOCP), embedding one bit per qualifying block by potentially flipping the centre pixel. The method achieves 1157-bit average capacity with a PSNR-DRD profile that is more conservative than block mapping but provides finer control over which pixels are modified. PPOCP's eligibility criterion---requiring the simultaneous existence of both patterns in the image---focuses embedding on images with sufficiently rich pattern distributions.
+
+Zhang et al. \cite{Zhang2022Magnification} take a fundamentally different approach by doubling the image resolution through $2\times2$ block expansion, embedding data in the expanded pixels while preserving the original pixel positions. Although achieving the highest PSNR (32.31 dB average) of all compared methods, the $4\times$ storage overhead renders this approach impractical for archival and transmission applications. A fair capacity comparison must normalise by image size; the raw 369-bit capacity at quadrupled storage represents a lower effective rate than its absolute figure suggests.
+
+\subsection{Additional Binary-Image Methods}
+
+The recent literature includes three binary RDH methods that are methodologically relevant to the proposed approach but were absent from the original comparative evaluation.
+
+Dong et al. \cite{Dong2020Adaptive} provide the closest overlapping-pattern
+competitor: they adapt window placement to local texture, whereas the proposed
+method adapts candidate assignment within a fixed block traversal. Their
+method is therefore included in the executable comparison rather than
+described again as a contextual-only baseline.
+
+Ren et al. \cite{Ren2022Sliding} present RDH in binary images via a sliding window that scans horizontal runs, identifying eligible patterns along image lines rather than within fixed block boundaries. The sliding approach captures partial overlaps between frequently occurring short patterns, achieving higher capacity on text-heavy images with rich horizontal texture.
+
+Yang \cite{Yang2023Large} targets large-capacity data hiding specifically in the black-and-white mixed regions of binary images, i.e., regions where both pixel values appear in close spatial proximity. Rather than treating all non-uniform blocks identically, Yang stratifies blocks by local black-white mixing ratio and assigns higher embedding priority to those with the most balanced mixture. This density-based prioritisation is complementary to the proposed method's distance-based adaptive threshold.
+
+Dong is included in the executable common protocol of
+Section~\ref{sec:experimental}. Ren, Yang, Zhang, and Chhajed--Garg remain
+contextual references because no validated author implementation was available
+and their publications do not fully specify an independently serializable
+synchronization stream under the net-capacity definition used here. Zhang
+additionally changes image dimensions, so its storage rate is not commensurate
+with the fixed-size protocol. Table~\ref{tab:modern_comparison} reports their
+published operating points without treating them as wire-level baselines.
+
+\subsection{Privacy-Preserving and Encrypted Binary Image RDH}
+
+A growing body of recent work extends binary RDH to scenarios where the data hider does not have access to the plaintext image---a deployment model directly relevant to cloud storage and distributed medical imaging systems.
+
+Ren, Lu, and Chen \cite{Ren2019Encrypted} propose RDH in encrypted binary images by pixel prediction. The content owner encrypts the binary image with a stream cipher; the data hider then identifies positions where a local neighbourhood predictor is highly confident and flips a subset of encrypted pixels to embed the message. The receiver, holding the encryption key, decrypts and extracts embedded bits from the pre-agreed positions. This work establishes the feasibility of binary RDH in the encrypted domain.
+
+Ma et al. \cite{Ma2021RDHEncrypted} extend encrypted image RDH to multi-key scenarios where different parties hold partial decryption keys, enabling hierarchical access to embedded data. Their construction is directly relevant to medical and legal document applications: a hospital image archive could allow radiologists to embed annotations via RDH without ever decrypting the full patient record.
+
+Recent encrypted-domain research also includes adaptive block coding for
+grayscale carriers \cite{Xiao2024AdaptiveBlock}. It is relevant to
+side-information compression, but its multi-bit grayscale cover model and
+vacating-room-after-encryption protocol are not commensurate with reversible
+mapping in binary cover images. Within the direct binary block-mapping scope,
+Huynh--Nguyen \cite{Huynh2025BlockMapping} is the recent 2025 continuation
+used in the present positioning.
+
+\subsection{Deep Learning Steganalysis of Binary Document Images}
+
+For applications in sensitive domains (medicine, law, administration), resistance to detection is a primary security concern. The steganalysis community has shifted decisively since 2018 from hand-crafted feature sets to convolutional neural networks trained end-to-end on raw pixel values.
+
+Boroumand, Chen, and Fridrich \cite{Boroumand2019SRNet} introduced SRNet, a
+deep residual network for image steganalysis that operates directly on image
+residuals rather than features engineered for a specific embedding algorithm.
+Its success motivates learned binary-image steganalysis, although a validated
+binary adaptation requires a dedicated architecture and substantially more
+cover--stego pairs than are available in the present protocol.
+
+Yedroudj, Comby, and Chaumont \cite{Yedroudj2018Net} propose Yedroudj-Net, which augments a convolutional backbone with a rich-model preprocessing layer, combining the interpretability of hand-crafted features with the power of learned representation. Yedroudj-Net is particularly effective at detecting block-based embedding because the preprocessing layer explicitly captures block-boundary artefacts---the statistical signature introduced by non-overlapping $3\times3$ block mapping.
+
+Zhang et al. \cite{Zhang2019SRNet} extend depth-wise separable convolution architecture to steganalysis, achieving comparable detection accuracy to SRNet at substantially lower computational cost. Their architecture's efficiency makes it practical to evaluate detection rates across many embedding parameters ($\alpha$ values, payload sizes).
+
+Block-pattern-mapping RDH creates a predictable statistical signature in the block histogram: the stego image has reduced counts at PEAK patterns and increased counts at ZERO patterns relative to the cover image. The companion adaptive steganography work from the same research group \cite{Ekodeck2026Combi} demonstrates that the KL divergence between cover and stego pattern distributions is the primary statistical footprint of block-mapping steganography and that reducing it substantially decreases detectability.
+
+\subsection{Adaptive Parameter Selection and Optimisation}
+
+The adaptive-threshold model
+$\text{HT}_i=\mu_i+\alpha\sigma_i$ is used to characterize the unconstrained
+capacity--distortion landscape. The deployed system then adopts the
+distance-one subset of this design space because it gives a deterministic
+one-bit mapping, bounded pixel distortion, and a compact auxiliary codec.
+
+Frazier \cite{Frazier2018Bayesian} provides a comprehensive tutorial on
+Bayesian optimization with Gaussian-process priors. The normalized objective
+defined in \S\ref{subsec:param_optim} is a non-convex and evaluation-intensive
+function of the type targeted by this framework.
+
+Sedighi, Cogranne, and Fridrich \cite{Sedighi2018Content} establish that optimal steganographic embedding assigns each cover element an individual distortion cost based on local image statistics, rather than using a uniform threshold. Their content-adaptive framework---based on the multivariate Gaussian model of local image windows---is directly applicable to binary block-mapping: each PEAK pattern $P_i$ should receive a per-pattern distortion function calibrated to its specific neighbourhood statistics.
+
+Jia et al. \cite{Jia2019Guided} propose a guided image steganography framework that simultaneously optimises multiple competing objectives (capacity, distortion, and security) through a multi-objective evolutionary algorithm. Applied to binary block-mapping, this framework would avoid the single scalar $\lambda$ weighting by instead maintaining a Pareto front of $(C_{\text{total}}, \text{DRD})$ trade-off points.
+
+\subsection{Machine Learning Integration in Steganography and Reversible Watermarking}
+
+A substantial body of recent work now applies machine learning directly to steganographic embedding, steganalysis, and watermarking.
+
+Zhu et al. \cite{Zhu2018HiDDeN} introduced HiDDeN, the first end-to-end trained encoder-decoder steganographic system where an encoder network embeds a fixed-length binary message into a cover image, a decoder recovers the message, and a discriminator simultaneously trains to detect the stego image. The adversarial training naturally balances capacity, imperceptibility, and security without requiring an explicit distortion metric.
+
+Jing et al. \cite{Jing2021HiNet} propose HiNet, an invertible neural network architecture that achieves lossless information hiding by design: the network is architecturally reversible, guaranteeing perfect extraction without a separate reversibility mechanism. For binary RDH, an analogous invertible architecture operating on block-pattern features could replace explicit bijective mapping tables with a learned, parameter-free reversible transform.
+
+Lu et al. \cite{Lu2021LargeCapacity} substantially increase the capacity of invertible image hiding by replacing scalar message embedding with a full second image hidden within the cover. Their architecture hides an entire image within another image of identical resolution, achieving image-in-image steganography at PSNR above 33 dB. While targeting natural greyscale images, the architectural principles transfer to binary images.
+
+Li, Feng, and Zhang \cite{Li2021LearnedRDH} demonstrate that a learned distortion predictor for RDH---trained on pairs of (cover block, modified block, human annoyance rating)---substantially reduces visual distortion relative to raw distance ordering at the same embedding capacity. This approach is directly applicable to improving candidate ZERO pattern selection in block-mapping methods.
+
+\subsection{Comparative Summary and Research Gap Analysis}
+
+Table~\ref{tab:modern_comparison} consolidates the literature across the
+evaluation dimensions that determine practical reversible payload. Existing
+binary-image studies generally report gross embedding capacity without the
+serialized synchronization cost, so their published values do not establish
+how many application bits remain after exact extraction metadata. They also
+rarely combine systematic steganalysis with capacity--distortion reporting,
+and no identified study evaluates several representative methods using the
+same covers, messages, payload targets, distortion implementation, and
+wire-level accounting. The resulting gap is therefore both methodological and
+experimental: binary RDH lacks a common net-capacity protocol that preserves
+exact reversibility while measuring perceptual, computational, and detection
+trade-offs. The proposed framework and evaluation protocol are designed to
+fill this gap.
+
+\begin{table*}[t]
+\centering
+\caption{Comparative overview of binary RDH and related systems}
+\label{tab:modern_comparison}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+\textbf{Method (Year)} & \textbf{EC (bits)} & \textbf{Net accounting} &
+\textbf{PSNR (dB)} & \textbf{DRD} & \textbf{Adaptive} &
+\textbf{Uniform blocks} & \textbf{Steg. eval.} \\
+\midrule
+Yin et al. 2020 \cite{Yin2020PPOCP} & 1157 & Not reported & 27.17 & 0.23 & No & Excluded & No \\
+Dong et al. 2020 \cite{Dong2020Adaptive} & $\sim$1500 & Not reported & $\sim$25 & $<$0.5 & Yes & Excluded & No \\
+Ren et al. 2022 \cite{Ren2022Sliding} & $\sim$2000 & Not reported & $\sim$24 & $<$1 & No & Excluded & No \\
+Zhang et al. 2022 \cite{Zhang2022Magnification} & 369 & Not reported & 32.31 & 0.08 & No & Excluded & No \\
+Chhajed \& Garg 2023 \cite{Chhajed2023BlockDiagonal} & $<$2000 & Not reported & $\sim$25 & $<$1 & No & Excluded & No \\
+Yang 2023 \cite{Yang2023Large} & $>$2000 & Not reported & $\sim$23 & $<$1 & Partial & Excluded & No \\
+Huynh \& Nguyen 2025 \cite{Huynh2025BlockMapping} & 2070 & Not reported & 24.13 & 0.55 & No & Excluded & No \\
+\textbf{Proposed (this work)} & \textbf{2874 gross} & \textbf{2245 net} & \textbf{per-image} & \textbf{0.76} & \textbf{Yes} & \textbf{Evaluated} & \textbf{Yes} \\
+\bottomrule
+\end{tabular}
+}
+\caption*{EC: capacity reported by the cited study on its stated
+$512\times512$ protocol. Values are contextual rather than directly
+comparable because datasets, payload definitions, and side-information
+accounting differ. ``Steg. eval.'': steganalysis resistance evaluated.}
+\end{table*}
+
+
+
+\section{Net-Aware Learned Distance-One Block Mapping}
+\label{sec:proposedmethod}
+
+\subsection{Overview and Design Rationale}
+
+This section specifies the complete system evaluated in
+Section~\ref{sec:experimental}. It extends the block-mapping framework of
+Huynh and Nguyen~\cite{Huynh2025BlockMapping} with learned candidate ordering and explicit
+optimization of payload after serialized metadata. The unconstrained adaptive
+threshold is retained as an ablation that characterizes the broader
+capacity--distortion landscape; the deployed codec uses globally disjoint
+Hamming-distance-one substitutions. Consequently, each active block carries
+one bit and changes at most one pixel.
+
+The system:
+\begin{itemize}
+    \item learns a perceptual ordering of absent distance-one patterns;
+    \item enforces a globally injective PEAK/ZERO assignment;
+    \item selects the frequency-ordered table prefix that maximizes net
+    capacity; and
+    \item serializes the payload length, active PEAK subset, and flip positions
+    with an enumerative codec.
+\end{itemize}
+
+The embedding and extraction workflows are illustrated in
+Figures~\ref{fig:embedding-flow} and~\ref{fig:extraction-flow} and formalized
+in Algorithms~\ref{alg:embedding} and~\ref{alg:extraction}.
+
+\subsection{Reversible Mapping Construction}
+
+\subsubsection*{Block representation and pattern histogram}
+
+Let $I$ be a binary image of size $M\times N$. Complete non-overlapping
+$3\times3$ blocks are visited in raster order:
+\[
+B_k=\{b_{i,j}\},\quad i,j\in\{0,1,2\},\quad
+k=1,\ldots,\left\lfloor\frac{M}{3}\right\rfloor
+\left\lfloor\frac{N}{3}\right\rfloor .
+\]
+The product, rather than the sum, gives the block count:
+\[
+B=\left\lfloor\frac{M}{3}\right\rfloor
+  \left\lfloor\frac{N}{3}\right\rfloor .
+\]
+
+Each block is mapped to a decimal index:
+\[
+d_k = \sum_{i=0}^{8} b_i 2^i,
+\]
+where $b_i \in \{0,1\}$ follows a fixed row-major ordering shared by both embedding and extraction.
+Rows below $3\lfloor M/3\rfloor$ and columns beyond
+$3\lfloor N/3\rfloor$ are copied unchanged and never participate in capacity
+or extraction.
+
+Uniform blocks ($d_k = 0$ and $d_k = 511$) are reserved for the separately
+evaluated Random Forest layer in Section~\ref{subsec:rf-layer}; the core
+block-mapping histogram uses $d\in\{1,\ldots,510\}$.
+A histogram $H(d)$ is constructed for $d \in \{1,\ldots,510\}$.
+
+\subsubsection*{Pattern sets}
+
+The implementation considers every non-uniform pattern occurring at least
+twice as an initial PEAK candidate. Candidates are sorted by decreasing
+frequency and then by numerical index. The pattern space is divided into:
+\begin{itemize}
+    \item \textbf{PEAK candidates} $\mathcal{P}_0=\{d:H(d)\geq2,\,
+    d\notin\{0,511\}\}$,
+    \item \textbf{Unused patterns (ZEROs)} $\mathcal{Z}$: patterns such that $H(d)=0$,
+    \item \textbf{Residual patterns}: patterns not involved in embedding.
+\end{itemize}
+
+The final active set $\mathcal{P}\subseteq\mathcal{P}_0$ is selected by the
+net-capacity rule defined below, not by an unspecified histogram tail.
+
+\subsubsection*{Pattern distance analysis}
+
+For each frequent pattern $P_i \in \mathcal{P}$ and each unused pattern $Z_j \in \mathcal{Z}$,
+the Hamming distance between their $3 \times 3$ representations is computed:
+\[
+D_{i,j} = \sum_{p=1}^{9} \delta(P_i[p], Z_j[p]),
+\]
+where $\delta(a,b)=1$ if $a\neq b$ and $0$ otherwise.
+
+The set $\{D_{i,j}\}$ characterizes the distortion cost associated with mapping $P_i$ to available unused patterns.
+
+\subsubsection*{Adaptive candidate selection}
+
+Candidate patterns for each frequent pattern are selected adaptively.
+Let $\mu_i$ and $\sigma_i$ denote the empirical mean and standard deviation of $\{D_{i,j}\}$.
+The candidate set is defined as:
+\[
+\mathcal{Z}_i = \{ Z_j \in \mathcal{Z} \mid D_{i,j} \le \mu_i + \alpha \sigma_i \},
+\]
+where $\alpha$ controls the capacity--distortion trade-off.
+
+This formulation relies solely on empirical statistics and does not assume any specific distance distribution.
+
+\subsubsection{Globally Injective Mapping Construction}
+
+For the unconstrained ablation, let $k_i=|\mathcal{Z}_i|$ and define
+\[
+L_i = \left\lfloor \log_2 (k_i + 1) \right\rfloor
+\]
+bits per occurrence. Exactly $2^{L_i}-1$ candidates are retained:
+\[
+\widetilde{\mathcal Z}_i\subseteq\mathcal Z_i,\qquad
+|\widetilde{\mathcal Z}_i|=2^{L_i}-1,
+\]
+which makes the mapping
+\[
+T_i:\{0,1\}^{L_i}\longleftrightarrow
+\{P_i\}\cup\widetilde{\mathcal Z}_i
+\]
+a genuine bijection. After a ZERO is assigned, it is removed from the
+available pool; therefore the ranges of all $T_i$ are globally disjoint.
+
+The deployed distance-one policy restricts $L_i=1$. Symbol 0 preserves
+$P_i$, while symbol 1 uses the lowest predicted-cost unassigned ZERO satisfying
+$D(P_i,Z)=1$. Thus every modified block flips exactly one pixel.
+
+\subsubsection*{Deterministic block traversal order}
+\label{subsec:order}
+
+To ensure reproducibility and unambiguous extraction, a deterministic block traversal order is enforced.
+
+The image is traversed in raster-scan order (left-to-right, top-to-bottom) at the block level.
+Each block is visited exactly once during both embedding and extraction.
+
+During embedding, frequent patterns are processed in descending order of occurrence.
+However, the spatial traversal order of blocks remains unchanged.
+Each block is modified at most once, and no inter-block dependencies are introduced.
+
+\subsubsection*{Multi-pattern embedding strategy}
+\label{subsec:multi_pattern}
+
+Embedding scans spatial blocks once in raster order. When a block pattern is
+an active PEAK, the next bit selects either the unchanged PEAK or its assigned
+ZERO. The last symbol is truncated to the declared payload length during
+extraction; for the deployed one-bit codec, no padding ambiguity arises.
+
+The total embedding capacity is:
+\[
+C_{\text{gross}} = \sum_{P_i \in \mathcal{P}} n_i L_i,
+\]
+where $n_i$ denotes the number of occurrences of $P_i$.
+
+\subsection{Embedding Procedure}
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    node distance=1.15cm and 1.35cm,
+    every node/.style={font=\small},
+    process/.style={rectangle, draw, rounded corners, align=center,
+      minimum width=3.15cm, minimum height=0.82cm, fill=blue!4},
+    decision/.style={diamond, draw, aspect=2.2, align=center,
+      inner sep=1pt, fill=orange!8},
+    data/.style={rectangle, draw, double, align=center,
+      minimum width=3.0cm, minimum height=0.82cm, fill=green!6},
+    arrow/.style={-{Latex[length=2.3mm]}, thick}
+]
+\node[data] (input) {Binary cover $I$};
+\node[process, right=of input] (partition) {Complete $3\times3$ blocks\\raster order; preserve borders};
+\node[process, right=of partition] (hist) {Histogram $H$\\PEAKs $H(d)\ge2$; absent ZEROs};
+\node[process, below=of hist] (rank) {For each PEAK, rank unassigned\\distance-one ZEROs with the CNN};
+\node[process, left=of rank] (inject) {Assign one ZERO per PEAK\\and enforce global disjointness};
+\node[process, left=of inject] (net) {Sort PEAKs by frequency\\select prefix maximizing\\$C_{\rm gross}-|A_{\rm wire}|_2$};
+\node[data, below=of net] (message) {Payload $M$ and declared length $q$};
+\node[process, right=of message] (embed) {Raster scan: $0\mapsto P_i$\\$1\mapsto Z_i$};
+\node[data, right=of embed] (stego) {Stego image $I'$};
+\node[data, below=of inject, yshift=-1.0cm] (wire) {Enumerative auxiliary stream\\$A_{\rm wire}=(q,r(\mathcal P),s_1,\ldots,s_t)$};
+
+\draw[arrow] (input) -- (partition);
+\draw[arrow] (partition) -- (hist);
+\draw[arrow] (hist) -- (rank);
+\draw[arrow] (rank) -- (inject);
+\draw[arrow] (inject) -- (net);
+\draw[arrow] (net) -- (message);
+\draw[arrow] (message) -- (embed);
+\draw[arrow] (embed) -- (stego);
+\draw[arrow] (embed.south) -- (wire.north);
+\end{tikzpicture}
+}
+\caption{Evaluated embedding pipeline. Learned distance-one assignment is
+followed by explicit net-capacity optimization and enumerative serialization;
+no cryptographic operation is assumed.}
+\label{fig:embedding-flow}
+\end{figure*}
+
+\begin{algorithm*}[t]
+\caption{Net-Aware CNN-Ranked Distance-One Embedding}
+\label{alg:embedding}
+\begin{algorithmic}[1]
+\Require Binary image $I$, payload $M=(m_1,\ldots,m_q)$, trained ranker $f_\theta$
+\Ensure Stego image $I'$, serialized auxiliary stream $A_{\rm wire}$
+\State Enumerate complete $3\times3$ blocks and compute $H(d)$
+\State $\mathcal P_0\gets\{d:H(d)\ge2,\ d\notin\{0,511\}\}$; sort by $(-H(d),d)$
+\State $\mathcal Z\gets\{d:H(d)=0\}$; $\mathcal U\gets\emptyset$; $\mathcal T\gets\emptyset$
+\For{each $P_i\in\mathcal P_0$}
+    \State $\mathcal C_i\gets\{Z\in\mathcal Z\setminus\mathcal U:D(P_i,Z)=1\}$
+    \If{$\mathcal C_i\neq\emptyset$}
+        \State $Z_i\gets\arg\min_{Z\in\mathcal C_i}(f_\theta(I,P_i,Z),Z)$
+        \State $\mathcal T[P_i]\gets\{0\mapsto P_i,1\mapsto Z_i\}$;
+        $\mathcal U\gets\mathcal U\cup\{Z_i\}$
+    \EndIf
+\EndFor
+\State Select the frequency-ordered prefix $\mathcal T^\star$ maximizing
+$\sum_{P_i\in\mathcal T^\star}H(P_i)-|A_{\rm wire}(\mathcal T^\star)|_2$
+\If{$q>\sum_{P_i\in\mathcal T^\star}H(P_i)$}
+    \State reject the requested payload
+\EndIf
+\State $I'\gets I$; $j\gets1$
+\For{each complete block of $I$ in raster order}
+    \If{its pattern is $P_i\in\mathcal T^\star$ and $j\le q$}
+        \State replace it by $\mathcal T^\star[P_i][m_j]$; $j\gets j+1$
+    \EndIf
+\EndFor
+\State Serialize $q$, the active PEAK subset rank, and base-9 flip positions
+\State \Return $I'$, $A_{\rm wire}$
+\end{algorithmic}
+\end{algorithm*}
+
+\subsection{Efficient Extraction and Restoration}
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    node distance=1.15cm and 1.35cm,
+    every node/.style={font=\small},
+    process/.style={rectangle, draw, rounded corners, align=center,
+      minimum width=3.15cm, minimum height=0.82cm, fill=blue!4},
+    decision/.style={diamond, draw, aspect=2.2, align=center,
+      inner sep=1pt, fill=orange!8},
+    data/.style={rectangle, draw, double, align=center,
+      minimum width=3.0cm, minimum height=0.82cm, fill=green!6},
+    arrow/.style={-{Latex[length=2.3mm]}, thick}
+]
+\node[data] (stego) {Stego image $I'$};
+\node[data, below=of stego] (wire) {Auxiliary stream $A_{\rm wire}$};
+\node[process, right=of wire] (decode) {Decode $q$, PEAK subset rank,\\and base-9 flip positions};
+\node[process, above=of decode] (inverse) {Build globally injective inverse\\$P_i\mapsto(0,P_i)$, $Z_i\mapsto(1,P_i)$};
+\node[process, right=of inverse] (scan) {Scan complete $3\times3$ blocks\\in raster order};
+\node[decision, below=of scan] (done) {$q$ bits\\recovered?};
+\node[process, right=of done] (lookup) {If pattern is in inverse:\\append bit and restore $P_i$};
+\node[data, below=of lookup] (outputs) {Recovered payload $M$\\and exact cover $I$};
+\draw[arrow] (stego) -- (inverse);
+\draw[arrow] (wire) -- (decode);
+\draw[arrow] (decode) -- (inverse);
+\draw[arrow] (inverse) -- (scan);
+\draw[arrow] (scan) -- (done);
+\draw[arrow] (done) -- node[above]{No} (lookup);
+\draw[arrow] (lookup) |- (scan);
+\draw[arrow] (done.south) |- node[pos=0.25,left]{Yes} (outputs.west);
+\end{tikzpicture}
+}
+\caption{Extraction and restoration pipeline. The serialized payload length
+provides an unambiguous stopping condition, and incomplete border blocks remain
+untouched.}
+\label{fig:extraction-flow}
+\end{figure*}
+
+To reduce extraction complexity, all mapping tables are merged into a single inverse dictionary:
+\[
+\mathcal{D} : p \mapsto (m, P_i),
+\]
+where $p$ is a stego pattern, $m\in\{0,1\}$ the extracted bit, and $P_i$ the
+original pattern.
+
+\begin{algorithm*}[t]
+\caption{Deterministic Extraction and Exact Restoration}
+\label{alg:extraction}
+\begin{algorithmic}[1]
+\Require Stego image $I'$, serialized auxiliary stream $A_{\rm wire}$
+\Ensure Extracted message $M$, restored image $I$
+\State Decode payload length $q$, active PEAKs, and their flip positions
+\State Reconstruct all tables $T_i=\{0\mapsto P_i,1\mapsto Z_i\}$
+\State Build $\mathcal D[P_i]=(0,P_i)$ and $\mathcal D[Z_i]=(1,P_i)$
+\State $I\gets I'$; $M\gets\emptyset$
+\For{each complete block of $I'$ in raster order}
+    \If{$|M|=q$}
+        \State \textbf{break}
+    \EndIf
+    \State Compute pattern index $d$
+    \If{$d \in \mathcal{D}$}
+        \State Append the decoded bit to $M$ and replace the block by its PEAK
+    \EndIf
+\EndFor
+\If{$|M|\neq q$}
+    \State reject the malformed stego/auxiliary pair
+\EndIf
+\State \Return $M$, $I$
+\end{algorithmic}
+\end{algorithm*}
+
+\subsection{Learned Ranking, Ablations, and Wire Accounting}
+
+\subsubsection*{Distortion characteristics}
+
+For each embedded block mapped from $P_i$ to $\mathcal{Z}_i$, the number of flipped pixels is bounded by:
+\[
+\max_{Z_j \in \mathcal{Z}_i} D_{i,j},
+\]
+ensuring pattern-specific distortion control.
+
+\subsubsection*{Gaussian-process diagnostic}
+\label{subsec:param_optim}
+
+The parameter $\alpha$ is explored by Gaussian-process Bayesian optimization.
+For every evaluated value, the implementation records capacity, PSNR, DRD, and
+the normalized objective
+\[
+J(\alpha)=\lambda\left(1-\frac{C_{\text{total}}(\alpha)}{C_{\mathrm{ref}}}\right)
++(1-\lambda)\mathrm{DRD}(\alpha).
+\]
+Expected Improvement selects the next value of $\alpha$. The equal weighting
+$\lambda=0.5$ gives the two normalized diagnostic terms identical influence;
+it is not used to select or train the deployed distance-one system. A
+$\lambda$ sweep is consequently not used to support any reported deployment
+claim: changing this diagnostic scalarization would alter only the exploratory
+ordering, whereas all final tables use the independently specified
+distance-one policy. Optimizing $\alpha$ alone does not guarantee
+$\mathrm{DRD}<1$, motivating the constrained distance-one policy used by the
+integrated system. The exploratory search uses
+$\alpha\in[0,1.5]$, initial points $\{0,0.5,1,1.5\}$, six EI iterations on a
+151-point grid, $\lambda=0.5$, exploration 0.01, and a Matérn-$5/2$ kernel
+with a white-noise term. The random seed is 20260607.
+
+\subsubsection*{CNN-based candidate ranking}
+
+For a PEAK pattern and each distance-one ZERO candidate, the CNN receives three
+$9\times9$ channels: the centred PEAK, the centred candidate, and the average
+spatial context of all PEAK occurrences. It regresses the empirical
+reciprocal-distance replacement cost. The candidate with the smallest predicted
+cost is assigned to symbol one, while symbol zero preserves the PEAK.
+
+The $9\times9$ support covers the central $3\times3$ block and a three-pixel
+margin in every direction. It contains the complete $5\times5$ DRD support
+around each of the nine possible flipped pixels, including pixels outside the
+embedding block; a $7\times7$ patch cannot provide that support for corner
+flips. Larger patches add context that is not used by the local training
+target.
+
+The network contains two $3\times3$ convolutional layers with 16 and 32
+channels and ReLU activations, adaptive $3\times3$ average pooling, and a
+$288\rightarrow64\rightarrow1$ regressor with ReLU and Softplus. Training uses
+Smooth-L1 loss, AdamW with learning rate $10^{-3}$, batch size 128, 20 epochs,
+and seed 20260607. Complete source images, rather than candidate samples, define
+the train/validation split.
+
+Figure~\ref{fig:cnn-architecture} summarizes the evaluated architecture and
+its scalar candidate-cost output.
+
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+  node distance=0.7cm,
+  layer/.style={rectangle,draw,rounded corners,align=center,
+    minimum height=0.75cm,minimum width=2.3cm,fill=blue!5},
+  arrow/.style={-{Latex[length=2mm]},thick}
+]
+\node[layer] (input) {Three $9\times9$ channels\\PEAK, ZERO, mean context};
+\node[layer, right=of input] (conv1) {$3\times3$ Conv\\3$\rightarrow$16, ReLU};
+\node[layer, right=of conv1] (conv2) {$3\times3$ Conv\\16$\rightarrow$32, ReLU};
+\node[layer, right=of conv2] (pool) {Adaptive average pool\\$32\times3\times3$};
+\node[layer, right=of pool] (reg) {Flatten, FC 288$\rightarrow$64\\ReLU, FC 64$\rightarrow$1, Softplus};
+\draw[arrow] (input) -- (conv1);
+\draw[arrow] (conv1) -- (conv2);
+\draw[arrow] (conv2) -- (pool);
+\draw[arrow] (pool) -- (reg);
+\end{tikzpicture}}
+\caption{Candidate-cost CNN used to rank globally available distance-one ZERO
+patterns. The scalar output estimates reciprocal-distance replacement cost.}
+\label{fig:cnn-architecture}
+\end{figure*}
+
+\subsubsection*{Random-Forest uniform-block ablation}
+\label{subsec:rf-layer}
+
+Uniform blocks are processed by a second reversible layer. A Random Forest
+classifier predicts whether a block admits a low-cost single-pixel flip from
+its $9\times9$ context, and a second forest predicts the pixel position. The
+safety label uses a local reciprocal-distance cost no greater than 0.5.
+Selected coordinates and positions are compactly serialized for exact
+extraction and restoration. The experiment shows that the classifier
+identifies reliable locations, while the coordinate stream defines the next
+compression target. The final net-aware configuration therefore assigns its
+bit budget to the enumerative block-mapping layer.
+
+Both forests use 120 trees and maximum depth 14. The safety model uses
+minimum leaf size 2 and balanced class weights; the position model uses
+minimum leaf size 1. Validation is grouped by source image with three folds,
+seed 20260607, and a deployment probability threshold of 0.7. These bounded
+defaults were fixed before the net-capacity evaluation: 120 trees stabilize
+the grouped predictions, depth 14 limits memorization of image-specific
+contexts, and the 0.7 threshold favors precision when every accepted block
+incurs coordinate overhead. They were not optimized on the reported test
+outcomes. This layer is an evaluated ablation and is not included in the final
+payload figures because its measured incremental net contribution is negative.
+
+\subsubsection*{Net-capacity accounting}
+
+Useful capacity subtracts the exact serialized side information:
+\[
+C_{\mathrm{net}}=C_{\mathrm{gross}}-|A_{\mathrm{wire}}|_2.
+\]
+For distance-one mappings, the wire format ranks the sorted active-PEAK subset
+in the combinatorial number system. The corresponding nine possible flip
+positions are then represented as base-9 digits. This approaches the
+information content of the mapping set more closely than independent fixed
+width pairs. Mapping pairs are ordered by occurrence count, and only the prefix
+maximizing net capacity is retained. If no positive subset exists, the image is
+left unchanged.
+
+For $t$ active PEAKs $0\le p_1<\cdots<p_t<512$, the subset rank is
+\[
+r(\mathcal P)=\sum_{j=1}^{t}\binom{p_j}{j}.
+\]
+If $s_j\in\{0,\ldots,8\}$ is the flipped bit position, the combined integer is
+\[
+u=r(\mathcal P)9^t+\sum_{j=1}^{t}s_j9^{t-j}.
+\]
+For example, with active PEAKs $\{5,9,12\}$ and flip positions $(0,4,8)$,
+$r=\binom51+\binom92+\binom{12}3=261$, the base-9 component is 44, and the
+combined state is $u=261\times9^3+44=190313$.
+The wire stream contains the magic identifier, format version, 32-bit payload
+length $q$, 16-bit table count $t$, and the shortest fixed byte string capable
+of representing the state space $\binom{512}{t}9^t$. Image dimensions are
+provided by the stego container and are checked by the extraction API. The
+stream is compressed but not encrypted; confidentiality and authentication,
+when required by an application, are orthogonal transport-layer services.
+
+\subsection{Comparison with Conventional Block-Mapping}
+
+Compared with~\cite{Huynh2025BlockMapping}, the proposed scheme introduces adaptive candidate selection,
+pattern-aware capacity allocation, and multi-pattern embedding,
+resulting in improved embedding efficiency while preserving reversibility.
+On the eight document benchmarks, the proposed implementation provides 2874
+gross bits and 2245 net bits on average after 629 auxiliary bits are charged.
+Huynh--Nguyen report 2070 gross bits under their own protocol; this published
+value is a contextual operating point rather than a direct net-capacity
+comparison because their serialized auxiliary cost is not reported.
+
+\subsection{Computational Complexity and Formal Properties}
+\label{subsec:complexity-analysis}
+
+This subsection provides a formal analysis of the computational complexity and
+theoretical guarantees of the proposed adaptive block-mapping embedding and
+optimized extraction algorithms. In particular, we derive tight asymptotic
+bounds for both time and space complexity, and we establish key properties such
+as deterministic reversibility and absence of inter-block interference. These
+results ensure that the proposed scheme is not only efficient but also
+theoretically sound and suitable for high-integrity reversible data hiding
+applications.
+
+\paragraph{Notation.}
+Let $n=MN$ denote the total number of pixels and
+$B=\lfloor M/3\rfloor\lfloor N/3\rfloor$ the number of complete
+$3\times3$ blocks.
+Let $\mathcal{P}$ be the set of frequent (PEAK) patterns and
+$\mathcal{Z}$ the set of unused (ZERO) patterns.
+For a pattern $P_i \in \mathcal{P}$, let $n_i$ be the number of blocks
+exhibiting $P_i$, $L_i$ the embedding capacity associated with $P_i$, and
+$E = \sum_i n_i^{\text{emb}}$ the total number of blocks actually used for
+embedding.
+
+\begin{proposition}[Embedding Time Complexity]
+The time complexity of the deployed distance-one embedding algorithm is
+\[
+O\!\left(n+|\mathcal P_0|\,c_\theta+E\right)=O(n),
+\]
+where $c_\theta$ is the fixed cost of evaluating at most nine candidates with
+the fixed CNN.
+\end{proposition}
+
+\begin{proof}
+The algorithm first partitions the image into blocks and computes pattern
+indices, which requires a single pass over all pixels and thus $O(n)$ time.
+Histogram construction and pattern classification are performed in constant
+time per block, yielding $O(B)=O(n)$ complexity.
+For each PEAK, its at most nine distance-one neighbors are generated directly
+and ranked by the fixed-size CNN, requiring
+$O(|\mathcal P_0|c_\theta)$ time. Since the binary $3\times3$ pattern space
+contains only 512 states, this term is bounded independently of image size.
+Finally, each embedding operation consists of a constant-time table lookup and
+block substitution, and is executed for $E$ blocks, contributing $O(E)$ time.
+Summing all terms gives the stated complexity.
+\end{proof}
+
+\begin{proposition}[Embedding Space Complexity]
+The space complexity of the embedding algorithm is
+\[
+O(n+q).
+\]
+\end{proposition}
+
+\begin{proof}
+The algorithm stores the original and modified images, requiring $O(n)$ space.
+The histogram, mapping tables, and inverse dictionary contain at most 512
+states and therefore require constant space with respect to image size. The
+payload buffer requires $O(q)$ space.
+\end{proof}
+
+\begin{proposition}[Optimized Extraction Time Complexity]
+The optimized extraction algorithm runs in
+\[
+O(n)
+\]
+time.
+\end{proposition}
+
+\begin{proof}
+Extraction scans the stego image once to reconstruct blocks and compute pattern
+indices, which requires $O(n)$ time.
+The inverse dictionary has at most 512 entries. Each complete block is
+processed at most once in deterministic raster order with constant-time
+lookup, and extraction stops after the declared $q$ bits.
+\end{proof}
+
+\begin{proposition}[Extraction Space Complexity]
+The space complexity of the optimized extraction algorithm is
+\[
+O(n+q).
+\]
+\end{proposition}
+
+\begin{proof}
+During extraction, memory is required for the stego image, the recovered image,
+and the inverse dictionary constructed from the mapping tables.
+The inverse dictionary is bounded by the 512-state pattern alphabet, and the
+message buffer stores exactly $q$ recovered bits.
+\end{proof}
+
+\begin{proposition}[Deterministic Reversibility]
+Given an unmodified stego image and its valid auxiliary stream, the proposed
+embedding and extraction procedures recover the payload and cover exactly.
+\end{proposition}
+
+\begin{proof}
+Each table maps 0 to its PEAK and 1 to one absent distance-one pattern.
+Assigned ZEROs are globally disjoint and were absent from the cover, so the
+union of table ranges is injective. During extraction, the inverse dictionary
+therefore maps every active stego pattern to one bit and one original PEAK.
+Since blocks are non-overlapping, modified at most once, and processed in a
+deterministic traversal order, the declared payload length gives a unique
+stopping point. Unused complete blocks and incomplete border pixels are never
+modified. Hence both the embedded message and original image are reconstructed
+exactly.
+\end{proof}
+
+\begin{proposition}[Independent Blocks]
+Embedding operations on distinct blocks are independent.
+\end{proposition}
+
+\begin{proof}
+Each block is processed independently using a pattern-specific mapping table.
+No embedding operation modifies neighboring blocks or depends on the state of
+other blocks.
+Therefore, embedding decisions are local and do not introduce inter-block
+interference.
+\end{proof}
+
+
+\section{Experimental Evaluation}
+\label{sec:experimental}
+
+\subsection{Datasets, Splits, and Reproducibility}
+
+The evaluation has two complementary scales. The eight standard
+$512\times512$ binary document images used by Huynh--Nguyen
+\cite{Huynh2025BlockMapping} support
+direct validation against the block-mapping literature; their diversity is
+shown in Figure~\ref{fig:dataset-final}. BOSSbase~\cite{Bas2011BOSS} provides
+10,000 grayscale
+images, from which seed 20260608 selects 100 profile images and 100 disjoint
+test images. The profile split supplies only the image-level statistics needed
+by the conservative Dong implementation. Test images are binarized at
+threshold 128. The CNN ranker trained on the document images is transferred
+without BOSSbase retraining, preventing test-set adaptation.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{images/Figure_4.pdf}
+\caption{Eight binary document images used for block-mapping validation.}
+\label{fig:dataset-final}
+\end{figure*}
+
+The four-method protocol embeds identical pseudorandom messages at targets 64,
+128, 256, and 512 bits. Every available run is accepted only after exact
+message extraction and bitwise cover restoration. Huynh--Nguyen uses the
+published threshold $T=5$. Dong evaluates all context divisors
+$l\in\{1,\ldots,10\}$ and retains the exact minimum-DRD result. PPOCP and Dong
+use conservative serialized synchronization or location information where the
+publications leave the independent wire representation open. These
+implementations are not presented as official author code. Accordingly,
+net-payload conclusions apply to the executable wire formats defined in this
+study, while DRD and availability provide the less
+serialization-dependent comparison.
+
+\subsection{Metrics and Statistical Protocol}
+
+Gross payload is the message length, auxiliary bits are the exact serialized
+wire length, and useful payload is
+$C_{\mathrm{net}}=C_{\mathrm{gross}}-C_{\mathrm{aux}}$. Distortion is measured
+with changed pixels, PSNR, and DRD \cite{3535}. Availability is the fraction of
+test images that carry the target and complete the exact round trip.
+
+Primary per-payload comparisons use common available images. A secondary fixed
+cohort contains the 46 images on which all four methods are available at all
+four payloads. ABM is paired with each baseline for net bits and DRD using the
+Wilcoxon signed-rank test and Holm correction within each payload. Mean net
+payload is accompanied by a 95\% percentile bootstrap interval with 10,000
+image-level resamples and seed 20260608. Runtime includes embedding,
+serialization, extraction, and verification. Memory is peak process RSS minus
+pre-call RSS, sampled every 2 ms. Experiments used Python 3.13.5, NumPy 2.2.6,
+PyTorch 2.8.0 CPU, scikit-learn 1.7.2, and SciPy 1.17.1 on 64-bit Windows with
+12 logical processors.
+
+\subsection{Machine-Learning Validation}
+
+Image-wise leave-one-out (LOSO) validation trains eight independent CNNs, each
+on seven document images and tests it on the remaining complete image. Across
+13,808 held-out candidates, pooled mean absolute error is 0.0367 and pooled
+Pearson correlation is 0.9893; per-image correlations range from 0.9861 to
+0.9939. A separate LOSO placement experiment applies each fold model to its
+held-out image at an identical 75\% distance-one payload. Mean DRD decreases
+from 0.8054 with deterministic Hamming-index ordering to 0.7663 with CNN
+ordering, a 4.85\% reduction. All eight images improve, with per-image
+reductions from 2.83\% to 7.94\%, while every message and cover is recovered
+exactly. The previously defined two-image split gives MAE 0.081 and correlation
+0.950 and is retained only as a directly reproducible detailed case:
+CNN ranking reduces DRD from 0.825 to 0.795 on table1-3 and from 0.935 to 0.899
+on french-4. Thus, regression accuracy and operational DRD impact are evaluated
+separately, and the latter is not inferred from two selected examples.
+Fold-level regression and placement results are provided with the
+reproducibility artefacts.
+
+The uniform-block Random Forest is evaluated by source-image-grouped
+cross-validation on 14,798 samples. It reaches ROC AUC 0.995, precision 0.897,
+recall 0.970, and flip-position accuracy 0.971. The layer adds 179.8 gross bits
+per document image on average, while its current coordinate representation
+uses 2667.0 auxiliary bits. This identifies coordinate coding as a concrete
+optimization opportunity while retaining the classifier as a validated
+component.
+
+\subsection{Document-Image and External Net Capacity}
+
+Table~\ref{tab:document-net} reports the integrated CNN-ranked mapping layer at
+a 75\% payload budget. Auxiliary sizes are measured from serialized bytes, and
+all eight messages and covers are recovered exactly.
+
+\begin{table}[t]
+\centering
+\caption{Net-aware results on the eight binary document images.}
+\label{tab:document-net}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Image} & \textbf{Gross} & \textbf{Aux.} & \textbf{Net} & \textbf{DRD} \\
+\midrule
+circuit-2 & 1576 & 592 & 984 & 0.583 \\
+formula-5 & 3692 & 672 & 3020 & 0.900 \\
+graph1-5 & 1978 & 632 & 1346 & 0.662 \\
+handwr2-8 & 2351 & 632 & 1719 & 0.768 \\
+large-8 & 1138 & 488 & 650 & 0.616 \\
+symbol-6 & 2367 & 672 & 1695 & 0.897 \\
+table1-3 & 4161 & 656 & 3505 & 0.789 \\
+french-4 & 5729 & 688 & 5041 & 0.864 \\
+\midrule
+\textbf{Average} & \textbf{2874} & \textbf{629} & \textbf{2245} & \textbf{0.760} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+On the 100 BOSSbase test images, net-aware table selection gives 893.2 gross,
+377.1 auxiliary, and 516.1 net bits on average. Median net capacity is 362
+bits, 78 images are net positive, mean DRD is 0.402, and every evaluated
+message and cover is recovered exactly. The enumerative codec raises external
+net capacity by 32.1\% relative to the preceding dense-or-sparse wire format.
+
+\subsection{Multi-Payload Common-Protocol Results}
+
+Table~\ref{tab:multiload} and Figure~\ref{fig:multiload} summarize the
+all-method matched subsets. ABM moves from metadata-dominated operation at 64
+bits to a median-positive point at 128 bits and a clearly positive operating
+region at 256 and 512 bits. PPOCP defines the lowest-DRD trajectory, while ABM
+defines the highest-net trajectory.
+
+\begin{table*}[t]
+\centering
+\caption{Mean net bits and median DRD on all-method matched images.}
+\label{tab:multiload}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{@{}rrcccccccc@{}}
+\toprule
+& & \multicolumn{2}{c}{\textbf{Proposed ABM}} &
+\multicolumn{2}{c}{\textbf{Dong}} &
+\multicolumn{2}{c}{\textbf{Huynh--Nguyen}} &
+\multicolumn{2}{c}{\textbf{PPOCP}} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}
+\textbf{Target} & \textbf{Matched} & \textbf{Net} & \textbf{DRD} &
+\textbf{Net} & \textbf{DRD} & \textbf{Net} & \textbf{DRD} &
+\textbf{Net} & \textbf{DRD} \\
+\midrule
+64  & 86 & $-57$ & 0.041 & $-224$ & 0.056 & $-2200$ & 0.035 & $-997$ & 0.023 \\
+128 & 83 & $-7$  & 0.080 & $-176$ & 0.108 & $-2096$ & 0.070 & $-1653$ & 0.041 \\
+256 & 69 & \textbf{93} & 0.135 & $-81$ & 0.200 & $-1812$ & 0.117 & $-2856$ & 0.064 \\
+512 & 46 & \textbf{309} & 0.176 & 96 & 0.332 & $-1191$ & 0.178 & $-4822$ & 0.097 \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Fixed-cohort sensitivity analysis on the 46 images available for
+every method and payload. Values are mean net bits with 95\% bootstrap
+intervals; DRD is the cohort median.}
+\label{tab:fixed-cohort}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{@{}rccc@{}}
+\toprule
+\textbf{Target} & \textbf{Method} & \textbf{Mean net bits (95\% CI)} &
+\textbf{Median DRD}\\
+\midrule
+64 & Proposed ABM & $-48.5\;[-49.2,-48.0]$ & 0.022\\
+   & Dong / Huynh--Nguyen / PPOCP & $-226.3\;[-229.6,-223.1]$ /
+   $-1644.7\;[-1855.7,-1450.9]$ / $-1028.0\;[-1063.1,-989.2]$ &
+   0.029 / 0.024 / 0.012\\
+128 & Proposed ABM & $8.0\;[5.7,10.1]$ & 0.043\\
+   & Dong / Huynh--Nguyen / PPOCP & $-178.3\;[-188.2,-169.7]$ /
+   $-1582.8\;[-1794.4,-1386.3]$ / $-1707.8\;[-1767.1,-1645.0]$ &
+   0.066 / 0.044 / 0.025\\
+256 & Proposed ABM & $113.9\;[108.5,119.0]$ & 0.087\\
+   & Dong / Huynh--Nguyen / PPOCP & $-83.8\;[-106.1,-66.1]$ /
+   $-1456.3\;[-1662.6,-1264.0]$ / $-2954.1\;[-3064.0,-2831.5]$ &
+   0.132 / 0.084 / 0.050\\
+512 & Proposed ABM & $309.0\;[289.7,326.1]$ & 0.176\\
+   & Dong / Huynh--Nguyen / PPOCP & $95.8\;[55.8,130.6]$ /
+   $-1190.6\;[-1396.5,-994.8]$ / $-4821.7\;[-5028.9,-4612.9]$ &
+   0.332 / 0.178 / 0.097\\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+Table~\ref{tab:fixed-cohort} preserves the ordering observed in the
+payload-specific matched analysis. It also removes changing-cohort composition
+as an explanation for the positive ABM net payload from 128 bits onward.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{images/Figure_5.pdf}
+\caption{Payload scaling on all-method matched images: mean net payload
+(left) and median DRD (right).}
+\label{fig:multiload}
+\end{figure*}
+
+Figure~\ref{fig:protocol-overview} complements the table with availability and
+the net-bits--DRD operating trajectories. PPOCP carries every target on all
+test images. ABM availability progresses from 89\% at 64 bits to 70\% at 512
+bits, matching Dong at the highest target and remaining above Huynh--Nguyen.
+The right panel is descriptive rather than a scalar ranking because the
+methods span different DRD ranges; Table~\ref{tab:fixed-cohort} provides the
+controlled cross-payload comparison.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{images/Figure_6.pdf}
+\caption{Complementary views of payload feasibility and useful-capacity
+efficiency. Numbers on the right panel denote target payloads in bits.}
+\label{fig:protocol-overview}
+\end{figure*}
+
+\subsection{Paired Significance and Binarization Strata}
+
+At each payload, ABM's paired net advantage over Dong, Huynh--Nguyen, and
+PPOCP remains significant after Holm correction. At 256 bits, adjusted
+$p$-values are below $6.7\times10^{-13}$, $3.1\times10^{-13}$, and
+$2.2\times10^{-14}$, respectively. Median ABM net gains are 160, 1752, and
+3016 bits. DRD tests place ABM below Dong and above the perceptually focused
+PPOCP and Huynh--Nguyen trajectories, yielding a two-objective interpretation.
+
+Binarization suitability is defined before embedding: threshold 128 must agree
+with Otsu on at least 95\% of pixels, and foreground fraction must lie in
+$[0.05,0.95]$. Twenty-two test images satisfy this criterion. As shown in
+Figure~\ref{fig:binarization}, ABM is available on all 22 through 256 bits,
+while net-positive behavior at 256 and 512 bits is present in both strata.
+Suitability therefore acts as an applicability indicator rather than a
+post-hoc explanation of net performance.
+
+At 512 bits, the 70 available images have mean foreground fraction 0.289,
+189.2 eligible non-uniform PEAK patterns, and non-uniform $8\times8$ block
+fraction 0.227. The 30 unavailable images have corresponding means 0.025,
+34.2, and 0.024. Unavailability is therefore concentrated in near-empty or
+nearly uniform thresholded photographs with insufficient repeated
+non-uniform patterns, rather than in failed extraction or restoration.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{images/Figure_7.pdf}
+\caption{ABM availability and mean net payload after stratification by
+fixed-threshold/Otsu agreement.}
+\label{fig:binarization}
+\end{figure*}
+
+\subsection{Runtime and Memory}
+
+Figure~\ref{fig:resources} and Table~\ref{tab:resources} report the 256-bit
+resource benchmark on ten protocol images. PPOCP provides the shortest runtime,
+Huynh--Nguyen the smallest incremental memory profile, and ABM requires a
+median runtime of 3.56 s and median incremental peak RSS of 2.56 MiB.
+Dong's complete ten-divisor optimization
+quantifies the computational cost of per-image context search.
+
+\begin{table*}[t]
+\centering
+\caption{Median resource profile at a 256-bit target.}
+\label{tab:resources}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Method} & \textbf{Available} & \textbf{Time (s)} &
+\textbf{Peak RSS increase (MiB)} \\
+\midrule
+Proposed ABM & 9/10 & 3.56 & 2.56 \\
+Dong & 9/10 & 16.97 & 0.05 \\
+Huynh--Nguyen & 7/10 & 1.51 & 0.02 \\
+PPOCP & 10/10 & 0.16 & 0.70 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{images/Figure_8.pdf}
+\caption{Median wall-clock runtime and incremental peak RSS at 256 bits.}
+\label{fig:resources}
+\end{figure*}
+
+\subsection{Grouped Steganalysis}
+
+The security evaluation uses foreground fraction, horizontal and vertical
+transition rates, and normalized $2\times2$ and $3\times3$ pattern histograms.
+Five-fold GroupKFold keeps each cover and its stego in the same fold. Both a
+standardized logistic model and a 500-tree Random Forest are evaluated.
+
+Figure~\ref{fig:steganalysis} visualizes the complete AUC curves, and
+Table~\ref{tab:steganalysis} reports the logistic detector. PPOCP provides the
+most resistant trajectory from 128 to 512 bits. ABM's AUC increases with useful
+payload, making statistical footprint the principal optimization signal for
+the next design iteration. The Random Forest gives ABM AUC values 0.623, 0.691,
+0.769, and 0.851, confirming the same payload trend with a different model.
+
+\begin{table*}[t]
+\centering
+\caption{Grouped logistic-detector ROC AUC on matched cover/stego pairs.}
+\label{tab:steganalysis}
+\begin{tabular}{@{}rccccc@{}}
+\toprule
+\textbf{Target} & \textbf{Pairs} & \textbf{Proposed ABM} &
+\textbf{Dong} & \textbf{Huynh--Nguyen} & \textbf{PPOCP} \\
+\midrule
+64  & 86 & 0.706 & 0.656 & \textbf{0.599} & 0.653 \\
+128 & 83 & 0.826 & 0.759 & 0.688 & \textbf{0.654} \\
+256 & 69 & 0.900 & 0.784 & 0.774 & \textbf{0.691} \\
+512 & 46 & 0.957 & 0.896 & 0.909 & \textbf{0.690} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{images/Figure_9.pdf}
+\caption{Grouped steganalysis across payloads with logistic (left) and Random
+Forest (right) detectors. The dashed line denotes chance-level AUC.}
+\label{fig:steganalysis}
+\end{figure*}
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Positioning Across Practical Objectives}
+
+The experiments separate four objectives that are frequently merged in RDH
+comparisons. In useful capacity, ABM establishes the highest observed
+trajectory and becomes mean-net-positive between 128 and 256 bits. In
+perceptual quality, PPOCP defines the lowest median DRD, followed closely by
+Huynh--Nguyen at the higher target. In applicability, PPOCP has universal
+target availability, while ABM combines high availability with compact side
+information. In computational cost, ABM remains practical and is substantially
+faster than the complete Dong parameter search.
+
+This decomposition supports a specific, protocol-bounded position: among the
+four evaluated implementations, ABM provides the highest net payload after
+serialized metadata, whereas PPOCP provides the lowest-distortion and
+least-detectable trajectory. This conclusion rests on exact round trips,
+multi-payload curves, a fixed-cohort sensitivity analysis, and paired tests.
+Because synchronization formats materially affect net payload, the result is
+not presented as a universal ranking of the original publications.
+
+\subsection{Security-Aware Optimization Direction}
+
+The measured AUC curves provide a direct route to strengthen the method. The
+current CNN predicts reciprocal-distance cost, whereas the steganalysis
+features respond to shifts in local pattern distributions. A security-aware
+ranker can optimize
+\[
+\mathcal{L}(Z_j)=
+\beta\,\widehat{\mathrm{DRD}}(Z_j)
++\gamma\,\Delta_{\mathrm{hist}}(Z_j)
++\eta\,\Delta_{\mathrm{trans}}(Z_j),
+\]
+where $\Delta_{\mathrm{hist}}$ measures the change in local pattern histograms
+and $\Delta_{\mathrm{trans}}$ measures transition-rate displacement. The
+coefficients can be selected on a Pareto front of net bits, DRD, and grouped
+detector AUC. This extension builds directly on the validated ranker and
+preserves the exact reversible wire format.
+
+The present measurements define an operational distinction. At 256 and
+512 bits, logistic AUC values of 0.900 and 0.957 make the current ABM
+configuration unsuitable when covert undetectability is the primary
+requirement, despite its positive net payload and exact reversibility. Its
+validated contribution at these loads is capacity-oriented reversible
+annotation, not secure covert communication. At 64 bits, AUC 0.706 provides a
+less detectable but metadata-negative operating point. PPOCP remains the
+preferred evaluated method for security-prioritized operation, whereas ABM
+addresses applications in which useful reversible capacity is primary and
+the stego channel itself is access-controlled.
+
+The RF uniform-block experiment supplies a second concrete direction:
+coordinate coding can use enumerative subset coding conditioned on the
+deterministic block order. Its grouped classification metrics show that
+location selection is reliable; compressing the selected subset targets the
+measured source of overhead.
+
+\subsection{Experimental Scope}
+\label{subsec:scope}
+
+The eight document images provide continuity with the binary block-mapping
+literature, and the disjoint BOSSbase protocol adds 100 external test images,
+four payloads, paired inference, resources, and steganalysis. BOSSbase
+binarization is a transfer test rather than a substitute for a large scanned
+document corpus. The 512-bit all-method cohort contains 46 images, so both
+availability and fixed-cohort results are reported. The logistic AUC of 0.957
+at that payload identifies a high-order statistical footprint even though the
+visual DRD remains moderate. These measured boundaries delimit the validated
+operating region and provide explicit targets for distribution-aware ranking.
+The reversible channel assumes lossless storage and transmission; geometric
+or lossy transformations require an external synchronization or error-control
+layer.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This work develops and evaluates a net-aware, machine-learning-assisted
+block-mapping framework for exactly reversible data hiding in binary images.
+The CNN ranker improves candidate placement on held-out images, the
+enumerative codec reduces auxiliary cost, and the complete system carries 2245
+net bits on average on eight document images and 516.1 net bits on 100
+BOSSbase images. Every reported available experiment restores the message and
+cover exactly.
+
+Under the common protocol, ABM obtains mean net payloads of $-57$, $-7$, $93$,
+and $309$ bits at targets 64, 128, 256, and 512 bits on matched images. Its
+paired net advantage is significant against every baseline after Holm
+correction; at 256 bits, all adjusted $p$-values are below
+$6.7\times10^{-13}$. Availability, binarization, runtime, memory, and two-classifier
+steganalysis turn this result into a reproducible practical profile rather than
+a single capacity number.
+
+Under the stated implementations and wire-level accounting, the combined
+evidence identifies ABM as the highest observed net-payload operating point,
+while PPOCP retains the strongest measured distortion and steganalysis
+profile. The result therefore adds a concrete net-capacity benchmark and an
+exactly reversible reference implementation. The measured security curves
+also identify local-distribution preservation as the principal optimization
+target while retaining compact metadata and exact restoration.
+
+\section*{Acknowledgements}
+This work was supported by the authors' institutions. No external financial
+support was received.
+
+\printcredits
+
+\section*{Declarations}
+\noindent\textbf{Ethics approval.}
+This study does not involve human participants, animals, personal data, or
+clinical interventions. It uses publicly available image data and offline
+computational experiments.
+
+\medskip
+\noindent\textbf{Competing interests.}
+The authors declare that they have no known competing financial interests or
+personal relationships that could have appeared to influence the work
+reported in this paper. The companion publication cited in the related work
+shares authors with this study and is identified explicitly; it is not used
+as an experimental baseline or as evidence for the numerical claims reported
+here.
+
+\medskip
+\noindent\textbf{Funding.}
+This research received no external funding.
+
+\medskip
+\noindent\textbf{Data availability.}
+BOSSbase is publicly available from its original distributor at
+\url{https://dde.binghamton.edu/download/ImageDB/BOSSbase_1.01.zip} under its
+applicable terms. The eight document images used for block-mapping validation,
+derived aggregate results, and per-image evaluation artefacts accompany the
+reproducibility package.
+
+\medskip
+\noindent\textbf{Code availability.}
+The reproducibility package contains the ABM implementation, independently
+implemented comparison methods, evaluation scripts, tests, trained model
+weights, CSV/JSON result tables, plotting code, and exact random seeds. It is
+publicly available at
+\url{https://github.com/EkodeckStephane/net-aware-block-mapping-rdh}.
+
+\bibliographystyle{cas-model1-num-names}
+\bibliography{references}
+
+\end{document}
+

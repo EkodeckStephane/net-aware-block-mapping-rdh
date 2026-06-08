@@ -1,0 +1,9 @@
+matplotlib
+numpy
+Pillow
+psutil
+pytest
+scipy
+scikit-learn
+scikit-image
+torch

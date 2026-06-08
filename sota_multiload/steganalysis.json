@@ -1,0 +1,326 @@
+{
+  "feature_definition": "Foreground and transition rates plus normalized 2x2 and 3x3 binary pattern histograms.",
+  "validation": "Five-fold GroupKFold; each cover and its stego remain in the same fold.",
+  "results": [
+    {
+      "payload_bits": 64,
+      "method": "ABM-enumerative",
+      "classifier": "logistic",
+      "paired_images": 86,
+      "roc_auc": 0.7055164954029205,
+      "balanced_accuracy": 0.680232558139535,
+      "error_probability": 0.319767441860465,
+      "folds": 5
+    },
+    {
+      "payload_bits": 64,
+      "method": "ABM-enumerative",
+      "classifier": "random_forest",
+      "paired_images": 86,
+      "roc_auc": 0.6226338561384531,
+      "balanced_accuracy": 0.5755813953488371,
+      "error_probability": 0.4244186046511629,
+      "folds": 5
+    },
+    {
+      "payload_bits": 64,
+      "method": "Dong-adaptive-conservative",
+      "classifier": "logistic",
+      "paired_images": 86,
+      "roc_auc": 0.6563007030827473,
+      "balanced_accuracy": 0.627906976744186,
+      "error_probability": 0.37209302325581395,
+      "folds": 5
+    },
+    {
+      "payload_bits": 64,
+      "method": "Dong-adaptive-conservative",
+      "classifier": "random_forest",
+      "paired_images": 86,
+      "roc_auc": 0.6399405083829096,
+      "balanced_accuracy": 0.6046511627906976,
+      "error_probability": 0.39534883720930236,
+      "folds": 5
+    },
+    {
+      "payload_bits": 64,
+      "method": "Huynh-Nguyen-T5",
+      "classifier": "logistic",
+      "paired_images": 86,
+      "roc_auc": 0.5989724175229854,
+      "balanced_accuracy": 0.5813953488372092,
+      "error_probability": 0.4186046511627908,
+      "folds": 5
+    },
+    {
+      "payload_bits": 64,
+      "method": "Huynh-Nguyen-T5",
+      "classifier": "random_forest",
+      "paired_images": 86,
+      "roc_auc": 0.575716603569497,
+      "balanced_accuracy": 0.5523255813953489,
+      "error_probability": 0.44767441860465107,
+      "folds": 5
+    },
+    {
+      "payload_bits": 64,
+      "method": "PPOCP-conservative",
+      "classifier": "logistic",
+      "paired_images": 86,
+      "roc_auc": 0.6530557057869119,
+      "balanced_accuracy": 0.6162790697674418,
+      "error_probability": 0.38372093023255816,
+      "folds": 5
+    },
+    {
+      "payload_bits": 64,
+      "method": "PPOCP-conservative",
+      "classifier": "random_forest",
+      "paired_images": 86,
+      "roc_auc": 0.6119524067063277,
+      "balanced_accuracy": 0.563953488372093,
+      "error_probability": 0.436046511627907,
+      "folds": 5
+    },
+    {
+      "payload_bits": 128,
+      "method": "ABM-enumerative",
+      "classifier": "logistic",
+      "paired_images": 83,
+      "roc_auc": 0.8262447379880969,
+      "balanced_accuracy": 0.7951807228915662,
+      "error_probability": 0.20481927710843384,
+      "folds": 5
+    },
+    {
+      "payload_bits": 128,
+      "method": "ABM-enumerative",
+      "classifier": "random_forest",
+      "paired_images": 83,
+      "roc_auc": 0.6911017564232834,
+      "balanced_accuracy": 0.6325301204819278,
+      "error_probability": 0.3674698795180722,
+      "folds": 5
+    },
+    {
+      "payload_bits": 128,
+      "method": "Dong-adaptive-conservative",
+      "classifier": "logistic",
+      "paired_images": 83,
+      "roc_auc": 0.7590361445783133,
+      "balanced_accuracy": 0.6807228915662651,
+      "error_probability": 0.3192771084337349,
+      "folds": 5
+    },
+    {
+      "payload_bits": 128,
+      "method": "Dong-adaptive-conservative",
+      "classifier": "random_forest",
+      "paired_images": 83,
+      "roc_auc": 0.7185367977935839,
+      "balanced_accuracy": 0.6445783132530121,
+      "error_probability": 0.35542168674698793,
+      "folds": 5
+    },
+    {
+      "payload_bits": 128,
+      "method": "Huynh-Nguyen-T5",
+      "classifier": "logistic",
+      "paired_images": 83,
+      "roc_auc": 0.6881985774422994,
+      "balanced_accuracy": 0.6445783132530121,
+      "error_probability": 0.35542168674698793,
+      "folds": 5
+    },
+    {
+      "payload_bits": 128,
+      "method": "Huynh-Nguyen-T5",
+      "classifier": "random_forest",
+      "paired_images": 83,
+      "roc_auc": 0.6266511830454348,
+      "balanced_accuracy": 0.5843373493975903,
+      "error_probability": 0.4156626506024097,
+      "folds": 5
+    },
+    {
+      "payload_bits": 128,
+      "method": "PPOCP-conservative",
+      "classifier": "logistic",
+      "paired_images": 83,
+      "roc_auc": 0.653941065466686,
+      "balanced_accuracy": 0.6325301204819278,
+      "error_probability": 0.3674698795180722,
+      "folds": 5
+    },
+    {
+      "payload_bits": 128,
+      "method": "PPOCP-conservative",
+      "classifier": "random_forest",
+      "paired_images": 83,
+      "roc_auc": 0.5862969952097548,
+      "balanced_accuracy": 0.5602409638554218,
+      "error_probability": 0.43975903614457823,
+      "folds": 5
+    },
+    {
+      "payload_bits": 256,
+      "method": "ABM-enumerative",
+      "classifier": "logistic",
+      "paired_images": 69,
+      "roc_auc": 0.9000210039907582,
+      "balanced_accuracy": 0.8478260869565217,
+      "error_probability": 0.15217391304347827,
+      "folds": 5
+    },
+    {
+      "payload_bits": 256,
+      "method": "ABM-enumerative",
+      "classifier": "random_forest",
+      "paired_images": 69,
+      "roc_auc": 0.7689561016593153,
+      "balanced_accuracy": 0.7101449275362319,
+      "error_probability": 0.28985507246376807,
+      "folds": 5
+    },
+    {
+      "payload_bits": 256,
+      "method": "Dong-adaptive-conservative",
+      "classifier": "logistic",
+      "paired_images": 69,
+      "roc_auc": 0.7838689350976686,
+      "balanced_accuracy": 0.7536231884057971,
+      "error_probability": 0.24637681159420288,
+      "folds": 5
+    },
+    {
+      "payload_bits": 256,
+      "method": "Dong-adaptive-conservative",
+      "classifier": "random_forest",
+      "paired_images": 69,
+      "roc_auc": 0.8013022474270112,
+      "balanced_accuracy": 0.7463768115942029,
+      "error_probability": 0.2536231884057971,
+      "folds": 5
+    },
+    {
+      "payload_bits": 256,
+      "method": "Huynh-Nguyen-T5",
+      "classifier": "logistic",
+      "paired_images": 69,
+      "roc_auc": 0.7737870195337113,
+      "balanced_accuracy": 0.7101449275362319,
+      "error_probability": 0.28985507246376807,
+      "folds": 5
+    },
+    {
+      "payload_bits": 256,
+      "method": "Huynh-Nguyen-T5",
+      "classifier": "random_forest",
+      "paired_images": 69,
+      "roc_auc": 0.7519428691451375,
+      "balanced_accuracy": 0.717391304347826,
+      "error_probability": 0.28260869565217395,
+      "folds": 5
+    },
+    {
+      "payload_bits": 256,
+      "method": "PPOCP-conservative",
+      "classifier": "logistic",
+      "paired_images": 69,
+      "roc_auc": 0.6906112161310649,
+      "balanced_accuracy": 0.6231884057971014,
+      "error_probability": 0.37681159420289856,
+      "folds": 5
+    },
+    {
+      "payload_bits": 256,
+      "method": "PPOCP-conservative",
+      "classifier": "random_forest",
+      "paired_images": 69,
+      "roc_auc": 0.6431421970174332,
+      "balanced_accuracy": 0.6159420289855073,
+      "error_probability": 0.3840579710144927,
+      "folds": 5
+    },
+    {
+      "payload_bits": 512,
+      "method": "ABM-enumerative",
+      "classifier": "logistic",
+      "paired_images": 46,
+      "roc_auc": 0.9574669187145557,
+      "balanced_accuracy": 0.9239130434782609,
+      "error_probability": 0.07608695652173914,
+      "folds": 5
+    },
+    {
+      "payload_bits": 512,
+      "method": "ABM-enumerative",
+      "classifier": "random_forest",
+      "paired_images": 46,
+      "roc_auc": 0.8511342155009451,
+      "balanced_accuracy": 0.7826086956521738,
+      "error_probability": 0.21739130434782616,
+      "folds": 5
+    },
+    {
+      "payload_bits": 512,
+      "method": "Dong-adaptive-conservative",
+      "classifier": "logistic",
+      "paired_images": 46,
+      "roc_auc": 0.8960302457466919,
+      "balanced_accuracy": 0.8369565217391304,
+      "error_probability": 0.16304347826086962,
+      "folds": 5
+    },
+    {
+      "payload_bits": 512,
+      "method": "Dong-adaptive-conservative",
+      "classifier": "random_forest",
+      "paired_images": 46,
+      "roc_auc": 0.8440453686200379,
+      "balanced_accuracy": 0.7391304347826086,
+      "error_probability": 0.26086956521739135,
+      "folds": 5
+    },
+    {
+      "payload_bits": 512,
+      "method": "Huynh-Nguyen-T5",
+      "classifier": "logistic",
+      "paired_images": 46,
+      "roc_auc": 0.9092627599243857,
+      "balanced_accuracy": 0.8152173913043479,
+      "error_probability": 0.1847826086956521,
+      "folds": 5
+    },
+    {
+      "payload_bits": 512,
+      "method": "Huynh-Nguyen-T5",
+      "classifier": "random_forest",
+      "paired_images": 46,
+      "roc_auc": 0.8534971644612477,
+      "balanced_accuracy": 0.7608695652173914,
+      "error_probability": 0.23913043478260865,
+      "folds": 5
+    },
+    {
+      "payload_bits": 512,
+      "method": "PPOCP-conservative",
+      "classifier": "logistic",
+      "paired_images": 46,
+      "roc_auc": 0.6904536862003782,
+      "balanced_accuracy": 0.6413043478260869,
+      "error_probability": 0.3586956521739131,
+      "folds": 5
+    },
+    {
+      "payload_bits": 512,
+      "method": "PPOCP-conservative",
+      "classifier": "random_forest",
+      "paired_images": 46,
+      "roc_auc": 0.717391304347826,
+      "balanced_accuracy": 0.6630434782608696,
+      "error_probability": 0.3369565217391304,
+      "folds": 5
+    }
+  ]
+}

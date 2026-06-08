@@ -1,0 +1,38 @@
+Figure 1. Embedding pipeline.
+Alt text: A flowchart partitions a binary cover into 3-by-3 blocks, identifies
+frequent and absent patterns, ranks distance-one substitutions with a CNN,
+selects a net-capacity-maximizing mapping prefix, embeds the payload, and
+serializes the auxiliary stream.
+
+Figure 2. Extraction and restoration pipeline.
+Alt text: A flowchart decodes the auxiliary stream, constructs a globally
+injective inverse dictionary, scans stego blocks, extracts the declared number
+of bits, and restores the original cover.
+
+Figure 3. CNN architecture.
+Alt text: Three 9-by-9 input channels pass through convolution layers with 16
+and 32 channels, adaptive average pooling, and a two-layer scalar regressor.
+
+Figure 4. Binary document benchmark.
+Alt text: Eight labeled binary images show a circuit, formula, text, graph,
+handwriting, a large glyph, symbols, and a table.
+
+Figure 5. Payload scaling.
+Alt text: Two line charts compare mean net payload and median DRD for ABM,
+Dong, Huynh--Nguyen, and PPOCP from 64 to 512 target bits.
+
+Figure 6. Availability and net-bits--DRD trajectories.
+Alt text: A grouped bar chart reports availability, and a line chart plots
+mean net payload against median DRD for four payload targets.
+
+Figure 7. Binarization strata.
+Alt text: Two line charts compare ABM availability and mean net payload for
+images classified as suitable or unsuitable for fixed-threshold binarization.
+
+Figure 8. Resource profile.
+Alt text: Two bar charts compare median runtime and incremental peak memory
+for ABM, Dong, Huynh--Nguyen, and PPOCP at a 256-bit target.
+
+Figure 9. Steganalysis.
+Alt text: Two line charts report grouped ROC AUC across payloads for logistic
+and Random Forest detectors; a dashed horizontal line marks chance level.

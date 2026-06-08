@@ -1,0 +1,85 @@
+{
+  "protocol": "leave-one-image-out placement evaluation",
+  "epochs": 20,
+  "payload_fraction": 0.75,
+  "folds": [
+    {
+      "image": "circuit-2",
+      "payload_bits": 1603,
+      "baseline_drd": 0.640379878728663,
+      "cnn_drd": 0.5914551459422724,
+      "drd_reduction_percent": 7.639954722425088,
+      "reversible": true,
+      "message_exact": true
+    },
+    {
+      "image": "formula-5",
+      "payload_bits": 3772,
+      "baseline_drd": 0.9504655345541556,
+      "cnn_drd": 0.9207124551273113,
+      "drd_reduction_percent": 3.1303691028418963,
+      "reversible": true,
+      "message_exact": true
+    },
+    {
+      "image": "graph1-5",
+      "payload_bits": 2057,
+      "baseline_drd": 0.7157894501584013,
+      "cnn_drd": 0.6821142157425174,
+      "drd_reduction_percent": 4.704628492139936,
+      "reversible": true,
+      "message_exact": true
+    },
+    {
+      "image": "handwr2-8",
+      "payload_bits": 2387,
+      "baseline_drd": 0.8024896881443917,
+      "cnn_drd": 0.7387547396460051,
+      "drd_reduction_percent": 7.942151711103204,
+      "reversible": true,
+      "message_exact": true
+    },
+    {
+      "image": "large-8",
+      "payload_bits": 1198,
+      "baseline_drd": 0.6682983000278924,
+      "cnn_drd": 0.6248303862252743,
+      "drd_reduction_percent": 6.504268198917139,
+      "reversible": true,
+      "message_exact": true
+    },
+    {
+      "image": "symbol-6",
+      "payload_bits": 2432,
+      "baseline_drd": 0.9071915856360585,
+      "cnn_drd": 0.8815564801885301,
+      "drd_reduction_percent": 2.8257653458673704,
+      "reversible": true,
+      "message_exact": true
+    },
+    {
+      "image": "table1-3",
+      "payload_bits": 4269,
+      "baseline_drd": 0.8324039207046251,
+      "cnn_drd": 0.7996604208227999,
+      "drd_reduction_percent": 3.9336071187781108,
+      "reversible": true,
+      "message_exact": true
+    },
+    {
+      "image": "french-4",
+      "payload_bits": 5853,
+      "baseline_drd": 0.9259729677865388,
+      "cnn_drd": 0.891327383172742,
+      "drd_reduction_percent": 3.741533048919801,
+      "reversible": true,
+      "message_exact": true
+    }
+  ],
+  "macro_baseline_drd": 0.8053739157175908,
+  "macro_cnn_drd": 0.7663014033584316,
+  "macro_drd_reduction_percent": 4.8514747742165785,
+  "mean_per_image_reduction_percent": 5.052784717624068,
+  "all_reversible": true,
+  "all_messages_exact": true
+}

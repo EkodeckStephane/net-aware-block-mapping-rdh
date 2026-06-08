@@ -1,0 +1,401 @@
+image,method,available,payload_bits,auxiliary_bits,net_payload_bits,changed_pixels,drd,psnr_db,reversible,message_exact,parameter,runtime_seconds,error
+7.pgm,ABM-enumerative,True,512,184,328,263,0.20285963881583086,29.985841734619036,True,True,,2.103726999950595,
+7.pgm,PPOCP-conservative,True,512,6536,-6024,260,0.11502861142843537,30.035665739808437,True,True,,0.08571430004667491,
+7.pgm,Huynh-Nguyen-T5,True,512,1120,-608,285,0.21542389578737733,29.636950619431516,True,True,,1.597184699960053,
+7.pgm,Dong-adaptive-conservative,True,512,480,32,418,0.32744610430426047,27.973636401766264,True,True,l=2,10.63176600006409,
+46.pgm,ABM-enumerative,True,512,160,352,249,0.2511070964639122,30.22340574855925,True,True,,2.105576000059955,
+46.pgm,PPOCP-conservative,True,512,5472,-4960,259,0.182066957567944,30.0524015787041,True,True,,0.07503619999624789,
+46.pgm,Huynh-Nguyen-T5,True,512,1880,-1368,250,0.223158404160735,30.205999132796236,True,True,,1.3372704000212252,
+46.pgm,Dong-adaptive-conservative,True,512,320,192,259,0.3363124319705724,30.0524015787041,True,True,l=7,13.002305299974978,
+353.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,0.920777199906297,capacity below target
+353.pgm,PPOCP-conservative,True,512,264,248,249,3.461679220773446,30.22340574855925,True,True,,0.07331989996600896,
+353.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5489756999304518,capacity below target
+353.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,29.351825200021267,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+410.pgm,ABM-enumerative,True,512,144,368,250,0.17688945734582365,30.205999132796236,True,True,,2.1197394999908283,
+410.pgm,PPOCP-conservative,True,512,4528,-4016,269,0.08148002157507449,29.887876419492535,True,True,,0.07095410011243075,
+410.pgm,Huynh-Nguyen-T5,True,512,1864,-1352,248,0.14521770885728622,30.240882411254454,True,True,,1.1500633000396192,
+410.pgm,Dong-adaptive-conservative,True,512,304,208,263,0.18844354786546857,29.985841734619036,True,True,l=6,10.787997500039637,
+488.pgm,ABM-enumerative,True,512,296,216,250,0.15478018179838718,30.205999132796236,True,True,,2.105925100040622,
+488.pgm,PPOCP-conservative,True,512,6088,-5576,256,0.09746415889527156,30.102999566398122,True,True,,0.09140300005674362,
+488.pgm,Huynh-Nguyen-T5,True,512,1088,-576,315,0.21323468683269706,29.20229368162061,True,True,,1.6247466000495479,
+488.pgm,Dong-adaptive-conservative,True,512,1016,-504,3830,2.3455071063609445,18.35341147983039,True,True,l=1,13.34908189997077,
+581.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.2501045999815688,capacity below target
+581.pgm,PPOCP-conservative,True,512,3040,-2528,265,1.0040555719978417,29.952940480148538,True,True,,0.14221129997167736,
+581.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.8646179999923334,capacity below target
+581.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,48.26545360009186,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+596.pgm,ABM-enumerative,True,512,376,136,266,0.6785916896963702,29.936582853205948,True,True,,4.14759900001809,
+596.pgm,PPOCP-conservative,True,512,5512,-5000,247,0.3920939210394455,30.25842968691996,True,True,,0.15859309991355985,
+596.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.9311490999534726,capacity below target
+596.pgm,Dong-adaptive-conservative,True,512,296,216,270,0.7481779753476845,29.871761577926744,True,True,l=5,39.53376030002255,
+636.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,2.410109799937345,capacity below target
+636.pgm,PPOCP-conservative,True,512,4392,-3880,252,0.8643349295584355,30.171393811701176,True,True,,0.1718107999768108,
+636.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.1968807999510318,capacity below target
+636.pgm,Dong-adaptive-conservative,True,512,288,224,254,1.3274290900497918,30.137062053317237,True,True,l=2,26.841217800043523,
+655.pgm,ABM-enumerative,True,512,224,288,264,0.37732553778596845,29.969359950818305,True,True,,4.332822000025772,
+655.pgm,PPOCP-conservative,True,512,4368,-3856,240,0.20561118688193972,30.383286802400555,True,True,,0.1869720999384299,
+655.pgm,Huynh-Nguyen-T5,True,512,1856,-1344,253,0.2919661131585037,30.154194007758438,True,True,,2.825402299989946,
+655.pgm,Dong-adaptive-conservative,True,512,536,-24,566,0.7124976948200111,26.657234907633903,True,True,l=2,16.096607699990273,
+812.pgm,ABM-enumerative,True,512,152,360,258,0.17516474537068275,30.069202159884313,True,True,,4.510736600030214,
+812.pgm,PPOCP-conservative,True,512,5904,-5392,249,0.094406295475216,30.22340574855925,True,True,,0.1998250000178814,
+812.pgm,Huynh-Nguyen-T5,True,512,1904,-1392,255,0.1332858288031174,30.11999741517706,True,True,,2.3956386001082137,
+812.pgm,Dong-adaptive-conservative,True,512,624,-112,147430,119.2273058906,2.4995405641525124,True,True,l=3,31.484414700069465,
+889.pgm,ABM-enumerative,True,512,160,352,244,0.24094148469838525,30.311500956129322,True,True,,4.2369589000009,
+889.pgm,PPOCP-conservative,True,512,4528,-4016,268,0.10390315312882734,29.904051279228728,True,True,,0.1782889999449253,
+889.pgm,Huynh-Nguyen-T5,True,512,1848,-1336,249,0.1938947743821907,30.22340574855925,True,True,,2.440656000049785,
+889.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,11.270533800008707,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+1300.pgm,ABM-enumerative,True,512,192,320,258,0.31171881634372145,30.069202159884313,True,True,,3.0137240000767633,
+1300.pgm,PPOCP-conservative,True,512,4264,-3752,255,0.121337740522582,30.11999741517706,True,True,,0.20112270000390708,
+1300.pgm,Huynh-Nguyen-T5,True,512,1880,-1368,278,0.2743209695216383,29.744951260335853,True,True,,3.267051999922842,
+1300.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,31.77959920000285,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+1404.pgm,ABM-enumerative,True,512,184,328,275,0.31395827088530615,29.79207228121399,True,True,,3.401642399956472,
+1404.pgm,PPOCP-conservative,True,512,5376,-4864,263,0.1867287780002181,29.985841734619036,True,True,,0.08933300001081079,
+1404.pgm,Huynh-Nguyen-T5,True,512,1832,-1320,256,0.2234108168368346,30.102999566398122,True,True,,2.2604922000318766,
+1404.pgm,Dong-adaptive-conservative,True,512,336,176,297,0.35213594428141964,29.45783472634449,True,True,l=7,47.15433509997092,
+1473.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.8463426999514922,capacity below target
+1473.pgm,PPOCP-conservative,True,512,4000,-3488,250,1.6694655480505927,30.205999132796236,True,True,,0.13240650005172938,
+1473.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.6097042999463156,capacity below target
+1473.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,47.36942920007277,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+1493.pgm,ABM-enumerative,True,512,232,280,243,0.3420336563921412,30.329336483533496,True,True,,3.639901499962434,
+1493.pgm,PPOCP-conservative,True,512,4144,-3632,260,0.2259830530948445,30.035665739808437,True,True,,0.0938429000088945,
+1493.pgm,Huynh-Nguyen-T5,True,512,1864,-1352,251,0.2758967426332185,30.18866200470623,True,True,,1.6705009000143036,
+1493.pgm,Dong-adaptive-conservative,True,512,528,-16,239936,408.8730627867524,0.38444507546223616,True,True,l=1,53.47215269994922,
+1583.pgm,ABM-enumerative,True,512,304,208,259,0.6252913617574386,30.0524015787041,True,True,,3.690995499957353,
+1583.pgm,PPOCP-conservative,True,512,5432,-4920,278,0.3904585925528294,29.744951260335853,True,True,,0.15535200003068894,
+1583.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.9540074999677017,capacity below target
+1583.pgm,Dong-adaptive-conservative,True,512,336,176,286,0.746125579013327,29.621738888226187,True,True,l=3,24.44477979990188,
+1586.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.0030211000703275,capacity below target
+1586.pgm,PPOCP-conservative,True,512,264,248,240,101.7022506447965,30.383286802400555,True,True,,0.14632259996142238,
+1586.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.9697632000315934,capacity below target
+1586.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,37.6988828999456,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+1592.pgm,ABM-enumerative,True,512,192,320,243,0.31473153362262396,30.329336483533496,True,True,,2.212545400019735,
+1592.pgm,PPOCP-conservative,True,512,4592,-4080,264,0.20311584411512404,29.969359950818305,True,True,,0.08103580004535615,
+1592.pgm,Huynh-Nguyen-T5,True,512,1856,-1344,246,0.2531650252282739,30.276048148482822,True,True,,1.3842435999540612,
+1592.pgm,Dong-adaptive-conservative,True,512,296,216,257,0.3273504291118134,30.08606798620367,True,True,l=3,11.418449900113046,
+1658.pgm,ABM-enumerative,True,512,176,336,258,0.25221039161139003,30.069202159884313,True,True,,2.2567665999522433,
+1658.pgm,PPOCP-conservative,True,512,4736,-4224,246,0.13856792697401263,30.276048148482822,True,True,,0.1025124000152573,
+1658.pgm,Huynh-Nguyen-T5,True,512,1888,-1376,278,0.21581930620943413,29.744951260335853,True,True,,1.3972916000057012,
+1658.pgm,Dong-adaptive-conservative,True,512,312,200,268,0.2595690710329772,29.904051279228728,True,True,l=7,13.18197459995281,
+1669.pgm,ABM-enumerative,True,512,464,48,230,0.5350759056951422,30.568120859340688,True,True,,2.279441999970004,
+1669.pgm,PPOCP-conservative,True,512,5152,-4640,252,0.37618343121290654,30.171393811701176,True,True,,0.07870870002079755,
+1669.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.579892999958247,capacity below target
+1669.pgm,Dong-adaptive-conservative,True,512,432,80,281,0.5965465435512473,29.698336020465813,True,True,l=2,50.70065420004539,
+1717.pgm,ABM-enumerative,True,512,200,312,243,0.23070374709869368,30.329336483533496,True,True,,2.1907179999398068,
+1717.pgm,PPOCP-conservative,True,512,4680,-4168,264,0.14906737733527242,29.969359950818305,True,True,,0.0839836000232026,
+1717.pgm,Huynh-Nguyen-T5,True,512,1896,-1384,277,0.20678667981271448,29.76060152887213,True,True,,1.496436099987477,
+1717.pgm,Dong-adaptive-conservative,True,512,360,152,290,0.24895094093803163,29.561419240527055,True,True,l=1,16.249318000045605,
+1722.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,0.5798968999879435,capacity below target
+1722.pgm,PPOCP-conservative,True,512,264,248,239,202.65745879805186,30.401420210035237,True,True,,0.07185150007717311,
+1722.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.29694240004755557,capacity below target
+1722.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,31.009822500054725,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+1899.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,0.9618606000440195,capacity below target
+1899.pgm,PPOCP-conservative,True,512,264,248,237,5.906914756691785,30.437915759415578,True,True,,0.07294910005293787,
+1899.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5994223000016063,capacity below target
+1899.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,31.292688900022767,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+2098.pgm,ABM-enumerative,True,512,136,376,252,0.10707932331494907,30.171393811701176,True,True,,2.202687199926004,
+2098.pgm,PPOCP-conservative,True,512,5600,-5088,257,0.0458674545509033,30.08606798620367,True,True,,0.09891089994926006,
+2098.pgm,Huynh-Nguyen-T5,True,512,1872,-1360,293,0.10140438652383384,29.516723015975522,True,True,,1.3406121999723837,
+2098.pgm,Dong-adaptive-conservative,True,512,392,120,11022,4.619493517656115,13.762795152622097,True,True,l=8,22.63891830004286,
+2105.pgm,ABM-enumerative,True,512,176,336,269,0.19493044995148281,29.887876419492535,True,True,,2.19406839995645,
+2105.pgm,PPOCP-conservative,True,512,6016,-5504,254,0.10161318128543663,30.137062053317237,True,True,,0.09835880005266517,
+2105.pgm,Huynh-Nguyen-T5,True,512,1136,-624,315,0.17919860476185914,29.20229368162061,True,True,,1.5137753000017256,
+2105.pgm,Dong-adaptive-conservative,True,512,440,72,338,0.21379683836377528,28.89623221674007,True,True,l=2,12.018523899954744,
+2179.pgm,ABM-enumerative,True,512,160,352,259,0.19485760228725146,30.0524015787041,True,True,,2.232200299971737,
+2179.pgm,PPOCP-conservative,True,512,6416,-5904,252,0.10454991983728074,30.171393811701176,True,True,,0.09323110000696033,
+2179.pgm,Huynh-Nguyen-T5,True,512,1872,-1360,288,0.20214578435645725,29.591474341924307,True,True,,1.6932688999222592,
+2179.pgm,Dong-adaptive-conservative,True,512,544,-32,466,0.334734116661972,27.501540052616615,True,True,l=5,14.64739479997661,
+2198.pgm,ABM-enumerative,True,512,224,288,279,0.27458234194999226,29.72935718678064,True,True,,2.0207218000432476,
+2198.pgm,PPOCP-conservative,True,512,5896,-5384,245,0.14016894191495757,30.293738375871293,True,True,,0.10029209998901933,
+2198.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5699812999228016,capacity below target
+2198.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,12.536872399970889,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map is exhausted; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map is exhausted
+2323.pgm,ABM-enumerative,True,512,192,320,270,0.3593565999646829,29.871761577926744,True,True,,2.2143790000118315,
+2323.pgm,PPOCP-conservative,True,512,4704,-4192,241,0.18993260581130575,30.365228793767933,True,True,,0.09114049992058426,
+2323.pgm,Huynh-Nguyen-T5,True,512,1896,-1384,255,0.2778456719922571,30.11999741517706,True,True,,1.576879100059159,
+2323.pgm,Dong-adaptive-conservative,True,512,336,176,285,0.3962202298486889,29.636950619431516,True,True,l=8,33.345120100071654,
+2460.pgm,ABM-enumerative,True,512,176,336,270,0.323192189566668,29.871761577926744,True,True,,2.4116683000465855,
+2460.pgm,PPOCP-conservative,True,512,5392,-4880,245,0.18779997713676652,30.293738375871293,True,True,,0.0812784000299871,
+2460.pgm,Huynh-Nguyen-T5,True,512,1848,-1336,253,0.27178305457643803,30.154194007758438,True,True,,1.6397204999811947,
+2460.pgm,Dong-adaptive-conservative,True,512,336,176,293,0.34194956487068795,29.516723015975522,True,True,l=1,9.24017330002971,
+2512.pgm,ABM-enumerative,True,512,304,208,249,0.12784196868611747,30.22340574855925,True,True,,2.144308999995701,
+2512.pgm,PPOCP-conservative,True,512,5744,-5232,248,0.08108608717215052,30.240882411254454,True,True,,0.09539589995983988,
+2512.pgm,Huynh-Nguyen-T5,True,512,1096,-584,309,0.1615895411340599,29.28581442526827,True,True,,1.6884934999980032,
+2512.pgm,Dong-adaptive-conservative,True,512,416,96,309,0.1456735117398289,29.28581442526827,True,True,l=3,12.903403000091203,
+2565.pgm,ABM-enumerative,True,512,184,328,240,0.3387069893301575,30.383286802400555,True,True,,2.190230599953793,
+2565.pgm,PPOCP-conservative,True,512,4752,-4240,274,0.26382092461985485,29.807893591312737,True,True,,0.08245999994687736,
+2565.pgm,Huynh-Nguyen-T5,True,512,3272,-2760,231,0.30446491931067216,30.549279420595173,True,True,,1.4044404999585822,
+2565.pgm,Dong-adaptive-conservative,True,512,304,208,243,0.3924455141886395,30.329336483533496,True,True,l=1,21.20353639998939,
+2702.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.7227760999230668,capacity below target
+2702.pgm,PPOCP-conservative,True,512,400,112,266,2.16015723304475,29.936582853205948,True,True,,0.14600870001595467,
+2702.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.8040695999516174,capacity below target
+2702.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,75.42100370000117,l=1: Insufficient Dong excluding-mode capacity; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Insufficient Dong excluding-mode capacity; l=6: Dong location map contains unused marks; l=7: Insufficient Dong excluding-mode capacity; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+2732.pgm,ABM-enumerative,True,512,136,376,250,0.10443425572771037,30.205999132796236,True,True,,4.30855800001882,
+2732.pgm,PPOCP-conservative,True,512,4784,-4272,263,0.05936816100460443,29.985841734619036,True,True,,0.10534360003657639,
+2732.pgm,Huynh-Nguyen-T5,True,512,1896,-1384,238,0.09007817674717383,30.419629648951492,True,True,,1.512074200087227,
+2732.pgm,Dong-adaptive-conservative,True,512,296,216,253,0.10759701539834887,30.154194007758438,True,True,l=9,39.3954143000301,
+2738.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.3932866000104696,capacity below target
+2738.pgm,PPOCP-conservative,True,512,264,248,239,5.066436469951297,30.401420210035237,True,True,,0.16165909997653216,
+2738.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0464668999193236,capacity below target
+2738.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,46.855550899985246,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+2766.pgm,ABM-enumerative,True,512,608,-96,279,0.8562516028830067,29.72935718678064,True,True,,3.767479700036347,
+2766.pgm,PPOCP-conservative,True,512,4408,-3896,263,0.6352082169147771,29.985841734619036,True,True,,0.07902619999367744,
+2766.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5762121999869123,capacity below target
+2766.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,9.985694400034845,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+2881.pgm,ABM-enumerative,True,512,224,288,246,0.09748143881402951,30.276048148482822,True,True,,3.2756183999590576,
+2881.pgm,PPOCP-conservative,True,512,3752,-3240,237,0.03836694973866986,30.437915759415578,True,True,,0.16509269992820919,
+2881.pgm,Huynh-Nguyen-T5,True,512,1088,-576,311,0.13651368941887898,29.257795329248243,True,True,,2.219407399999909,
+2881.pgm,Dong-adaptive-conservative,True,512,344,168,268,0.11223803604414359,29.904051279228728,True,True,l=10,7.96292440011166,
+2929.pgm,ABM-enumerative,True,512,152,360,258,0.1583553859081942,30.069202159884313,True,True,,3.3667607000097632,
+2929.pgm,PPOCP-conservative,True,512,5328,-4816,247,0.08125307392156698,30.25842968691996,True,True,,0.08881600003223866,
+2929.pgm,Huynh-Nguyen-T5,True,512,1864,-1352,263,0.14876454411797954,29.985841734619036,True,True,,1.8005063000600785,
+2929.pgm,Dong-adaptive-conservative,True,512,304,208,273,0.15533161786365418,29.823772749109057,True,True,l=4,15.997563599958085,
+2947.pgm,ABM-enumerative,True,512,200,312,255,0.15963997437484795,30.11999741517706,True,True,,2.863338500028476,
+2947.pgm,PPOCP-conservative,True,512,6136,-5624,259,0.0946134312335745,30.0524015787041,True,True,,0.18605200003366917,
+2947.pgm,Huynh-Nguyen-T5,True,512,1072,-560,288,0.14552577526253085,29.591474341924307,True,True,,2.851227500010282,
+2947.pgm,Dong-adaptive-conservative,True,512,328,184,277,0.17038192611346073,29.76060152887213,True,True,l=3,13.930750999948941,
+3009.pgm,ABM-enumerative,True,512,160,352,270,0.09963880934173565,29.871761577926744,True,True,,4.385093200020492,
+3009.pgm,PPOCP-conservative,True,512,4616,-4104,263,0.042402190361304735,29.985841734619036,True,True,,0.2151552999857813,
+3009.pgm,Huynh-Nguyen-T5,True,512,1072,-560,310,0.08879619994146294,29.27178228117389,True,True,,2.3629794999724254,
+3009.pgm,Dong-adaptive-conservative,True,512,320,192,282,0.10062462970922435,29.682908136323004,True,True,l=1,28.386839700047858,
+3089.pgm,ABM-enumerative,True,512,208,304,235,0.12403817387451815,30.474720596799255,True,True,,3.9403395999688655,
+3089.pgm,PPOCP-conservative,True,512,6144,-5632,269,0.08139948626152567,29.887876419492535,True,True,,0.19329979992471635,
+3089.pgm,Huynh-Nguyen-T5,True,512,1120,-608,292,0.12463417310546913,29.531570705032433,True,True,,2.182613000040874,
+3089.pgm,Dong-adaptive-conservative,True,512,512,0,313,0.14618885345516272,29.229955844052128,True,True,l=1,23.373018500045873,
+3099.pgm,ABM-enumerative,True,512,352,160,246,0.2977595493405681,30.276048148482822,True,True,,4.043608800042421,
+3099.pgm,PPOCP-conservative,True,512,5832,-5320,263,0.19379557914950626,29.985841734619036,True,True,,0.17423530004452914,
+3099.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.019295800011605,capacity below target
+3099.pgm,Dong-adaptive-conservative,True,512,536,-24,376,0.3993074862240469,28.433520770240005,True,True,l=3,35.59969479998108,
+3105.pgm,ABM-enumerative,True,512,152,360,246,0.13050350796341717,30.276048148482822,True,True,,3.7280580999795347,
+3105.pgm,PPOCP-conservative,True,512,5800,-5288,263,0.07172257631795197,29.985841734619036,True,True,,0.1649189000017941,
+3105.pgm,Huynh-Nguyen-T5,True,512,1904,-1392,291,0.12208583703441585,29.546469329657544,True,True,,1.8291448999661952,
+3105.pgm,Dong-adaptive-conservative,True,512,352,160,45620,26.042190094185337,7.593846410110317,True,True,l=1,12.06986029993277,
+3109.pgm,ABM-enumerative,True,512,328,184,242,0.17254108390650783,30.347245559712302,True,True,,4.136391200008802,
+3109.pgm,PPOCP-conservative,True,512,5912,-5400,265,0.11767626082976426,29.952940480148538,True,True,,0.1870607000309974,
+3109.pgm,Huynh-Nguyen-T5,True,512,1096,-584,286,0.22215624674122397,29.621738888226187,True,True,,2.6934936000034213,
+3109.pgm,Dong-adaptive-conservative,True,512,440,72,298,0.19531106130303125,29.443236578754064,True,True,l=5,17.696717599988915,
+3116.pgm,ABM-enumerative,True,512,208,304,243,0.32280745413255874,30.329336483533496,True,True,,4.230377200059593,
+3116.pgm,PPOCP-conservative,True,512,4744,-4232,251,0.20316324358051613,30.18866200470623,True,True,,0.17212810006458312,
+3116.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0524340000702068,capacity below target
+3116.pgm,Dong-adaptive-conservative,True,512,568,-56,406,0.41362566655731187,28.100138883744673,True,True,l=1,57.76890580006875,
+3125.pgm,ABM-enumerative,True,512,208,304,237,0.3199217555925017,30.437915759415578,True,True,,2.31918620003853,
+3125.pgm,PPOCP-conservative,True,512,4880,-4368,263,0.21105484011012454,29.985841734619036,True,True,,0.08929609996266663,
+3125.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5955312999431044,capacity below target
+3125.pgm,Dong-adaptive-conservative,True,512,392,120,356,0.4670091442888168,28.670899239787865,True,True,l=1,7.064773099962622,
+3823.pgm,ABM-enumerative,True,512,200,312,280,0.08100549466196712,29.713818906094424,True,True,,2.3332330000121146,
+3823.pgm,PPOCP-conservative,True,512,4808,-4296,262,0.0417833444704126,30.00238630631916,True,True,,0.10576289996970445,
+3823.pgm,Huynh-Nguyen-T5,True,512,1088,-576,350,0.10416747079779773,28.744718776013862,True,True,,1.4225696999346837,
+3823.pgm,Dong-adaptive-conservative,True,512,440,72,44857,15.535148510667073,7.667096969983513,True,True,l=1,14.304672300000675,
+3909.pgm,ABM-enumerative,True,512,328,184,259,0.08128663258329882,30.0524015787041,True,True,,2.2188795000547543,
+3909.pgm,PPOCP-conservative,True,512,5688,-5176,258,0.051864190139977,30.069202159884313,True,True,,0.10990059992764145,
+3909.pgm,Huynh-Nguyen-T5,True,512,688,-176,384,0.1283434211157923,28.34208697584131,True,True,,1.59530469996389,
+3909.pgm,Dong-adaptive-conservative,True,512,528,-16,322,0.10303270611415694,29.106840502558306,True,True,l=1,8.722224299912341,
+4004.pgm,ABM-enumerative,True,512,208,304,259,0.13788346135615825,30.0524015787041,True,True,,2.270667999982834,
+4004.pgm,PPOCP-conservative,True,512,5992,-5480,271,0.08156611962024082,29.855706310772558,True,True,,0.09676540002692491,
+4004.pgm,Huynh-Nguyen-T5,True,512,1120,-608,299,0.15579613493957553,29.42868733627232,True,True,,1.4186269000638276,
+4004.pgm,Dong-adaptive-conservative,True,512,488,24,307,0.14341081308615142,29.314015464744752,True,True,l=4,14.765880599967204,
+4090.pgm,ABM-enumerative,True,512,320,192,270,0.13242652922680784,29.871761577926744,True,True,,2.232602100004442,
+4090.pgm,PPOCP-conservative,True,512,5880,-5368,240,0.07655794457411834,30.383286802400555,True,True,,0.10345189995132387,
+4090.pgm,Huynh-Nguyen-T5,True,512,688,-176,350,0.17768030237657065,28.744718776013862,True,True,,1.5077898999443278,
+4090.pgm,Dong-adaptive-conservative,True,512,576,-64,144717,93.07808410705674,2.580203709809854,True,True,l=1,11.867989100050181,
+4328.pgm,ABM-enumerative,True,512,160,352,245,0.1746400210235879,30.293738375871293,True,True,,2.2550794000271708,
+4328.pgm,PPOCP-conservative,True,512,5584,-5072,266,0.09116781575169555,29.936582853205948,True,True,,0.08600300003308803,
+4328.pgm,Huynh-Nguyen-T5,True,512,1888,-1376,273,0.15281623801255595,29.823772749109057,True,True,,1.3647183999419212,
+4328.pgm,Dong-adaptive-conservative,True,512,448,64,308,0.2000470654409741,29.299892054512174,True,True,l=1,22.84691510000266,
+4391.pgm,ABM-enumerative,True,512,400,112,267,0.0748871714781184,29.920286605870864,True,True,,2.1853123999899253,
+4391.pgm,PPOCP-conservative,True,512,5800,-5288,238,0.045930482711620924,30.419629648951492,True,True,,0.10422549990471452,
+4391.pgm,Huynh-Nguyen-T5,True,512,688,-176,411,0.13018863304754602,28.046981000755924,True,True,,1.3292283000191674,
+4391.pgm,Dong-adaptive-conservative,True,512,496,16,142738,50.92991692595975,2.6400031468592173,True,True,l=6,43.17642999999225,
+4707.pgm,ABM-enumerative,True,512,184,328,272,0.2402285863354996,29.83971017917463,True,True,,2.280524499947205,
+4707.pgm,PPOCP-conservative,True,512,5216,-4704,270,0.13719564875822787,29.871761577926744,True,True,,0.09453020000364631,
+4707.pgm,Huynh-Nguyen-T5,True,512,1880,-1368,279,0.23315792935260132,29.72935718678064,True,True,,1.3616452000569552,
+4707.pgm,Dong-adaptive-conservative,True,512,360,152,335,0.28774875203340405,28.934951149148166,True,True,l=4,8.744643499958329,
+4757.pgm,ABM-enumerative,True,512,544,-32,264,0.8114668250612044,29.969359950818305,True,True,,2.2535642000148073,
+4757.pgm,PPOCP-conservative,True,512,4632,-4120,249,0.5317544516802427,30.22340574855925,True,True,,0.08581319998484105,
+4757.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.6004431999754161,capacity below target
+4757.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,46.192960100015625,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map is exhausted; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+4839.pgm,ABM-enumerative,True,512,312,200,255,0.5005391637925276,30.11999741517706,True,True,,2.1771511000115424,
+4839.pgm,PPOCP-conservative,True,512,5248,-4736,248,0.33421805629826334,30.240882411254454,True,True,,0.08159910002723336,
+4839.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5805538999848068,capacity below target
+4839.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,31.859702300047502,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+5009.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,0.6125950999557972,capacity below target
+5009.pgm,PPOCP-conservative,True,512,264,248,265,224.45091940151548,29.952940480148538,True,True,,0.06503409997094423,
+5009.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.3055756000103429,capacity below target
+5009.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,31.97008260001894,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+5038.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.0454942000797018,capacity below target
+5038.pgm,PPOCP-conservative,True,512,264,248,243,20.6074797518275,30.329336483533496,True,True,,0.08067479997407645,
+5038.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.9396502000745386,capacity below target
+5038.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,47.35168570000678,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+5056.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.7236517000710592,capacity below target
+5056.pgm,PPOCP-conservative,True,512,264,248,254,2.9091303986987174,30.137062053317237,True,True,,0.161548399948515,
+5056.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0352612000424415,capacity below target
+5056.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,50.5986125000054,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Dong location map contains unused marks; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+5125.pgm,ABM-enumerative,True,512,544,-32,261,0.8742781117248565,30.018994146133803,True,True,,3.8707998000318184,
+5125.pgm,PPOCP-conservative,True,512,4616,-4104,261,0.5497729056362667,30.018994146133803,True,True,,0.08384069998282939,
+5125.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5745811000233516,capacity below target
+5125.pgm,Dong-adaptive-conservative,True,512,616,-104,952,3.5263897170047707,24.399029735671874,True,True,l=2,45.68277349998243,
+5184.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.9964174999622628,capacity below target
+5184.pgm,PPOCP-conservative,True,512,5320,-4808,253,0.661427607960077,30.154194007758438,True,True,,0.1685583998914808,
+5184.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.019741200027056,capacity below target
+5184.pgm,Dong-adaptive-conservative,True,512,328,184,270,1.2998223518125152,29.871761577926744,True,True,l=7,44.85894379997626,
+5248.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.2476559000788257,capacity below target
+5248.pgm,PPOCP-conservative,True,512,264,248,276,6.0014561471090655,29.77630839886444,True,True,,0.150701200007461,
+5248.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0294219000497833,capacity below target
+5248.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,48.30345459992532,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+5288.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.2890076000476256,capacity below target
+5288.pgm,PPOCP-conservative,True,512,264,248,248,3.8947128390560994,30.240882411254454,True,True,,0.17370239994488657,
+5288.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0046670000301674,capacity below target
+5288.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,48.25718610000331,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+5306.pgm,ABM-enumerative,True,512,200,312,267,0.2515986531760696,29.920286605870864,True,True,,2.6925979999359697,
+5306.pgm,PPOCP-conservative,True,512,4592,-4080,234,0.12986369936668124,30.493240645415188,True,True,,0.19340139999985695,
+5306.pgm,Huynh-Nguyen-T5,True,512,1888,-1376,265,0.20361982768097028,29.952940480148538,True,True,,2.5500823999755085,
+5306.pgm,Dong-adaptive-conservative,True,512,312,200,13519,15.007446840665622,12.875953539069824,True,True,l=1,10.933906399994157,
+5374.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,2.0439694999950007,capacity below target
+5374.pgm,PPOCP-conservative,True,512,4248,-3736,245,0.8956090304694398,30.293738375871293,True,True,,0.18196800001896918,
+5374.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0838843999663368,capacity below target
+5374.pgm,Dong-adaptive-conservative,True,512,336,176,274,1.4233002220376432,29.807893591312737,True,True,l=1,54.91010370000731,
+5510.pgm,ABM-enumerative,True,512,208,304,258,0.38908174798444756,30.069202159884313,True,True,,4.124340399983339,
+5510.pgm,PPOCP-conservative,True,512,5440,-4928,263,0.20087686924185577,29.985841734619036,True,True,,0.17468920000828803,
+5510.pgm,Huynh-Nguyen-T5,True,512,3384,-2872,255,0.3576277792750378,30.11999741517706,True,True,,2.5438952000113204,
+5510.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,16.949533800012432,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+5683.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.0549024000065401,capacity below target
+5683.pgm,PPOCP-conservative,True,512,264,248,243,206.074797518275,30.329336483533496,True,True,,0.15091209998354316,
+5683.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5107134999707341,capacity below target
+5683.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,50.70923270005733,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+5788.pgm,ABM-enumerative,True,512,296,216,251,0.5251442349928326,30.18866200470623,True,True,,3.701953399926424,
+5788.pgm,PPOCP-conservative,True,512,4928,-4416,232,0.31067753431359757,30.530519370607617,True,True,,0.16216569999232888,
+5788.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.9896159999771044,capacity below target
+5788.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,28.19223729998339,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map is exhausted; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map is exhausted; l=9: Dong payload length does not match auxiliary data; l=10: Dong location map contains unused marks
+5966.pgm,ABM-enumerative,True,512,192,320,241,0.1187233111082273,30.365228793767933,True,True,,2.296453700051643,
+5966.pgm,PPOCP-conservative,True,512,6160,-5648,269,0.08053530588777914,29.887876419492535,True,True,,0.1042174999602139,
+5966.pgm,Huynh-Nguyen-T5,True,512,1072,-560,299,0.15628787460505292,29.42868733627232,True,True,,1.564025399973616,
+5966.pgm,Dong-adaptive-conservative,True,512,488,24,11095,5.450080707798669,13.734126153836343,True,True,l=9,25.864358799997717,
+6197.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,0.7453038999810815,capacity below target
+6197.pgm,PPOCP-conservative,True,512,264,248,267,226.39975522627608,29.920286605870864,True,True,,0.07455480005592108,
+6197.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.29887169995345175,capacity below target
+6197.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,32.228158699930646,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+6247.pgm,ABM-enumerative,True,512,256,256,269,0.49492678268803,29.887876419492535,True,True,,2.4249806000152603,
+6247.pgm,PPOCP-conservative,True,512,3600,-3088,248,0.22371383438107953,30.240882411254454,True,True,,0.1027291000355035,
+6247.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.7286112000001594,capacity below target
+6247.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,27.157455799984746,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+6399.pgm,ABM-enumerative,True,512,184,328,238,0.2745877337062868,30.419629648951492,True,True,,2.3043327999766916,
+6399.pgm,PPOCP-conservative,True,512,5800,-5288,266,0.18240555930570151,29.936582853205948,True,True,,0.08734900003764778,
+6399.pgm,Huynh-Nguyen-T5,True,512,1848,-1336,246,0.2654847442684261,30.276048148482822,True,True,,1.6401183999842033,
+6399.pgm,Dong-adaptive-conservative,True,512,408,104,307,0.329693926130164,29.314015464744752,True,True,l=5,10.503528199973516,
+6447.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.0439481000648811,capacity below target
+6447.pgm,PPOCP-conservative,True,512,3712,-3200,286,1.064813187943936,29.621738888226187,True,True,,0.08506190008483827,
+6447.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5739175999769941,capacity below target
+6447.pgm,Dong-adaptive-conservative,True,512,280,232,265,1.4671606162134263,29.952940480148538,True,True,l=4,34.76916790008545,
+6702.pgm,ABM-enumerative,True,512,232,280,272,0.4025326308657844,29.83971017917463,True,True,,2.2549854000099003,
+6702.pgm,PPOCP-conservative,True,512,5392,-4880,254,0.20628571562580464,30.137062053317237,True,True,,0.08476120000705123,
+6702.pgm,Huynh-Nguyen-T5,True,512,3376,-2864,252,0.37589487512620173,30.171393811701176,True,True,,1.71579919999931,
+6702.pgm,Dong-adaptive-conservative,True,512,288,224,272,0.45488157823896674,29.83971017917463,True,True,l=1,19.496959100011736,
+6760.pgm,ABM-enumerative,True,512,368,144,235,0.6059095089924413,30.474720596799255,True,True,,2.200378999928944,
+6760.pgm,PPOCP-conservative,True,512,5072,-4560,279,0.473041688009924,29.72935718678064,True,True,,0.08058760000858456,
+6760.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.6052295999834314,capacity below target
+6760.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,37.23723259998951,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+6823.pgm,ABM-enumerative,True,512,448,64,255,0.7905943457431142,30.11999741517706,True,True,,2.220130000030622,
+6823.pgm,PPOCP-conservative,True,512,4576,-4064,231,0.5368594398219895,30.549279420595173,True,True,,0.08060980006121099,
+6823.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5889559999341145,capacity below target
+6823.pgm,Dong-adaptive-conservative,True,512,296,216,267,0.9120181059118753,29.920286605870864,True,True,l=2,39.98687340004835,
+6949.pgm,ABM-enumerative,True,512,152,360,256,0.45823472189344205,30.102999566398122,True,True,,2.2828163999365643,
+6949.pgm,PPOCP-conservative,True,512,3488,-2976,261,0.2137377073783423,30.018994146133803,True,True,,0.09613860002718866,
+6949.pgm,Huynh-Nguyen-T5,True,512,3336,-2824,245,0.4490691758306361,30.293738375871293,True,True,,1.637189699918963,
+6949.pgm,Dong-adaptive-conservative,True,512,288,224,261,0.5413281481926815,30.018994146133803,True,True,l=2,11.989562600036152,
+7039.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.04455470002722,capacity below target
+7039.pgm,PPOCP-conservative,True,512,2800,-2288,247,1.3093402339566678,30.25842968691996,True,True,,0.08215349994134158,
+7039.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5907150000566617,capacity below target
+7039.pgm,Dong-adaptive-conservative,True,512,280,232,277,2.2497355508357875,29.76060152887213,True,True,l=9,33.89035500003956,
+7381.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.2682572999037802,capacity below target
+7381.pgm,PPOCP-conservative,True,512,5072,-4560,252,0.653785931103565,30.171393811701176,True,True,,0.17510330001823604,
+7381.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0182266000192612,capacity below target
+7381.pgm,Dong-adaptive-conservative,True,512,392,120,336,1.3684725253587355,28.922006445618177,True,True,l=1,49.92915250000078,
+7401.pgm,ABM-enumerative,True,512,152,360,233,0.17977960081412078,30.511840009256424,True,True,,3.008481999975629,
+7401.pgm,PPOCP-conservative,True,512,5136,-4624,254,0.07850130494953966,30.137062053317237,True,True,,0.17337799991946667,
+7401.pgm,Huynh-Nguyen-T5,True,512,1896,-1384,240,0.154574249975195,30.383286802400555,True,True,,2.812470500008203,
+7401.pgm,Dong-adaptive-conservative,True,512,392,120,329,0.2617889280063275,29.013440240016873,True,True,l=5,10.237466200022027,
+7569.pgm,ABM-enumerative,True,512,392,120,267,0.6302362516245409,29.920286605870864,True,True,,4.530197100015357,
+7569.pgm,PPOCP-conservative,True,512,5200,-4688,248,0.37585016599009036,30.240882411254454,True,True,,0.08624760003294796,
+7569.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.6496019000187516,capacity below target
+7569.pgm,Dong-adaptive-conservative,True,512,320,192,277,0.7484615341761379,29.76060152887213,True,True,l=2,43.96823889994994,
+7612.pgm,ABM-enumerative,True,512,144,368,247,0.1498346741572396,30.25842968691996,True,True,,4.112970000016503,
+7612.pgm,PPOCP-conservative,True,512,4904,-4392,258,0.09665831348846741,30.069202159884313,True,True,,0.18289840000215918,
+7612.pgm,Huynh-Nguyen-T5,True,512,1888,-1376,281,0.14808440167523418,29.698336020465813,True,True,,2.298032599966973,
+7612.pgm,Dong-adaptive-conservative,True,512,504,8,422,0.2603139132417823,27.93227470989988,True,True,l=3,22.17310210003052,
+7770.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.8589502000249922,capacity below target
+7770.pgm,PPOCP-conservative,True,512,2568,-2056,244,0.9487791882483054,30.311500956129322,True,True,,0.15923500002827495,
+7770.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0123093000147492,capacity below target
+7770.pgm,Dong-adaptive-conservative,True,512,280,232,261,1.5273637166569085,30.018994146133803,True,True,l=10,35.835411299951375,
+7975.pgm,ABM-enumerative,True,512,424,88,262,1.0033774884252589,30.00238630631916,True,True,,3.170808899914846,
+7975.pgm,PPOCP-conservative,True,512,4328,-3816,238,0.7228291837426813,30.419629648951492,True,True,,0.15490139997564256,
+7975.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.049544999958016,capacity below target
+7975.pgm,Dong-adaptive-conservative,True,512,560,-48,436,1.9676880915352697,27.790534326830752,True,True,l=10,66.69992389995605,
+8077.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.8767467000288889,capacity below target
+8077.pgm,PPOCP-conservative,True,512,3384,-2872,256,0.8322246441824331,30.102999566398122,True,True,,0.15269300004001707,
+8077.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0179305999772623,capacity below target
+8077.pgm,Dong-adaptive-conservative,True,512,280,232,268,1.2358028418198261,29.904051279228728,True,True,l=2,18.85023849993013,
+8222.pgm,ABM-enumerative,True,512,152,360,261,0.1129076485883978,30.018994146133803,True,True,,4.03469690005295,
+8222.pgm,PPOCP-conservative,True,512,6664,-6152,260,0.06098707729060175,30.035665739808437,True,True,,0.20663329993840307,
+8222.pgm,Huynh-Nguyen-T5,True,512,1096,-584,301,0.12625884981385693,29.399734263578182,True,True,,2.6171641000546515,
+8222.pgm,Dong-adaptive-conservative,True,512,400,112,316,0.13120060665761255,29.18852839333258,True,True,l=2,16.786980899982154,
+8331.pgm,ABM-enumerative,True,512,448,64,271,0.7734319914577821,29.855706310772558,True,True,,4.041092299972661,
+8331.pgm,PPOCP-conservative,True,512,3616,-3104,255,0.4601880854370623,30.11999741517706,True,True,,0.16228339995723218,
+8331.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.803110400098376,capacity below target
+8331.pgm,Dong-adaptive-conservative,True,512,472,40,319,0.908657297208857,29.1474923889448,True,True,l=1,18.532588600064628,
+8366.pgm,ABM-enumerative,True,512,320,192,226,0.4846513739881472,30.644314828042603,True,True,,2.767942799953744,
+8366.pgm,PPOCP-conservative,True,512,5240,-4728,279,0.39505620264052504,29.72935718678064,True,True,,0.09209559997543693,
+8366.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0386720999376848,capacity below target
+8366.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,73.39961760002188,l=1: Dong location map contains unused marks; l=2: Dong payload length does not match auxiliary data; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+8401.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.7162718999898061,capacity below target
+8401.pgm,PPOCP-conservative,True,512,480,32,242,2.797759662656966,30.347245559712302,True,True,,0.16119350004009902,
+8401.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,1.0108677999814972,capacity below target
+8401.pgm,Dong-adaptive-conservative,True,512,304,208,252,3.1445956560633403,30.171393811701176,True,True,l=2,57.57251540001016,
+8486.pgm,ABM-enumerative,True,512,200,312,256,0.1460105145856788,30.102999566398122,True,True,,3.9563142999541014,
+8486.pgm,PPOCP-conservative,True,512,6152,-5640,267,0.08796663634436802,29.920286605870864,True,True,,0.12852120003663003,
+8486.pgm,Huynh-Nguyen-T5,True,512,1120,-608,286,0.16173466391071267,29.621738888226187,True,True,,1.9262772999936715,
+8486.pgm,Dong-adaptive-conservative,True,512,584,-72,1523,0.900114542755296,22.35840018615619,True,True,l=4,13.443373600021005,
+8696.pgm,ABM-enumerative,True,512,408,104,277,0.8476405026648218,29.76060152887213,True,True,,2.1929478999227285,
+8696.pgm,PPOCP-conservative,True,512,3328,-2816,247,0.6642346640074452,30.25842968691996,True,True,,0.08332720003090799,
+8696.pgm,Huynh-Nguyen-T5,True,512,3360,-2848,264,0.6752778730380314,29.969359950818305,True,True,,1.48324940004386,
+8696.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,63.02337579999585,l=1: Dong location map contains unused marks; l=2: Dong location map contains unused marks; l=3: Dong location map contains unused marks; l=4: Dong location map contains unused marks; l=5: Dong location map contains unused marks; l=6: Dong location map contains unused marks; l=7: Dong location map contains unused marks; l=8: Dong location map contains unused marks; l=9: Dong location map contains unused marks; l=10: Dong location map contains unused marks
+8716.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,0.9784705999772996,capacity below target
+8716.pgm,PPOCP-conservative,True,512,264,248,268,75.66491229198935,29.904051279228728,True,True,,0.07658340001944453,
+8716.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.582332499907352,capacity below target
+8716.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,31.774035300011747,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+9065.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.0506695000221953,capacity below target
+9065.pgm,PPOCP-conservative,True,512,4616,-4104,242,0.6772313602366052,30.347245559712302,True,True,,0.08905710000544786,
+9065.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5742480999324471,capacity below target
+9065.pgm,Dong-adaptive-conservative,True,512,328,184,280,0.9923434214343261,29.713818906094424,True,True,l=2,47.44963199994527,
+9164.pgm,ABM-enumerative,True,512,376,136,266,0.7157965532924961,29.936582853205948,True,True,,2.221758999978192,
+9164.pgm,PPOCP-conservative,True,512,5248,-4736,270,0.451382761303558,29.871761577926744,True,True,,0.09097949997521937,
+9164.pgm,Huynh-Nguyen-T5,True,512,3304,-2792,244,0.5562214013132638,30.311500956129322,True,True,,1.4130731000332162,
+9164.pgm,Dong-adaptive-conservative,True,512,328,184,282,0.8772974988819819,29.682908136323004,True,True,l=8,15.517030599992722,
+9182.pgm,ABM-enumerative,True,512,512,0,269,0.35814157936821606,29.887876419492535,True,True,,2.2527957999845967,
+9182.pgm,PPOCP-conservative,True,512,5576,-5064,244,0.22134882469857092,30.311500956129322,True,True,,0.09079719998408109,
+9182.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5913509998936206,capacity below target
+9182.pgm,Dong-adaptive-conservative,True,512,560,-48,395,0.5293658662626408,28.219428263252013,True,True,l=4,10.893407099996693,
+9392.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.0042690000263974,capacity below target
+9392.pgm,PPOCP-conservative,True,512,5696,-5184,251,0.5869158609112094,30.18866200470623,True,True,,0.07736899994779378,
+9392.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5896954999770969,capacity below target
+9392.pgm,Dong-adaptive-conservative,True,512,296,216,240,1.0446657533038461,30.383286802400555,True,True,l=3,7.858025600085966,
+9503.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,0.5868686999892816,capacity below target
+9503.pgm,PPOCP-conservative,True,512,264,248,249,211.1624324671802,30.22340574855925,True,True,,0.07502699992619455,
+9503.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.28748129995074123,capacity below target
+9503.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,32.68755749997217,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+9523.pgm,ABM-enumerative,True,512,200,312,255,0.3537216860695419,30.11999741517706,True,True,,2.220926499925554,
+9523.pgm,PPOCP-conservative,True,512,4680,-4168,253,0.2452813396832345,30.154194007758438,True,True,,0.08656960004009306,
+9523.pgm,Huynh-Nguyen-T5,True,512,3352,-2840,234,0.33194153281789085,30.493240645415188,True,True,,1.5075152999488637,
+9523.pgm,Dong-adaptive-conservative,True,512,296,216,266,0.39186875728697973,29.936582853205948,True,True,l=1,47.67512559995521,
+9776.pgm,ABM-enumerative,True,512,176,336,240,0.11446253154422169,30.383286802400555,True,True,,2.3570094999158755,
+9776.pgm,PPOCP-conservative,True,512,5568,-5056,252,0.07156321420515216,30.171393811701176,True,True,,0.10765979997813702,
+9776.pgm,Huynh-Nguyen-T5,True,512,1104,-592,301,0.15013721625918472,29.399734263578182,True,True,,1.513446499942802,
+9776.pgm,Dong-adaptive-conservative,True,512,472,40,82535,45.954926420100215,5.0190176632936385,True,True,l=5,20.781355799990706,
+9904.pgm,ABM-enumerative,True,512,144,368,259,0.226857610851242,30.0524015787041,True,True,,2.031027099932544,
+9904.pgm,PPOCP-conservative,True,512,5080,-4568,262,0.13449330284573346,30.00238630631916,True,True,,0.08646360004786402,
+9904.pgm,Huynh-Nguyen-T5,True,512,1848,-1336,242,0.17843891926509942,30.347245559712302,True,True,,1.250612299889326,
+9904.pgm,Dong-adaptive-conservative,True,512,272,240,259,0.23805638573477103,30.0524015787041,True,True,l=1,4.201690900023095,
+9909.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.099318099906668,capacity below target
+9909.pgm,PPOCP-conservative,True,512,264,248,245,3.149956887709185,30.293738375871293,True,True,,0.11170979996677488,
+9909.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.7581356998998672,capacity below target
+9909.pgm,Dong-adaptive-conservative,False,512,0,0,0,,,False,False,,30.817546700011007,l=1: Insufficient Dong excluding-mode capacity; l=2: Insufficient Dong excluding-mode capacity; l=3: Insufficient Dong excluding-mode capacity; l=4: Insufficient Dong excluding-mode capacity; l=5: Insufficient Dong excluding-mode capacity; l=6: Insufficient Dong excluding-mode capacity; l=7: Insufficient Dong excluding-mode capacity; l=8: Insufficient Dong excluding-mode capacity; l=9: Insufficient Dong excluding-mode capacity; l=10: Insufficient Dong excluding-mode capacity
+9946.pgm,ABM-enumerative,False,512,0,0,0,,,False,False,,1.0768126000184566,capacity below target
+9946.pgm,PPOCP-conservative,True,512,4744,-4232,262,0.46221477112488357,30.00238630631916,True,True,,0.08802260004449636,
+9946.pgm,Huynh-Nguyen-T5,False,512,0,0,0,,,False,False,,0.5668941999319941,capacity below target
+9946.pgm,Dong-adaptive-conservative,True,512,464,48,351,0.982246984435026,28.732328054858375,True,True,l=5,30.47266840003431,

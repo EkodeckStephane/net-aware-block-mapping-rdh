@@ -1,0 +1,31 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,positioning}
+
+\begin{document}
+\begin{tikzpicture}[
+  font=\sffamily,
+  node distance=8mm and 10mm,
+  box/.style={draw,rounded corners,align=center,minimum height=13mm,
+    minimum width=31mm,fill=blue!5},
+  result/.style={draw,rounded corners,align=center,minimum height=13mm,
+    minimum width=35mm,fill=green!9},
+  arrow/.style={-{Latex[length=2.4mm]},thick}
+]
+\node[box] (cover) {Binary cover\\$3\times3$ blocks};
+\node[box,right=of cover] (rank) {CNN-ranked\\distance-one mapping};
+\node[box,right=of rank] (net) {Enumerative wire\\$C_{\rm net}=C_{\rm gross}-|A|$};
+\node[result,right=of net] (stego) {Exactly reversible\\stego image};
+\node[result,below=of rank,xshift=18mm] (benchmark)
+{Common protocol\\PPOCP, Huynh--Nguyen, Dong, ABM};
+\node[result,right=of benchmark] (outcome)
+{Highest observed net payload\\2245 bits on document images\\309 bits at target 512};
+\draw[arrow] (cover) -- (rank);
+\draw[arrow] (rank) -- (net);
+\draw[arrow] (net) -- (stego);
+\draw[arrow] (rank) -- (benchmark);
+\draw[arrow] (benchmark) -- (outcome);
+\draw[arrow] (stego) -- (outcome);
+\end{tikzpicture}
+\end{document}

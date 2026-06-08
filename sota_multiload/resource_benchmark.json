@@ -1,0 +1,322 @@
+{
+  "payload_bits": 256,
+  "images_requested": 10,
+  "memory_definition": "Peak process RSS minus pre-call RSS, sampled every 2 ms.",
+  "summaries": [
+    {
+      "method": "ABM-enumerative",
+      "available_images": 9,
+      "median_runtime_seconds": 3.5647944998927414,
+      "median_peak_rss_increase_mib": 2.5625,
+      "maximum_peak_rss_increase_mib": 10.19140625
+    },
+    {
+      "method": "Dong-adaptive-conservative",
+      "available_images": 9,
+      "median_runtime_seconds": 16.97019939997699,
+      "median_peak_rss_increase_mib": 0.05078125,
+      "maximum_peak_rss_increase_mib": 3.7734375
+    },
+    {
+      "method": "Huynh-Nguyen-T5",
+      "available_images": 7,
+      "median_runtime_seconds": 1.5081232000375167,
+      "median_peak_rss_increase_mib": 0.0234375,
+      "maximum_peak_rss_increase_mib": 0.03125
+    },
+    {
+      "method": "PPOCP-conservative",
+      "available_images": 10,
+      "median_runtime_seconds": 0.1563015499850735,
+      "median_peak_rss_increase_mib": 0.703125,
+      "maximum_peak_rss_increase_mib": 2.75390625
+    }
+  ],
+  "images": [
+    {
+      "image": "7.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": 4.128864900092594,
+      "peak_rss_increase_bytes": 10686464,
+      "available": true
+    },
+    {
+      "image": "7.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.19512619997840375,
+      "peak_rss_increase_bytes": 2658304,
+      "available": true
+    },
+    {
+      "image": "7.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": 1.8597867999924347,
+      "peak_rss_increase_bytes": 32768,
+      "available": true
+    },
+    {
+      "image": "7.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": 19.30970390001312,
+      "peak_rss_increase_bytes": 3956736,
+      "available": true
+    },
+    {
+      "image": "46.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": 3.774066900019534,
+      "peak_rss_increase_bytes": 3096576,
+      "available": true
+    },
+    {
+      "image": "46.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.08623210003133863,
+      "peak_rss_increase_bytes": 2367488,
+      "available": true
+    },
+    {
+      "image": "46.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": 0.7962557999417186,
+      "peak_rss_increase_bytes": 20480,
+      "available": true
+    },
+    {
+      "image": "46.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": 16.97019939997699,
+      "peak_rss_increase_bytes": 20480,
+      "available": true
+    },
+    {
+      "image": "353.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": null,
+      "peak_rss_increase_bytes": null,
+      "available": false,
+      "error": "capacity below target"
+    },
+    {
+      "image": "353.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.14728019991889596,
+      "peak_rss_increase_bytes": 2887680,
+      "available": true
+    },
+    {
+      "image": "353.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": null,
+      "peak_rss_increase_bytes": null,
+      "available": false,
+      "error": "Payload has 256 bits but capacity is 80"
+    },
+    {
+      "image": "353.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": null,
+      "peak_rss_increase_bytes": null,
+      "available": false,
+      "error": "Dong unavailable"
+    },
+    {
+      "image": "410.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": 2.9136221000226215,
+      "peak_rss_increase_bytes": 3166208,
+      "available": true
+    },
+    {
+      "image": "410.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.18366850004531443,
+      "peak_rss_increase_bytes": 671744,
+      "available": true
+    },
+    {
+      "image": "410.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": 1.297077399911359,
+      "peak_rss_increase_bytes": 24576,
+      "available": true
+    },
+    {
+      "image": "410.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": 15.099615199957043,
+      "peak_rss_increase_bytes": 73728,
+      "available": true
+    },
+    {
+      "image": "488.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": 2.983229500008747,
+      "peak_rss_increase_bytes": 2686976,
+      "available": true
+    },
+    {
+      "image": "488.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.10262359993066639,
+      "peak_rss_increase_bytes": 20480,
+      "available": true
+    },
+    {
+      "image": "488.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": 1.8999210000038147,
+      "peak_rss_increase_bytes": 32768,
+      "available": true
+    },
+    {
+      "image": "488.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": 10.69548900006339,
+      "peak_rss_increase_bytes": 40960,
+      "available": true
+    },
+    {
+      "image": "581.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": 3.6522861999692395,
+      "peak_rss_increase_bytes": 2625536,
+      "available": true
+    },
+    {
+      "image": "581.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.1478075000923127,
+      "peak_rss_increase_bytes": 90112,
+      "available": true
+    },
+    {
+      "image": "581.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": null,
+      "peak_rss_increase_bytes": null,
+      "available": false,
+      "error": "Payload has 256 bits but capacity is 224"
+    },
+    {
+      "image": "581.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": 44.6216874999227,
+      "peak_rss_increase_bytes": 270336,
+      "available": true
+    },
+    {
+      "image": "596.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": 2.3028698000125587,
+      "peak_rss_increase_bytes": 2392064,
+      "available": true
+    },
+    {
+      "image": "596.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.16170199995394796,
+      "peak_rss_increase_bytes": 24576,
+      "available": true
+    },
+    {
+      "image": "596.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": 2.042526299948804,
+      "peak_rss_increase_bytes": 28672,
+      "available": true
+    },
+    {
+      "image": "596.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": 29.635487999999896,
+      "peak_rss_increase_bytes": 24576,
+      "available": true
+    },
+    {
+      "image": "636.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": 3.4521993999369442,
+      "peak_rss_increase_bytes": 2457600,
+      "available": true
+    },
+    {
+      "image": "636.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.1649563000537455,
+      "peak_rss_increase_bytes": 1851392,
+      "available": true
+    },
+    {
+      "image": "636.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": null,
+      "peak_rss_increase_bytes": null,
+      "available": false,
+      "error": "Payload has 256 bits but capacity is 144"
+    },
+    {
+      "image": "636.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": 14.155802499968559,
+      "peak_rss_increase_bytes": 32768,
+      "available": true
+    },
+    {
+      "image": "655.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": 3.5647944998927414,
+      "peak_rss_increase_bytes": 2809856,
+      "available": true
+    },
+    {
+      "image": "655.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.15090110001619905,
+      "peak_rss_increase_bytes": 20480,
+      "available": true
+    },
+    {
+      "image": "655.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": 1.5081232000375167,
+      "peak_rss_increase_bytes": 20480,
+      "available": true
+    },
+    {
+      "image": "655.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": 14.616777000017464,
+      "peak_rss_increase_bytes": 53248,
+      "available": true
+    },
+    {
+      "image": "812.pgm",
+      "method": "ABM-enumerative",
+      "runtime_seconds": 4.1076104999519885,
+      "peak_rss_increase_bytes": 2490368,
+      "available": true
+    },
+    {
+      "image": "812.pgm",
+      "method": "PPOCP-conservative",
+      "runtime_seconds": 0.17427849990781397,
+      "peak_rss_increase_bytes": 802816,
+      "available": true
+    },
+    {
+      "image": "812.pgm",
+      "method": "Huynh-Nguyen-T5",
+      "runtime_seconds": 1.3255642000585794,
+      "peak_rss_increase_bytes": 24576,
+      "available": true
+    },
+    {
+      "image": "812.pgm",
+      "method": "Dong-adaptive-conservative",
+      "runtime_seconds": 20.62007059995085,
+      "peak_rss_increase_bytes": 2387968,
+      "available": true
+    }
+  ]
+}

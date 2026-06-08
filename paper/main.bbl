@@ -1,0 +1,290 @@
+\begin{thebibliography}{34}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Article
+\bibitem[{Rivest et~al.(1978)Rivest, Shamir, and Adleman}]{cryptographie}
+\bibinfo{author}{R.~L. Rivest}, \bibinfo{author}{A.~Shamir},
+  \bibinfo{author}{L.~Adleman},
+\newblock \bibinfo{title}{A method for obtaining digital signatures and
+  public-key cryptosystems},
+\newblock \bibinfo{journal}{Communications of the ACM} \bibinfo{volume}{21}
+  (\bibinfo{year}{1978}) \bibinfo{pages}{120--126}.
+%Type = Book
+\bibitem[{Johnson et~al.(2001)Johnson, Duric, and Jajodia}]{generalite}
+\bibinfo{author}{N.~F. Johnson}, \bibinfo{author}{Z.~Duric},
+  \bibinfo{author}{S.~Jajodia}, \bibinfo{title}{Information Hiding:
+  Steganography and Watermarking---Attacks and Countermeasures},
+  \bibinfo{publisher}{Springer}, \bibinfo{address}{New York},
+  \bibinfo{year}{2001}.
+%Type = Article
+\bibitem[{Chhajed and Garg(2023)}]{Chhajed2023BlockDiagonal}
+\bibinfo{author}{G.~J. Chhajed}, \bibinfo{author}{B.~R. Garg},
+\newblock \bibinfo{title}{Hiding data in binary images using block-diagonal
+  partition pattern},
+\newblock \bibinfo{journal}{International Journal of Computing and Digital
+  Systems}  (\bibinfo{year}{2023}).
+%Type = Article
+\bibitem[{Huynh and Nguyen(2025)}]{Huynh2025BlockMapping}
+\bibinfo{author}{V.-T. Huynh}, \bibinfo{author}{T.-S. Nguyen},
+\newblock \bibinfo{title}{High-capacity reversible data hiding scheme based on
+  block mapping for binary image},
+\newblock \bibinfo{journal}{Multimedia Tools and Applications}
+  (\bibinfo{year}{2025}).
+%Type = Inproceedings
+\bibitem[{Yang(2023)}]{Yang2023Large}
+\bibinfo{author}{Y.~Yang},
+\newblock \bibinfo{title}{Large capacity data hiding in binary image black and
+  white mixed regions},
+\newblock in: \bibinfo{booktitle}{2023 3rd International Conference on
+  Electronic Information Engineering and Computer}, \bibinfo{publisher}{IEEE},
+  \bibinfo{year}{2023}, pp. \bibinfo{pages}{516--521}.
+%Type = Inproceedings
+\bibitem[{Ren et~al.(2023)Ren, Li, Liu, and Wang}]{Ren2022Sliding}
+\bibinfo{author}{F.~Ren}, \bibinfo{author}{Q.~Li}, \bibinfo{author}{Y.~Liu},
+  \bibinfo{author}{X.~Wang},
+\newblock \bibinfo{title}{Reversible data hiding algorithm for binary image
+  based on sliding window},
+\newblock in: \bibinfo{booktitle}{5th International Conference on Artificial
+  Intelligence and Pattern Recognition}, \bibinfo{publisher}{ACM},
+  \bibinfo{year}{2023}, pp. \bibinfo{pages}{572--580}.
+%Type = Article
+\bibitem[{Dong et~al.(2020)Dong, Kim, Yu, and Feng}]{Dong2020Adaptive}
+\bibinfo{author}{K.~Dong}, \bibinfo{author}{H.~J. Kim},
+  \bibinfo{author}{X.~Yu}, \bibinfo{author}{G.-C. Feng},
+\newblock \bibinfo{title}{Reversible data hiding for binary images based on
+  adaptive overlapping pattern},
+\newblock \bibinfo{journal}{EURASIP Journal on Information Security}
+  \bibinfo{volume}{2020} (\bibinfo{year}{2020}) \bibinfo{pages}{1}.
+%Type = Article
+\bibitem[{Zhang et~al.(2022)Zhang, Lu, Liu, Yeung, and
+  Xue}]{Zhang2022Magnification}
+\bibinfo{author}{F.~Zhang}, \bibinfo{author}{W.~Lu}, \bibinfo{author}{H.~Liu},
+  \bibinfo{author}{Y.~Yeung}, \bibinfo{author}{Y.~Xue},
+\newblock \bibinfo{title}{Reversible data hiding in binary images based on
+  image magnification},
+\newblock \bibinfo{journal}{Journal of Visual Communication and Image
+  Representation} \bibinfo{volume}{78} (\bibinfo{year}{2022}).
+%Type = Article
+\bibitem[{Yin et~al.(2020{\natexlab{a}})Yin, Lu, Zhang, Chen, and
+  Liu}]{Yin2020PPOCP}
+\bibinfo{author}{X.~Yin}, \bibinfo{author}{W.~Lu}, \bibinfo{author}{J.~Zhang},
+  \bibinfo{author}{J.~Chen}, \bibinfo{author}{W.~Liu},
+\newblock \bibinfo{title}{Reversible data hiding in binary images by flipping
+  pattern pair with opposite center pixel},
+\newblock \bibinfo{journal}{Journal of Visual Communication and Image
+  Representation} \bibinfo{volume}{70} (\bibinfo{year}{2020}{\natexlab{a}})
+  \bibinfo{pages}{102816}.
+%Type = Incollection
+\bibitem[{Yin et~al.(2020{\natexlab{b}})Yin, Lu, and Zhang}]{23}
+\bibinfo{author}{X.~Yin}, \bibinfo{author}{W.~Lu}, \bibinfo{author}{J.~Zhang},
+\newblock \bibinfo{title}{Reversible data hiding in binary images by
+  symmetrical flipping degree histogram modification},
+\newblock in: \bibinfo{editor}{C.-N. Yang}, \bibinfo{editor}{S.-L. Peng},
+  \bibinfo{editor}{L.~C. Jain} (Eds.), \bibinfo{booktitle}{Security with
+  Intelligent Computing and Big-data Services}, \bibinfo{publisher}{Springer},
+  \bibinfo{address}{Cham}, \bibinfo{year}{2020}{\natexlab{b}}, pp.
+  \bibinfo{pages}{891--903}.
+%Type = Article
+\bibitem[{Ren et~al.(2019)Ren, Lu, and Chen}]{Ren2019Encrypted}
+\bibinfo{author}{H.~Ren}, \bibinfo{author}{W.~Lu}, \bibinfo{author}{B.~Chen},
+\newblock \bibinfo{title}{Reversible data hiding in encrypted binary images by
+  pixel prediction},
+\newblock \bibinfo{journal}{Signal Processing} \bibinfo{volume}{165}
+  (\bibinfo{year}{2019}) \bibinfo{pages}{268--277}.
+%Type = Article
+\bibitem[{Feng et~al.(2015)Feng, Lu, and Sun}]{Feng2015Secure}
+\bibinfo{author}{G.~Feng}, \bibinfo{author}{W.~Lu}, \bibinfo{author}{W.~Sun},
+\newblock \bibinfo{title}{Secure binary image steganography based on minimizing
+  the distortion on the texture},
+\newblock \bibinfo{journal}{IEEE Transactions on Information Forensics and
+  Security} \bibinfo{volume}{10} (\bibinfo{year}{2015})
+  \bibinfo{pages}{243--255}.
+%Type = Inproceedings
+\bibitem[{Xuan et~al.(2008)Xuan, Shi, Chai, Tong, Teng, and Li}]{69}
+\bibinfo{author}{G.~Xuan}, \bibinfo{author}{Y.-Q. Shi},
+  \bibinfo{author}{P.~Chai}, \bibinfo{author}{X.~Tong},
+  \bibinfo{author}{J.~Teng}, \bibinfo{author}{J.~Li},
+\newblock \bibinfo{title}{Reversible binary image data hiding by run-length
+  histogram modification},
+\newblock in: \bibinfo{booktitle}{19th International Conference on Pattern
+  Recognition}, \bibinfo{publisher}{IEEE}, \bibinfo{year}{2008}, pp.
+  \bibinfo{pages}{1--4}.
+%Type = Article
+\bibitem[{Tian(2003)}]{11}
+\bibinfo{author}{J.~Tian},
+\newblock \bibinfo{title}{Reversible data embedding using a difference
+  expansion},
+\newblock \bibinfo{journal}{IEEE Transactions on Circuits and Systems for Video
+  Technology} \bibinfo{volume}{13} (\bibinfo{year}{2003})
+  \bibinfo{pages}{890--896}.
+%Type = Article
+\bibitem[{Ni et~al.(2006)Ni, Shi, Ansari, and Su}]{18}
+\bibinfo{author}{Z.~Ni}, \bibinfo{author}{Y.-Q. Shi},
+  \bibinfo{author}{N.~Ansari}, \bibinfo{author}{W.~Su},
+\newblock \bibinfo{title}{Reversible data hiding},
+\newblock \bibinfo{journal}{IEEE Transactions on Circuits and Systems for Video
+  Technology} \bibinfo{volume}{16} (\bibinfo{year}{2006})
+  \bibinfo{pages}{354--362}.
+%Type = Inproceedings
+\bibitem[{Wahed and Nyeem(2017)}]{24}
+\bibinfo{author}{M.~A. Wahed}, \bibinfo{author}{H.~Nyeem},
+\newblock \bibinfo{title}{Efficient data embedding for interpolation based
+  reversible data hiding scheme},
+\newblock in: \bibinfo{booktitle}{2017 2nd International Conference on
+  Electrical and Electronic Engineering}, \bibinfo{publisher}{IEEE},
+  \bibinfo{year}{2017}, pp. \bibinfo{pages}{1--4}.
+%Type = Article
+\bibitem[{Puteaux and Puech(2018)}]{Puteaux2018MSB}
+\bibinfo{author}{P.~Puteaux}, \bibinfo{author}{W.~Puech},
+\newblock \bibinfo{title}{An efficient {MSB} prediction-based method for
+  high-fidelity reversible data hiding},
+\newblock \bibinfo{journal}{IEEE Transactions on Information Forensics and
+  Security} \bibinfo{volume}{13} (\bibinfo{year}{2018})
+  \bibinfo{pages}{2181--2192}.
+%Type = Article
+\bibitem[{Li et~al.(2019)Li, Li, Yang, and Zeng}]{Li2019MultiHist}
+\bibinfo{author}{X.~Li}, \bibinfo{author}{B.~Li}, \bibinfo{author}{B.~Yang},
+  \bibinfo{author}{T.~Zeng},
+\newblock \bibinfo{title}{Efficient reversible data hiding based on multiple
+  histograms modification},
+\newblock \bibinfo{journal}{IEEE Transactions on Information Forensics and
+  Security} \bibinfo{volume}{15} (\bibinfo{year}{2019})
+  \bibinfo{pages}{539--553}.
+%Type = Article
+\bibitem[{Shi et~al.(2019)Shi, Li, Zhang, Wu, and Ma}]{Shi2019Survey}
+\bibinfo{author}{Y.-Q. Shi}, \bibinfo{author}{X.~Li},
+  \bibinfo{author}{X.~Zhang}, \bibinfo{author}{H.-Z. Wu},
+  \bibinfo{author}{B.~Ma},
+\newblock \bibinfo{title}{Reversible data hiding: Advances in the past two
+  decades},
+\newblock \bibinfo{journal}{IEEE Access} \bibinfo{volume}{7}
+  (\bibinfo{year}{2019}) \bibinfo{pages}{69977--69997}.
+%Type = Article
+\bibitem[{Lu et~al.(2004)Lu, Kot, and Shi}]{3535}
+\bibinfo{author}{H.~Lu}, \bibinfo{author}{A.~C. Kot}, \bibinfo{author}{Y.-Q.
+  Shi},
+\newblock \bibinfo{title}{Distance-reciprocal distortion measure for binary
+  document images},
+\newblock \bibinfo{journal}{IEEE Signal Processing Letters}
+  \bibinfo{volume}{11} (\bibinfo{year}{2004}) \bibinfo{pages}{228--231}.
+%Type = Article
+\bibitem[{Ma et~al.(2021)Ma, Zhang, Zhao, and Yu}]{Ma2021RDHEncrypted}
+\bibinfo{author}{K.~Ma}, \bibinfo{author}{W.~Zhang}, \bibinfo{author}{X.~Zhao},
+  \bibinfo{author}{N.~Yu},
+\newblock \bibinfo{title}{Reversible data hiding in encrypted images by
+  reserving room before encryption with multi-key},
+\newblock \bibinfo{journal}{Signal Processing: Image Communication}
+  \bibinfo{volume}{99} (\bibinfo{year}{2021}) \bibinfo{pages}{116461}.
+%Type = Article
+\bibitem[{Xiao et~al.(2024)Xiao, Wang, Shen, and Yao}]{Xiao2024AdaptiveBlock}
+\bibinfo{author}{F.~Xiao}, \bibinfo{author}{K.~Wang},
+  \bibinfo{author}{Y.~Shen}, \bibinfo{author}{Y.~Yao},
+\newblock \bibinfo{title}{High-capacity reversible data hiding in encrypted
+  images based on adaptive block coding selection},
+\newblock \bibinfo{journal}{Journal of Visual Communication and Image
+  Representation} \bibinfo{volume}{104} (\bibinfo{year}{2024})
+  \bibinfo{pages}{104291}.
+%Type = Article
+\bibitem[{Boroumand et~al.(2019)Boroumand, Chen, and
+  Fridrich}]{Boroumand2019SRNet}
+\bibinfo{author}{M.~Boroumand}, \bibinfo{author}{M.~Chen},
+  \bibinfo{author}{J.~Fridrich},
+\newblock \bibinfo{title}{Deep residual network for steganalysis of digital
+  images},
+\newblock \bibinfo{journal}{IEEE Transactions on Information Forensics and
+  Security} \bibinfo{volume}{14} (\bibinfo{year}{2019})
+  \bibinfo{pages}{1181--1193}.
+%Type = Inproceedings
+\bibitem[{Yedroudj et~al.(2018)Yedroudj, Comby, and Chaumont}]{Yedroudj2018Net}
+\bibinfo{author}{M.~Yedroudj}, \bibinfo{author}{F.~Comby},
+  \bibinfo{author}{M.~Chaumont},
+\newblock \bibinfo{title}{Yedroudj-net: An efficient neural network for image
+  steganalysis},
+\newblock in: \bibinfo{booktitle}{IEEE International Conference on Acoustics,
+  Speech and Signal Processing}, pp. \bibinfo{pages}{2092--2096}.
+%Type = Article
+\bibitem[{Zhang et~al.(2019)Zhang, Zhu, Liu, and Liu}]{Zhang2019SRNet}
+\bibinfo{author}{R.~Zhang}, \bibinfo{author}{F.~Zhu}, \bibinfo{author}{J.~Liu},
+  \bibinfo{author}{G.~Liu},
+\newblock \bibinfo{title}{Depth-wise separable convolutions and multi-level
+  pooling for an efficient spatial {CNN}-based steganalysis},
+\newblock \bibinfo{journal}{IEEE Transactions on Information Forensics and
+  Security} \bibinfo{volume}{15} (\bibinfo{year}{2019})
+  \bibinfo{pages}{1282--1294}.
+%Type = Article
+\bibitem[{Ekodeck et~al.(2026)Ekodeck, Eb{\'e}l{\'e}, Ewane, Mossebo~Tcheunteu,
+  Fotso, and Ndoundam}]{Ekodeck2026Combi}
+\bibinfo{author}{S.~G.~R. Ekodeck}, \bibinfo{author}{S.~A. Eb{\'e}l{\'e}},
+  \bibinfo{author}{A.~U. Ewane}, \bibinfo{author}{S.~W. Mossebo~Tcheunteu},
+  \bibinfo{author}{D.~B.~M. Fotso}, \bibinfo{author}{R.~Ndoundam},
+\newblock \bibinfo{title}{Adaptive combinatorial steganography for justified
+  pdf texts: A signal-based framework with multi-line coding and
+  distortion-aware embedding},
+\newblock \bibinfo{journal}{Signal, Image and Video Processing}
+  (\bibinfo{year}{2026}).
+%Type = Misc
+\bibitem[{Frazier(2018)}]{Frazier2018Bayesian}
+\bibinfo{author}{P.~I. Frazier}, \bibinfo{title}{A tutorial on {Bayesian}
+  optimization}, \bibinfo{howpublished}{arXiv preprint arXiv:1807.02811},
+  \bibinfo{year}{2018}.
+%Type = Article
+\bibitem[{Sedighi et~al.(2016)Sedighi, Cogranne, and
+  Fridrich}]{Sedighi2018Content}
+\bibinfo{author}{V.~Sedighi}, \bibinfo{author}{R.~Cogranne},
+  \bibinfo{author}{J.~Fridrich},
+\newblock \bibinfo{title}{Content-adaptive steganography by minimizing
+  statistical detectability},
+\newblock \bibinfo{journal}{IEEE Transactions on Information Forensics and
+  Security} \bibinfo{volume}{11} (\bibinfo{year}{2016})
+  \bibinfo{pages}{221--234}.
+%Type = Inproceedings
+\bibitem[{Jia et~al.(2019)Jia, Shi, Xu, Luo, and Yin}]{Jia2019Guided}
+\bibinfo{author}{S.~Jia}, \bibinfo{author}{Y.-Q. Shi}, \bibinfo{author}{G.~Xu},
+  \bibinfo{author}{X.~Luo}, \bibinfo{author}{Z.~Yin},
+\newblock \bibinfo{title}{Guided image steganography based on syndrome-trellis
+  codes},
+\newblock in: \bibinfo{booktitle}{IEEE International Conference on Multimedia
+  and Expo}, pp. \bibinfo{pages}{1030--1035}.
+%Type = Inproceedings
+\bibitem[{Zhu et~al.(2018)Zhu, Kaplan, Johnson, and Fei-Fei}]{Zhu2018HiDDeN}
+\bibinfo{author}{J.~Zhu}, \bibinfo{author}{R.~Kaplan},
+  \bibinfo{author}{J.~Johnson}, \bibinfo{author}{L.~Fei-Fei},
+\newblock \bibinfo{title}{{HiDDeN}: Hiding data with deep networks},
+\newblock in: \bibinfo{booktitle}{European Conference on Computer Vision},
+  \bibinfo{publisher}{Springer}, \bibinfo{year}{2018}, pp.
+  \bibinfo{pages}{657--672}.
+%Type = Inproceedings
+\bibitem[{Jing et~al.(2021)Jing, Yang, Dong, Yin, and Yu}]{Jing2021HiNet}
+\bibinfo{author}{J.~Jing}, \bibinfo{author}{X.~Yang},
+  \bibinfo{author}{J.~Dong}, \bibinfo{author}{Z.~Yin}, \bibinfo{author}{N.~Yu},
+\newblock \bibinfo{title}{{HiNet}: Deep image hiding by invertible network},
+\newblock in: \bibinfo{booktitle}{IEEE/CVF International Conference on Computer
+  Vision}, pp. \bibinfo{pages}{4733--4742}.
+%Type = Inproceedings
+\bibitem[{Lu et~al.(2021)Lu, Wang, Zhong, and Rosin}]{Lu2021LargeCapacity}
+\bibinfo{author}{S.-P. Lu}, \bibinfo{author}{R.~Wang},
+  \bibinfo{author}{T.~Zhong}, \bibinfo{author}{P.~L. Rosin},
+\newblock \bibinfo{title}{Large-capacity image steganography based on
+  invertible neural networks},
+\newblock in: \bibinfo{booktitle}{IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, pp. \bibinfo{pages}{10816--10825}.
+%Type = Inproceedings
+\bibitem[{Li et~al.(2021)Li, Feng, and Zhang}]{Li2021LearnedRDH}
+\bibinfo{author}{Q.~Li}, \bibinfo{author}{G.~Feng}, \bibinfo{author}{X.~Zhang},
+\newblock \bibinfo{title}{Reversible data hiding with adaptive encoding
+  strategy based on learning-based prediction},
+\newblock in: \bibinfo{booktitle}{IEEE International Conference on Image
+  Processing}, pp. \bibinfo{pages}{1494--1498}.
+%Type = Inproceedings
+\bibitem[{Bas et~al.(2011)Bas, Filler, and Pevn{\'y}}]{Bas2011BOSS}
+\bibinfo{author}{P.~Bas}, \bibinfo{author}{T.~Filler},
+  \bibinfo{author}{T.~Pevn{\'y}},
+\newblock \bibinfo{title}{Break our steganographic system: The ins and outs of
+  organizing boss},
+\newblock in: \bibinfo{booktitle}{Information Hiding}, volume
+  \bibinfo{volume}{6958} of \textit{\bibinfo{series}{Lecture Notes in Computer
+  Science}}, \bibinfo{publisher}{Springer}, \bibinfo{year}{2011}, pp.
+  \bibinfo{pages}{59--70}.
+
+\end{thebibliography}
