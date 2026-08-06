@@ -174,3 +174,20 @@ Recompile update 2026-08-06:
   `source_package_v1_0`, regenerated `rdhi_page1.txt/png`, rebuilt
   `latex_source_v1_0_revised.zip`, and rebuilt root `paper.zip` from the
   current deliverables.
+
+Declaration restoration update 2026-08-06:
+- Reintegrated the manuscript `Declarations` section in `paper/main.tex` and
+  regenerated `paper/article_v1_0_blue_changes.tex` and
+  `paper/article_v1_0_red_blue_changes.tex`.
+- Restored the declaration subsections for ethics approval, competing
+  interests, funding, data availability, and code availability.
+- Kept the AI-use declaration removed, in line with the user's clarification.
+- Did not restore the first-version sentence referring to a companion
+  publication, because the article must remain self-contained as version 1.0.
+- Recompiled `paper/main.pdf`, `paper/article_v1_0_blue_changes_updated.pdf`,
+  and `paper/article_v1_0_red_blue_changes_updated.pdf`; the original
+  red/blue PDF filename was locked by Windows, so the current red/blue PDF is
+  the `_updated` artifact.
+- Refreshed `paper/article_v1_0_clean.pdf`, `paper/source_package_v1_0`,
+  `paper/latex_source_v1_0_revised.zip`, root `paper.zip`, and the page-1
+  text/PNG preview artifacts after the declaration restoration.

@@ -29,7 +29,7 @@ deleted text, by design.
 | Figure 10 | Done | Figure 10 is reduced, split into two side-by-side panels, labelled, cited, and interpreted in the text. |
 | Figures/tables/equations | Done | All 22 floats have one caption, a label, and at least one reference in the text. Equations are numbered where structurally used. |
 | Bibliography | Done | Frazier 2018 is restored in the GP paragraph; Sedighi 2018 supports the future detectability-aware direction. Bibliography now has 28 cited keys and 28 entries, with no missing or uncited entries. |
-| Declarations | Done | The `Declarations` section was removed from the manuscript. Cover letters use `Submission statements` only. |
+| Declarations | Done | The manuscript retains non-AI declarations for ethics, competing interests, funding, data availability, and code availability. No AI-use declaration is included. Cover letters use `Submission statements`. |
 | Response to reviewers | Done | `response_to_reviewers.tex/pdf` follows the requested template style and is aligned to the experiments actually performed. |
 | Cover letter | Done | `revision_cover_letter.tex/pdf` follows the requested submission-cover-letter model. |
 

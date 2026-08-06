@@ -8,6 +8,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PAPER = ROOT / "paper"
 OLD = PAPER / "main_before_actions_20260805.tex"
+if not OLD.exists():
+    OLD = PAPER / "validation_logs" / "main_before_actions_20260805.tex"
 NEW = PAPER / "main.tex"
 BLUE_OUT = PAPER / "article_v1_0_blue_changes.tex"
 RED_BLUE_OUT = PAPER / "article_v1_0_red_blue_changes.tex"
