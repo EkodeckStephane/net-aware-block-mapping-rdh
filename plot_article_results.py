@@ -5,6 +5,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -56,10 +59,62 @@ def finish(fig, name: str) -> None:
     plt.close(fig)
 
 
+def percentile_interval(values, statistic=np.mean, *, seed: int = 20260608):
+    data = np.asarray(values, dtype=float)
+    if data.size == 0:
+        return np.nan, np.nan, np.nan
+    rng = np.random.default_rng(seed + data.size)
+    estimates = [
+        statistic(data[rng.integers(0, data.size, size=data.size)])
+        for _ in range(4000)
+    ]
+    point = float(statistic(data))
+    low, high = np.percentile(estimates, [2.5, 97.5])
+    return point, float(low), float(high)
+
+
+def matched_rows(report, method: str):
+    rows = report["images"]
+    methods = sorted({row["method"] for row in rows})
+    available = {
+        current: {
+            row["image"]: row
+            for row in rows
+            if row["method"] == current and row["available"]
+        }
+        for current in methods
+    }
+    common = set.intersection(*(set(items) for items in available.values()))
+    return [available[method][name] for name in sorted(common)]
+
+
+def figure_statistics(reports):
+    stats = {}
+    for report in reports:
+        payload = int(report["payload_bits"])
+        for method in METHODS:
+            selected = matched_rows(report, method)
+            net_values = [row["net_payload_bits"] for row in selected]
+            drd_values = [row["drd"] for row in selected]
+            stats[(payload, method, "net")] = percentile_interval(
+                net_values,
+                np.mean,
+                seed=20260608 + payload,
+            )
+            stats[(payload, method, "drd")] = percentile_interval(
+                drd_values,
+                np.median,
+                seed=20260618 + payload,
+            )
+    return stats
+
+
 def main() -> None:
     IMAGES.mkdir(exist_ok=True)
     analysis = load("analysis.json")
     curves = analysis["curves"]
+    reports = [load(f"sota_{payload}.json") for payload in (64, 128, 256, 512)]
+    stats = figure_statistics(reports)
 
     fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.1))
     for method in METHODS:
@@ -68,24 +123,32 @@ def main() -> None:
             key=lambda row: row["payload_bits"],
         )
         x = [row["payload_bits"] for row in rows]
+        net_points = [stats[(payload, method, "net")][0] for payload in x]
+        net_low = [stats[(payload, method, "net")][1] for payload in x]
+        net_high = [stats[(payload, method, "net")][2] for payload in x]
+        drd_points = [stats[(payload, method, "drd")][0] for payload in x]
+        drd_low = [stats[(payload, method, "drd")][1] for payload in x]
+        drd_high = [stats[(payload, method, "drd")][2] for payload in x]
         axes[0].plot(
             x,
-            [row["mean_net_payload_bits"] for row in rows],
+            net_points,
             marker=MARKERS[method],
             linestyle=LINESTYLES[method],
             linewidth=2,
             color=COLORS[method],
             label=LABELS[method],
         )
+        axes[0].fill_between(x, net_low, net_high, color=COLORS[method], alpha=0.12)
         axes[1].plot(
             x,
-            [row["median_drd"] for row in rows],
+            drd_points,
             marker=MARKERS[method],
             linestyle=LINESTYLES[method],
             linewidth=2,
             color=COLORS[method],
             label=LABELS[method],
         )
+        axes[1].fill_between(x, drd_low, drd_high, color=COLORS[method], alpha=0.12)
     axes[0].axhline(0, color="black", linewidth=0.8)
     axes[0].set_ylabel("Mean net payload (bits)")
     axes[1].set_ylabel("Median DRD")
@@ -96,7 +159,6 @@ def main() -> None:
     axes[0].legend(fontsize=8)
     finish(fig, "Figure_5")
 
-    reports = [load(f"sota_{payload}.json") for payload in (64, 128, 256, 512)]
     fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.2))
     ax = axes[0]
     x = np.arange(4)
@@ -129,14 +191,30 @@ def main() -> None:
             [row for row in curves if row["method"] == method],
             key=lambda row: row["payload_bits"],
         )
+        payloads = [row["payload_bits"] for row in rows]
+        net_points = [stats[(payload, method, "net")][0] for payload in payloads]
+        net_low = [stats[(payload, method, "net")][1] for payload in payloads]
+        net_high = [stats[(payload, method, "net")][2] for payload in payloads]
         ax.plot(
             [row["median_drd"] for row in rows],
-            [row["mean_net_payload_bits"] for row in rows],
+            net_points,
             marker=MARKERS[method],
             linestyle=LINESTYLES[method],
             linewidth=2,
             color=COLORS[method],
             label=LABELS[method],
+        )
+        ax.errorbar(
+            [row["median_drd"] for row in rows],
+            net_points,
+            yerr=[
+                np.asarray(net_points) - np.asarray(net_low),
+                np.asarray(net_high) - np.asarray(net_points),
+            ],
+            fmt="none",
+            ecolor=COLORS[method],
+            alpha=0.35,
+            capsize=2,
         )
         for row in rows:
             ax.annotate(

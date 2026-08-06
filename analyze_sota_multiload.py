@@ -9,7 +9,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
-from scipy.stats import wilcoxon
+from scipy.stats import rankdata, wilcoxon
 from skimage.filters import threshold_otsu
 
 
@@ -30,6 +30,37 @@ def _holm(p_values: list[float]) -> list[float]:
         running = max(running, value)
         adjusted[index] = running
     return adjusted.tolist()
+
+
+def _rank_biserial(delta: np.ndarray) -> float:
+    nonzero = np.asarray(delta, dtype=float)
+    nonzero = nonzero[nonzero != 0]
+    if nonzero.size == 0:
+        return 0.0
+    ranks = rankdata(np.abs(nonzero))
+    positive = float(np.sum(ranks[nonzero > 0]))
+    negative = float(np.sum(ranks[nonzero < 0]))
+    total = float(nonzero.size * (nonzero.size + 1) / 2)
+    return (positive - negative) / total
+
+
+def _bootstrap_mean_interval(
+    values: list[float],
+    *,
+    seed: int,
+    resamples: int = 10000,
+) -> dict[str, float]:
+    data = np.asarray(values, dtype=float)
+    if data.size == 0:
+        return {"mean": float("nan"), "ci_low": float("nan"), "ci_high": float("nan")}
+    rng = np.random.default_rng(seed)
+    sampled = rng.choice(data, size=(resamples, data.size), replace=True)
+    means = sampled.mean(axis=1)
+    return {
+        "mean": float(data.mean()),
+        "ci_low": float(np.percentile(means, 2.5)),
+        "ci_high": float(np.percentile(means, 97.5)),
+    }
 
 
 def suitability(path: Path, threshold: int = 128) -> dict[str, float | bool]:
@@ -75,6 +106,23 @@ def analyze(
     curves = []
     paired_tests = []
     strata = []
+    fixed_candidates: set[str] | None = None
+
+    for report in reports:
+        rows = list(report["images"])
+        for method in METHODS:
+            available_names = {
+                str(row["image"])
+                for row in rows
+                if row["method"] == method and row["available"]
+            }
+            fixed_candidates = (
+                set(available_names)
+                if fixed_candidates is None
+                else fixed_candidates & available_names
+            )
+    fixed_names = sorted(fixed_candidates or set())
+    fixed_cohort = []
 
     for report in reports:
         payload = int(report["payload_bits"])
@@ -138,6 +186,7 @@ def analyze(
                         "metric": metric,
                         "paired_images": len(common),
                         "median_abm_minus_competitor": float(np.median(delta)),
+                        "rank_biserial_r": _rank_biserial(delta),
                         "wins": int(np.count_nonzero(delta > 0)),
                         "ties": int(np.count_nonzero(delta == 0)),
                         "wilcoxon_p": p_value,
@@ -146,6 +195,27 @@ def analyze(
         for item, adjusted in zip(payload_tests, _holm(raw_p)):
             item["holm_adjusted_p"] = adjusted
         paired_tests.extend(payload_tests)
+
+        if fixed_names:
+            for method_index, method in enumerate(METHODS):
+                selected = [available[method][name] for name in fixed_names]
+                interval = _bootstrap_mean_interval(
+                    [float(row["net_payload_bits"]) for row in selected],
+                    seed=20260608 + payload * 10 + method_index,
+                )
+                fixed_cohort.append(
+                    {
+                        "payload_bits": payload,
+                        "method": method,
+                        "cohort_images": len(selected),
+                        "mean_net_payload_bits": interval["mean"],
+                        "ci_low": interval["ci_low"],
+                        "ci_high": interval["ci_high"],
+                        "median_drd": float(
+                            np.median([float(row["drd"]) for row in selected])
+                        ),
+                    }
+                )
 
         for method in METHODS:
             method_rows = [
@@ -237,6 +307,7 @@ def analyze(
         "curves": curves,
         "areas": areas,
         "paired_wilcoxon_tests": paired_tests,
+        "fixed_cohort": fixed_cohort,
         "binarization_strata": strata,
     }
     with (output_dir / "analysis.json").open("w", encoding="utf-8") as handle:

@@ -1,0 +1,419 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlist[itemize]{leftmargin=1.6em,itemsep=0.25em,topsep=0.2em}
+
+\definecolor{commentgray}{RGB}{235,235,235}
+\definecolor{changeblue}{RGB}{0,0,180}
+
+\newtcolorbox{reviewercomment}{
+  enhanced,
+  breakable,
+  colback=commentgray,
+  colframe=commentgray,
+  boxrule=0pt,
+  arc=0pt,
+  left=5pt,
+  right=5pt,
+  top=5pt,
+  bottom=5pt,
+  before skip=10pt,
+  after skip=10pt,
+  fontupper=\itshape
+}
+
+\newcommand{\response}{\noindent\textbf{Response:} }
+\newcommand{\manuscriptchange}[1]{%
+  \par\noindent{\color{changeblue}\textbf{Manuscript change:} #1}\par
+}
+
+\begin{document}
+
+\begin{center}
+{\LARGE Response to Reviewers}\\[6pt]
+{\large Journal of Visual Communication and Image Representation --- Manuscript JVCI-26-1814}\\[6pt]
+{\large Net-Aware Learned Block Mapping for Reversible Data Hiding in Binary Images}\\[18pt]
+August 5, 2026
+\end{center}
+
+We thank the Senior Area Editor and the reviewers for their detailed assessment. The revision substantially refocuses the manuscript around a single defensible technical contribution: \emph{serialization-aware net-payload-driven activation of reversible PEAK/ZERO mappings}. We now state explicitly that net-capacity accounting, binary RDH, PEAK/ZERO block mapping, side information, and distortion-aware ranking are established concepts. The algorithmic distinction is that the exact serialized description cost required for deterministic recovery is used inside the active mapping-selection decision, rather than subtracted only after gross capacity has been maximized.
+
+The article is written as a self-contained version of the work. We removed references to a companion publication or earlier manuscript framing, corrected the bibliography, narrowed the claims, and added the requested ablations and limitations.
+
+\textbf{Overview of major changes.}
+
+\begin{itemize}
+  \item \textbf{Novelty refocused:} the core claim is serialization-aware PEAK/ZERO activation; net accounting itself is explicitly not claimed as new.
+  \item \textbf{Wire model clarified:} the revision adds encoder/decoder contracts and an executable auxiliary-stream table for ABM and baselines.
+  \item \textbf{Ablations added:} A0/A1/A2 activation, non-learning rankers, and CNN architecture diagnostics now isolate the useful contribution.
+  \item \textbf{Evaluation strengthened:} confidence intervals, runtime decomposition, sensitivity analysis, residual visuals, and channel stress are now reported.
+  \item \textbf{Scope narrowed:} high-payload detectability, small-corpus scope, and lossless-channel limits are explicitly stated; related work and references were corrected.
+\end{itemize}
+
+\section*{Response to the Senior Area Editor}
+
+\begin{reviewercomment}
+The authors are suggested to revise the manuscript according to the reviewer comments point by point carefully, especially clarifying the contributions and technique details, justifying the scheme designing and strengthening the experiment analysis.
+\end{reviewercomment}
+
+\response We agree. The revised manuscript is reorganized so that the proposed scheme is no longer presented as a collection of separate novelty claims. Instead, the core mechanism is serialization-aware activation of reversible PEAK/ZERO mappings. We added the missing technical contract for the auxiliary stream, the exact wire representation, the central activation ablation, non-learning ranker baselines, CNN architecture diagnostics, sensitivity analysis, runtime decomposition, visual residuals, and channel stress tests.
+
+\manuscriptchange{The main revisions appear in the Abstract, the Introduction through Conclusion, the wire-model table, the activation-ablation table, the ranker-ablation table, the CNN-architecture table, the module-runtime table, the channel-stress table, and the multi-payload, protocol-overview, steganalysis, and visual-comparison figures.}
+
+\section*{Response to Reviewer \#1}
+
+\begin{reviewercomment}
+1. The core mechanism is conventional $3\times3$ binary PEAK/ZERO block mapping; candidate ranking and auxiliary-bit accounting do not by themselves constitute a fundamentally new RDH mechanism.
+\end{reviewercomment}
+
+\response We agree with the premise and revised the novelty claim accordingly. The manuscript now states that the reversible carrier family is established and deterministic. The contribution is not a new invertible primitive; it is the selection rule that activates only those reversible mappings whose exact serialized recovery cost still improves useful payload.
+
+\manuscriptchange{The Abstract, Introduction, Related Work, and Discussion now use the phrase ``serialization-aware net-payload-driven activation'' and avoid presenting block mapping, RDH, or net accounting as new by themselves.}
+
+\begin{reviewercomment}
+2. Auxiliary information must be counted in RDH. Subtracting synchronization overhead should be treated as necessary evaluation practice, not as the main contribution.
+\end{reviewercomment}
+
+\response We agree. The manuscript now explicitly says that net-capacity accounting itself is not introduced by this work. The distinction is that the exact serialized cost of the reversible mapping participates in deciding which PEAK/ZERO tables remain active.
+
+\manuscriptchange{The Introduction and proposed-method section now separate established net-capacity accounting from the proposed serialization-aware mapping-selection mechanism.}
+
+\begin{reviewercomment}
+3. The CNN ranking gives a limited DRD reduction and does not justify making learned block mapping the main emphasis.
+\end{reviewercomment}
+
+\response We agree that the CNN should not carry the main novelty claim. The revised manuscript treats it as a learned distortion ranker supporting the reversible mechanism. The central novelty claim is moved to serialization-aware activation. The CNN results are retained only as a secondary ablation.
+
+\manuscriptchange{The Abstract, contribution list, and Conclusion now identify the CNN as a secondary learned candidate-cost ranker rather than the core reversible mechanism.}
+
+\begin{reviewercomment}
+4. Compare the CNN against simpler non-learning rankers such as direct DRD-cost, transition-preserving, or connectivity-aware costs.
+\end{reviewercomment}
+
+\response We agree. We added a ranker ablation using identical distance-one candidates and a common payload/serialization protocol. The CNN remains close to direct DRD-cost ranking and improves over Hamming-index and simple transition/connectivity heuristics, but the table also confirms that the learning component is not the source of the net-payload gain.
+
+\manuscriptchange{The ``Candidate Ranking and CNN Architecture'' subsection and the ranker-ablation table report the Hamming, direct DRD, transition-preserving, connectivity-aware, and CNN rankers.}
+
+\begin{reviewercomment}
+5. The CNN only orders candidate ZERO patterns; it does not learn an end-to-end reversible process.
+\end{reviewercomment}
+
+\response We agree and now state this explicitly. The deployed codec remains a deterministic distance-one PEAK/ZERO reversible substitution system. The CNN supplies an ordering over admissible substitutions; invertibility is provided by the explicit mapping and wire representation.
+
+\manuscriptchange{The proposed-method section now states that the CNN is not an end-to-end reversible encoder and does not replace the deterministic mapping.}
+
+\begin{reviewercomment}
+6. Gaussian-process exploration and the Random Forest uniform-block layer are diagnostic, not deployed components.
+\end{reviewercomment}
+
+\response We agree. Those parts have been condensed and relabelled as diagnostic ablations. The deployed codec is defined by distance-one PEAK/ZERO substitution, serialized-net activation, enumerative auxiliary coding, and optional CNN ranking.
+
+\manuscriptchange{The Introduction and Section ``Learned Ranking, Ablations, and Wire Accounting'' now identify Gaussian-process and Random Forest analyses as diagnostic only.}
+
+\begin{reviewercomment}
+7. ABM has negative mean net payload at 64 and 128 bits, which limits practical robustness.
+\end{reviewercomment}
+
+\response We agree. The revised manuscript makes the operating envelope explicit: the proposed representation is not recommended for very small payload targets when the fixed synchronization cost dominates. The low-payload limitation is reported in the Abstract, multi-payload discussion, and Conclusion.
+
+\manuscriptchange{Sections ``Multi-Payload Common-Protocol Results'' and ``Positioning Across Practical Objectives'' now state that ABM is capacity-oriented and becomes useful after the auxiliary cost is amortized.}
+
+\begin{reviewercomment}
+8. Logistic detector AUC values become high at 256 and 512 bits, limiting security relevance.
+\end{reviewercomment}
+
+\response We agree. We no longer present the method as secure steganography at those payloads. The revised text states that the validated operating region is capacity-oriented reversible annotation over a lossless channel, not covert communication at high payload. We also added a quantitative detectability-cause analysis using block-histogram Jensen--Shannon displacement and horizontal/vertical transition changes.
+
+\manuscriptchange{The Abstract, Grouped Steganalysis subsection, Discussion, and Conclusion now explicitly report this limitation and analyze why detectability rises.}
+
+\begin{reviewercomment}
+9. The auxiliary stream is ambiguous: embedded in the stego image, transmitted through a side channel, or stored externally.
+\end{reviewercomment}
+
+\response We agree. The revised manuscript now defines the codec contract as $(I,M)\mapsto(I',A_{\rm wire})$ and $(I',A_{\rm wire})\mapsto(I,M)$. The auxiliary stream is serialized side information stored or transmitted alongside the marked image; it is not hidden in the marked pixels in the evaluated implementation.
+
+\manuscriptchange{The ``Overview and Design Rationale'' subsection adds the encoder/decoder contract, and the wire-model table gives the exact charged fields.}
+
+\section*{Response to Reviewer \#2}
+
+\begin{reviewercomment}
+1. Clarify which components are essential and which are diagnostic.
+\end{reviewercomment}
+
+\response We agree. The revised contribution hierarchy is: essential mechanism, serialization-aware PEAK/ZERO activation; executable realization, enumerative wire representation; secondary distortion module, CNN ranking; diagnostics, Gaussian-process exploration and Random Forest uniform-block analysis; evaluation contribution, common executable protocol.
+
+\manuscriptchange{The contribution list in the Introduction and the method overview now separate deployed components from diagnostics.}
+
+\begin{reviewercomment}
+2. The CNN improvement is limited; justify its necessity.
+\end{reviewercomment}
+
+\response We agree that the CNN should be justified as useful but not necessary for reversibility or net payload. The new ranker ablation shows that CNN ranking is a distortion-ranking component, not the source of the principal net-payload gain. The proposed codec remains executable with non-learning rankers.
+
+\manuscriptchange{The ranker-ablation and CNN-architecture tables now quantify CNN utility and architecture sensitivity.}
+
+\begin{reviewercomment}
+3. Baseline net-payload comparison may depend on authors' serialization choices.
+\end{reviewercomment}
+
+\response We agree and have made this limitation explicit. The revised wire-model table states which parts are specified in the cited papers and which executable representations were introduced for the common protocol. We also added a fixed-header serialization-sensitivity analysis that credits baselines with 104 auxiliary bits while retaining payload-critical maps, states, locations, and payload length. The conclusion is limited to this tested fixed-header variation.
+
+\manuscriptchange{The wire-model table, the ``Serialization Sensitivity for Baselines'' subsection, and the Discussion now state this limitation directly.}
+
+\begin{reviewercomment}
+4. The method has a clear detectability problem at higher payloads.
+\end{reviewercomment}
+
+\response We agree. The method is now scoped as reversible annotation over lossless channels. The abstract and conclusion explicitly state that it is not suitable for covert communication at high payload under the tested detector.
+
+\manuscriptchange{The Abstract, Section ``Grouped Steganalysis,'' and Conclusion were revised to narrow the security claim.}
+
+\begin{reviewercomment}
+5. The learning-assisted method is trained on eight document images and transferred to BOSSbase; more generalization detail is needed.
+\end{reviewercomment}
+
+\response We agree. The revised text describes the image-wise leave-one-source-out validation and the disjoint thresholded BOSSbase frozen transfer. We also make clear that BOSSbase is a transfer stress test and does not replace a larger real binary-document corpus.
+
+\manuscriptchange{Sections ``Datasets, Splits, and Reproducibility,'' ``Machine-Learning Validation,'' and ``Experimental Scope'' now describe the split and its limitation.}
+
+\section*{Response to Reviewer \#3}
+
+\begin{reviewercomment}
+1. Provide more contribution detail in the abstract, not only many results.
+\end{reviewercomment}
+
+\response We agree. The abstract was rewritten to foreground the mechanism: serialization-aware activation, exact wire representation, CNN as ranker, common protocol, and operating limitation. It now contains fewer isolated performance numbers.
+
+\manuscriptchange{The Abstract was replaced and aligned with the revised contribution hierarchy.}
+
+\begin{reviewercomment}
+2. Steganalysis is usually for steganography rather than RDH; reorganize or remove those sections.
+\end{reviewercomment}
+
+\response We agree that steganalysis should not dominate an RDH paper. We retained a shorter detector analysis because the reviewers specifically raised detectability as an operating limitation, but we moved its interpretation to scope and limitations rather than treating it as a deployed security module.
+
+\manuscriptchange{The steganalysis material is presented as detectability/scope evaluation in Section ``Grouped Steganalysis'' and the Discussion.}
+
+\begin{reviewercomment}
+3--4. Add visual quality and visualization comparisons including cover, marked image, and residual maps for all methods.
+\end{reviewercomment}
+
+\response We agree. We added a visual comparison figure showing matched crop-level cover, stego/marked images, and residual maps for ABM, Dong, Huynh--Nguyen, and PPOCP under the same payload.
+
+\manuscriptchange{The visual-comparison figure adds the requested cover/stego/residual visualization.}
+
+\section*{Response to Reviewer \#4}
+
+\begin{reviewercomment}
+1. Provide computational cost analysis by module, not only overall runtime.
+\end{reviewercomment}
+
+\response We agree. The revised manuscript includes a module-level runtime decomposition for candidate generation/ranking, prefix optimization, embedding, serialization, extraction, and verification.
+
+\manuscriptchange{The ABM module-runtime table reports the runtime decomposition.}
+
+\begin{reviewercomment}
+2. Discuss payload size, auxiliary length, and mapping parameters through sensitivity analysis.
+\end{reviewercomment}
+
+\response We agree. We added payload/auxiliary sensitivity analysis, including how net payload, DRD, histogram displacement, transition changes, and changed pixels evolve with payload fraction. We also added serialization sensitivity for baselines.
+
+\manuscriptchange{Sections ``Serialization Sensitivity for Baselines'' and ``Multi-Payload Common-Protocol Results'' now discuss parameter influence and operating envelope.}
+
+\begin{reviewercomment}
+3. Define parameters such as $\mathrm{HT}_i=\mu_i+\alpha\sigma_i$ when first introduced.
+\end{reviewercomment}
+
+\response We agree. The adaptive threshold equation now defines $\mu_i$, $\sigma_i$, $\alpha$, and the resulting candidate set immediately where the notation appears.
+
+\manuscriptchange{The adaptive-threshold and adaptive-candidate-set equations now define the threshold and candidate set explicitly.}
+
+\begin{reviewercomment}
+4. Add more analysis of why methods differ in net capacity and distortion.
+\end{reviewercomment}
+
+\response We agree. The revised Discussion decomposes the observed differences into reversible mapping capacity, serialized synchronization cost, distortion ranking, and detectability footprint. The new central ablation isolates the net-payload effect of activation itself.
+
+\manuscriptchange{The Discussion and the activation-ablation table now provide this decomposition.}
+
+\section*{Response to Reviewer \#5}
+
+\begin{reviewercomment}
+1. Justify the selected CNN architecture with ablations over depth, width/window, MAE, and inference or training cost.
+\end{reviewercomment}
+
+\response We agree. We added a compact architecture diagnostic comparing shallow, current, deeper, different-window, and different-width variants under the same 20-epoch protocol, optimizer, learning rate, batch size, loss, split, and seed policy. The table now includes validation MAE, Pearson correlation, held-out placement DRD, training time, and inference time per candidate. The wider two-layer 9-by-9 model gives the lowest MAE, while the deployed two-layer 9-by-9 configuration remains a lighter compromise with close MAE, lower inference cost, and comparable placement DRD.
+
+\manuscriptchange{The CNN-architecture table now reports depth, window-size, and width diagnostics with inference timing.}
+
+\begin{reviewercomment}
+2. The Random Forest uniform-block layer is mathematically non-viable in net payload and distracts from the method.
+\end{reviewercomment}
+
+\response We agree. The revised manuscript removes it from the core method and keeps it only as a diagnostic example showing why gross-capacity additions can be invalidated by coordinate overhead.
+
+\manuscriptchange{The Random Forest material is condensed and labelled as a diagnostic ablation in the proposed-method section.}
+
+\begin{reviewercomment}
+3. High-payload AUC is severe; either implement a security-aware ranker or establish a quantified payload threshold.
+\end{reviewercomment}
+
+\response We agree. We did not add a new security-aware ranker because that would introduce a new method beyond the revised scope. Instead, the manuscript now gives a strict scope statement: the present implementation is capacity-oriented over a lossless channel and not recommended for covert communication at high payload. The security-aware ranker is retained only as a future optimization direction.
+
+\manuscriptchange{The Abstract and Conclusion now include the high-payload detectability limitation, and the security-aware ranker equation is presented as future work.}
+
+\begin{reviewercomment}
+4. Figures 5 and 6 should include statistical variance such as 95\% confidence intervals.
+\end{reviewercomment}
+
+\response We agree. The multi-payload and protocol-overview figures were regenerated with 95\% confidence information for the payload and distortion views.
+
+\manuscriptchange{The multi-payload and protocol-overview figures now include uncertainty information in the plotted comparisons.}
+
+\section*{Response to Reviewer \#6}
+
+\begin{reviewercomment}
+1. The abstract is overloaded with performance numbers and obscures the core innovation.
+\end{reviewercomment}
+
+\response We agree. The abstract now states the core mechanism first and reports only the minimum numbers needed to substantiate the central activation effect and operating limitation.
+
+\manuscriptchange{The Abstract was rewritten around serialization-aware activation and exact wire accounting.}
+
+\begin{reviewercomment}
+2. Related work is too long and tangential.
+\end{reviewercomment}
+
+\response We agree. The related work section has been shortened and reorganized around binary pattern/block substitution, distortion and coding, neighbouring domains, and the resulting research gap.
+
+\manuscriptchange{The Related Work section was rewritten and narrowed.}
+
+\begin{reviewercomment}
+3. Add more recent state-of-the-art comparisons.
+\end{reviewercomment}
+
+\response We expanded the literature positioning with additional relevant binary-cover and side-information-aware works. For the executable common-protocol comparison, we retained ABM, PPOCP, Dong, and Huynh--Nguyen because these are the methods for which a meaningful plaintext binary-image block/pattern RDH comparison could be implemented under matched messages and recovery accounting.
+
+\manuscriptchange{The comparative related-work table and the bibliography now include additional recent and conceptual prior art, while the common protocol explains why only executable direct comparators are included.}
+
+\begin{reviewercomment}
+4. The two-layer CNN lacks justification and comparison with deeper architectures.
+\end{reviewercomment}
+
+\response We agree. The new architecture diagnostic compares shallow, current, deeper, and window-size variants.
+
+\manuscriptchange{The CNN-architecture table adds this comparison.}
+
+\begin{reviewercomment}
+5. The lossless-channel assumption ignores JPEG compression and noise.
+\end{reviewercomment}
+
+\response We agree. We added a channel stress test. PNG and TIFF preserve message and cover exactly. JPEG recompression and one-pixel noise break exact extraction/restoration, confirming that the method requires a lossless carrier channel.
+
+\manuscriptchange{The channel-stress table and the Experimental Scope discussion now state the channel limitation.}
+
+\begin{reviewercomment}
+6. The keywords are too generic.
+\end{reviewercomment}
+
+\response We agree. The keywords were replaced with more specific terms.
+
+\manuscriptchange{The keyword list now includes binary-image reversible data hiding, PEAK/ZERO block mapping, serialization-aware mapping selection, auxiliary-information coding, and learned distortion ranking.}
+
+\section*{Response to Reviewer \#7}
+
+\begin{reviewercomment}
+1. The manuscript requires careful proofreading.
+\end{reviewercomment}
+
+\response We agree. We proofread the revised manuscript while rewriting the abstract, introduction, related work, method, experiments, discussion, and conclusion.
+
+\manuscriptchange{Language and flow were edited throughout the manuscript.}
+
+\begin{reviewercomment}
+2. Equations are not numbered.
+\end{reviewercomment}
+
+\response We agree. The displayed equations used for the method and discussion were converted to numbered equation environments.
+
+\manuscriptchange{The revised source contains numbered equations for the codec contract, block indexing, adaptive threshold, candidate set, net capacity, enumerative state, complexity, and security-aware future objective.}
+
+\begin{reviewercomment}
+3. Study the influence of parameters.
+\end{reviewercomment}
+
+\response We agree. Payload, auxiliary length, serialization credit, and mapping activation sensitivity are now reported explicitly.
+
+\manuscriptchange{The revised experiments add the activation ablation, serialization sensitivity, fixed-cohort analysis, and payload diagnostic discussion.}
+
+\begin{reviewercomment}
+4. Clarify the improvement of the proposed method in the experimental evaluation.
+\end{reviewercomment}
+
+\response We agree. The central ablation now shows the isolated effect: compared with the same active tables charged after selection, serialization-aware activation reduces mean auxiliary cost by 180 bits and raises mean net payload from 2139 to 2245 bits while preserving exact reversibility.
+
+\manuscriptchange{The activation-ablation table and the surrounding text isolate the improvement due to the proposed selection rule.}
+
+\begin{reviewercomment}
+5. Neural networks are widely used; refer to more state-of-the-art works and add discussion.
+\end{reviewercomment}
+
+\response We expanded the neural-network discussion where it is relevant to RDH ranking and steganalysis. We did not add unrelated neural-network references from different application domains solely for citation count, because they do not address binary-image RDH, reversible coding, side-information cost, or distortion ranking.
+
+\manuscriptchange{The Related Work section now includes learned RDH and steganalysis references relevant to this manuscript's learning component.}
+
+\section*{Response to Reviewer \#8}
+
+\begin{reviewercomment}
+1. Describe CNN design, 9-by-9 window rationale, loss function, partitioning, and LOSO validation in more detail.
+\end{reviewercomment}
+
+\response We agree. The revised method and experimental sections explain that the 9-by-9 support covers the DRD neighbourhood around a $3\times3$ replacement, describe the regression target and loss, and state the leave-one-source-out image split.
+
+\manuscriptchange{Sections ``Learned Ranking, Ablations, and Wire Accounting'' and ``Machine-Learning Validation'' now include these details.}
+
+\begin{reviewercomment}
+2. Distinguish contributions from Huynh--Nguyen and Dong, and provide component ablations.
+\end{reviewercomment}
+
+\response We agree. The manuscript now distinguishes direct prior art from the revised contribution. Huynh--Nguyen is identified as the closest direct $3\times3$ block-mapping comparator, and Dong is identified as prior art for side information and compression. The central distinction is the use of exact serialized mapping cost in the active mapping-selection decision. The component ablation verifies that this decision changes net payload independently of the ranker.
+
+\manuscriptchange{The Related Work section, ``Comparison with Conventional Block-Mapping'' subsection, and activation-ablation table now make this distinction explicit.}
+
+\begin{reviewercomment}
+3. Add targeted detectability analysis explaining why AUC increases.
+\end{reviewercomment}
+
+\response We agree. The revised manuscript reports histogram-displacement and transition-change diagnostics. These show that detectability rises with payload because block-histogram mass is shifted from PEAK patterns to ZERO patterns and local transitions increase with changed-pixel count.
+
+\manuscriptchange{Section ``Grouped Steganalysis'' and Section ``Security-Aware Optimization Direction'' now provide this quantitative explanation.}
+
+\begin{reviewercomment}
+4. Validation uses only eight document images and 100 thresholded BOSS images; more representative real-world binary images are not considered.
+\end{reviewercomment}
+
+\response We agree and now state this as a limitation. The revision keeps the eight canonical binary document images for direct comparison and the disjoint thresholded BOSSbase split as a frozen transfer/stress test. We explicitly avoid claiming that this replaces a larger real-world document corpus.
+
+\manuscriptchange{The Datasets subsection and Experimental Scope subsection now state the dataset limitation and the role of BOSSbase as transfer evidence only.}
+
+\section*{Closing Statement}
+
+We believe the revised manuscript now answers the central concerns raised across the reviews: it no longer relies on a broad ``net capacity is new'' claim; it defines the exact auxiliary-stream contract; it proves the core incremental value through a direct activation ablation; it separates deployed components from diagnostics; it adds simpler ranker and CNN architecture baselines; it narrows the security claim; and it documents the remaining dataset and channel limitations.
+
+\vspace{1.5cm}
+Sincerely,
+
+St\'ephane Ga\"el R. Ekodeck and co-authors
+
+\end{document}

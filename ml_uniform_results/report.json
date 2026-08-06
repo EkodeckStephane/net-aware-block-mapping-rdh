@@ -1,0 +1,46 @@
+{
+  "cross_validated_metrics": {
+    "roc_auc": 0.9952441405929506,
+    "precision": 0.8972003499562554,
+    "recall": 0.9701986754966887,
+    "position_accuracy": 0.9706717123935666,
+    "samples": 14798,
+    "safe_samples": 2114
+  },
+  "probability_threshold": 0.7,
+  "capacities": [
+    {
+      "image": "circuit-2",
+      "candidate_blocks": 133
+    },
+    {
+      "image": "formula-5",
+      "candidate_blocks": 379
+    },
+    {
+      "image": "graph1-5",
+      "candidate_blocks": 179
+    },
+    {
+      "image": "handwr2-8",
+      "candidate_blocks": 275
+    },
+    {
+      "image": "large-8",
+      "candidate_blocks": 72
+    },
+    {
+      "image": "symbol-6",
+      "candidate_blocks": 173
+    },
+    {
+      "image": "table1-3",
+      "candidate_blocks": 379
+    },
+    {
+      "image": "french-4",
+      "candidate_blocks": 622
+    }
+  ],
+  "mean_candidate_blocks": 276.5
+}

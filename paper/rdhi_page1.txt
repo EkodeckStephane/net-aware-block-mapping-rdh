@@ -1,0 +1,91 @@
+Net-Aware Learned Block Mapping for Reversible Data Hiding in
+Binary Images
+Stéphane Gaël R. Ekodecka,b,c,∗ , Vivien Beyala Kamgangd,e , Serge Alain Ebéléa,b,c and Julius
+Marcellin Nkenlifacke,d
+a Department of Computer Science, LIRIMA, TEAM GRIMCAPE, University of Yaoundé I, P.O. Box 812, Yaoundé, Cameroon
+b IRD, UMI 209 UMMISCO, IRD France Nord, Bondy, F-93143, France
+c Sorbonne Université, UMI 209 UMMISCO, Paris, F-75005, France
+d RTU Mathematics and Computer Science, The University of Bertoua, P.O. Box 416, Bertoua, Cameroon
+e RUFCEA (UR-IFIA), University of Dschang, P.O. Box 96, Dschang, Cameroon
+
+ARTICLE INFO
+
+ABSTRACT
+
+Keywords:
+Binary-image reversible data hiding
+PEAK/ZERO block mapping
+Serialization-aware mapping selection
+Auxiliary-information coding
+Learned distortion ranking
+
+This paper presents a reversible data hiding scheme for plaintext binary images under an explicit
+synchronization model. Its technical contribution is serialization-aware net-payload-driven activation
+of reversible PEAK/ZERO 3 × 3 mappings: the active mapping configuration is selected by useful
+payload after charging the exact serialized description required for deterministic recovery. The
+implementation represents the active PEAK subset by a combinatorial rank and the distance-one
+flip positions by base-9 digits; a convolutional neural network (CNN) supplies the learned distortion
+ranking for admissible ZERO candidates. On eight 512 × 512 document images, this activation
+raises mean net payload from 2139 to 2245 bits relative to an otherwise identical wire-charged grossselection variant and preserves exact round-trip reversibility. In a common executable protocol on 100
+disjoint thresholded BOSSbase images, the proposed adaptive block-mapping method (ABM), Dong,
+Huynh–Nguyen, and the opposite-center-pair method (PPOCP) are compared with identical messages,
+payload targets, distance-reciprocal distortion (DRD) computation, auxiliary-bit accounting, and
+reversibility checks. The proposed method achieves the highest useful capacity among the evaluated
+implementations, while PPOCP retains the lowest-distortion and most favorable detectability profile.
+Logistic detector AUC reaches 0.900 and 0.957 at 256 and 512 bits, placing the validated operating
+region in capacity-oriented reversible annotation over a lossless channel with detectability-aware
+payload selection.
+
+1. Introduction
+The proliferation of digital archives has increased the
+need to associate authentication data, annotations, and integrity evidence with images while preserving the original content. Cryptography protects message content [1],
+whereas steganography conceals its presence [2]. Reversible
+data hiding (RDH) combines these objectives with exact
+cover restoration, a property that is especially valuable for
+medical, legal, and administrative binary documents.
+Binary images have two pixel states, so every modification can alter stroke continuity, topology, or local readability.
+Specialized RDH methods therefore rely on pattern statistics,
+overlapping neighborhoods, or reversible block substitutions
+rather than direct grayscale-domain operations [3–13]. Their
+practical performance depends on three coupled quantities:
+visual distortion, the side information required for exact
+synchronization, and the statistical footprint visible to a
+steganalyst.
+Existing methods occupy complementary parts of the
+capacity–distortion space. Magnification-based embedding
+∗ Corresponding author
+
+stephane-gael.ekodeck@facsciences-uy1.cm (S.G.R. Ekodeck);
+vivsxx@univ-bertoua.cm (V.B. Kamgang);
+serge-alain.ebele@facsciences-uy1.cm (S.A. Ebélé);
+marcellin.nkenlifack@gmail.com (J.M. Nkenlifack)
+ORCID (s): 0000-0002-8094-8832 (S.G.R. Ekodeck);
+0000-0002-3644-1866 (V.B. Kamgang); 0000-0001-7036-7068 (S.A. Ebélé);
+0000-0003-3322-4687 (J.M. Nkenlifack)
+
+Ekodeck et al.: Preprint submitted to Elsevier
+
+provides low distortion by increasing image size [8]; PPOCP
+uses overlapping opposite-center pairs for perceptually selective changes [9]; Huynh–Nguyen exploit the combinatorial
+capacity of 3 × 3 block mapping [4]; and Dong et al. adapt
+overlapping patterns to image statistics [7]. These contributions motivate a unified evaluation in which useful payload
+is measured after serialized metadata and all methods use the
+same messages, cover images, and distortion metric.
+This work builds on established net-capacity accounting. The distinguishing algorithmic decision is that the
+exact serialized description cost of the reversible mapping
+configuration participates in deciding which PEAK/ZERO
+tables remain active. A convolutional neural network ranks
+distance-one ZERO candidates by predicted perceptual cost,
+while the reversible mechanism remains a deterministic
+PEAK/ZERO substitution with an enumerative auxiliary
+stream. Gaussian-process threshold exploration and the
+Random Forest uniform-block agent are reported as diagnostic ablations; the deployed distance-one codec consists
+of the deterministic PEAK/ZERO mapping, CNN ranking,
+serialization-aware activation, and enumerative auxiliary
+stream.
+The main scientific contributions of this paper are:
+1. Serialization-aware net-payload-driven activation of
+reversible PEAK/ZERO mappings, where active tables are selected by useful payload after the exact
+Page 1 of 17
+
+

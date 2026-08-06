@@ -1,0 +1,27 @@
+{
+  "image": "table1-3",
+  "payload_bits": 512,
+  "crop": "rows 0:120, cols 0:140",
+  "rows": [
+    {
+      "method": "ABM",
+      "drd": 0.10464689566825534
+    },
+    {
+      "method": "Dong",
+      "drd": 0.11531277946935223,
+      "parameter": "l=5"
+    },
+    {
+      "method": "Huynh-Nguyen",
+      "drd": 0.07567888503696266,
+      "parameter": "T=5"
+    },
+    {
+      "method": "PPOCP",
+      "drd": 0.06167462896476074,
+      "parameter": ""
+    }
+  ],
+  "figure_pdf": "paper\\images\\Figure_10.pdf"
+}

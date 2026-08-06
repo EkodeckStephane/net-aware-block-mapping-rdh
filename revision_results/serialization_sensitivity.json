@@ -1,0 +1,171 @@
+{
+  "protocol": "Header-credit sensitivity: for baselines whose papers leave container fields open, remove a 104-bit executable-container charge (magic/version/image-shape fields) while keeping payload-critical maps/states unchanged. Availability and DRD are unchanged.",
+  "rows": [
+    {
+      "payload_bits": 64,
+      "method": "ABM-enumerative",
+      "matched_images": 86,
+      "mean_net_payload_bits": -57.02325581395349,
+      "median_net_payload_bits": -48.0,
+      "median_drd": 0.04098171527836379,
+      "baseline_header_credit_bits": 0,
+      "mean_net_payload_bits_after_credit": -57.02325581395349
+    },
+    {
+      "payload_bits": 64,
+      "method": "Dong-adaptive-conservative",
+      "matched_images": 86,
+      "mean_net_payload_bits": -224.09302325581396,
+      "median_net_payload_bits": -224.0,
+      "median_drd": 0.055857662193737896,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -120.09302325581396
+    },
+    {
+      "payload_bits": 64,
+      "method": "Huynh-Nguyen-T5",
+      "matched_images": 86,
+      "mean_net_payload_bits": -2200.0,
+      "median_net_payload_bits": -1840.0,
+      "median_drd": 0.035471296854491116,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -2096.0
+    },
+    {
+      "payload_bits": 64,
+      "method": "PPOCP-conservative",
+      "matched_images": 86,
+      "mean_net_payload_bits": -997.3953488372093,
+      "median_net_payload_bits": -1016.0,
+      "median_drd": 0.022833662457477324,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -893.3953488372093
+    },
+    {
+      "payload_bits": 128,
+      "method": "ABM-enumerative",
+      "matched_images": 83,
+      "mean_net_payload_bits": -7.132530120481928,
+      "median_net_payload_bits": 8.0,
+      "median_drd": 0.07952982115934247,
+      "baseline_header_credit_bits": 0,
+      "mean_net_payload_bits_after_credit": -7.132530120481928
+    },
+    {
+      "payload_bits": 128,
+      "method": "Dong-adaptive-conservative",
+      "matched_images": 83,
+      "mean_net_payload_bits": -176.0,
+      "median_net_payload_bits": -168.0,
+      "median_drd": 0.10824702047823812,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -72.0
+    },
+    {
+      "payload_bits": 128,
+      "method": "Huynh-Nguyen-T5",
+      "matched_images": 83,
+      "mean_net_payload_bits": -2096.1927710843374,
+      "median_net_payload_bits": -1760.0,
+      "median_drd": 0.06995770184605592,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -1992.1927710843374
+    },
+    {
+      "payload_bits": 128,
+      "method": "PPOCP-conservative",
+      "matched_images": 83,
+      "mean_net_payload_bits": -1652.5301204819277,
+      "median_net_payload_bits": -1688.0,
+      "median_drd": 0.04076341760713616,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -1548.5301204819277
+    },
+    {
+      "payload_bits": 256,
+      "method": "ABM-enumerative",
+      "matched_images": 69,
+      "mean_net_payload_bits": 92.52173913043478,
+      "median_net_payload_bits": 112.0,
+      "median_drd": 0.13471987336865263,
+      "baseline_header_credit_bits": 0,
+      "mean_net_payload_bits_after_credit": 92.52173913043478
+    },
+    {
+      "payload_bits": 256,
+      "method": "Dong-adaptive-conservative",
+      "matched_images": 69,
+      "mean_net_payload_bits": -81.3913043478261,
+      "median_net_payload_bits": -56.0,
+      "median_drd": 0.1998369479608421,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": 22.608695652173907
+    },
+    {
+      "payload_bits": 256,
+      "method": "Huynh-Nguyen-T5",
+      "matched_images": 69,
+      "mean_net_payload_bits": -1811.5942028985507,
+      "median_net_payload_bits": -1624.0,
+      "median_drd": 0.11654100996619235,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -1707.5942028985507
+    },
+    {
+      "payload_bits": 256,
+      "method": "PPOCP-conservative",
+      "matched_images": 69,
+      "mean_net_payload_bits": -2855.768115942029,
+      "median_net_payload_bits": -2992.0,
+      "median_drd": 0.0641180158593806,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -2751.768115942029
+    },
+    {
+      "payload_bits": 512,
+      "method": "ABM-enumerative",
+      "matched_images": 46,
+      "mean_net_payload_bits": 309.04347826086956,
+      "median_net_payload_bits": 328.0,
+      "median_drd": 0.1760271013582532,
+      "baseline_header_credit_bits": 0,
+      "mean_net_payload_bits_after_credit": 309.04347826086956
+    },
+    {
+      "payload_bits": 512,
+      "method": "Dong-adaptive-conservative",
+      "matched_images": 46,
+      "mean_net_payload_bits": 95.82608695652173,
+      "median_net_payload_bits": 120.0,
+      "median_drd": 0.33221402139606804,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": 199.82608695652175
+    },
+    {
+      "payload_bits": 512,
+      "method": "Huynh-Nguyen-T5",
+      "matched_images": 46,
+      "mean_net_payload_bits": -1190.608695652174,
+      "median_net_payload_bits": -1344.0,
+      "median_drd": 0.17805961082083505,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -1086.608695652174
+    },
+    {
+      "payload_bits": 512,
+      "method": "PPOCP-conservative",
+      "matched_images": 46,
+      "mean_net_payload_bits": -4821.739130434783,
+      "median_net_payload_bits": -4880.0,
+      "median_drd": 0.09706123619186949,
+      "baseline_header_credit_bits": 104,
+      "mean_net_payload_bits_after_credit": -4717.739130434783
+    }
+  ],
+  "best_after_credit_by_payload": {
+    "64": "ABM-enumerative",
+    "128": "ABM-enumerative",
+    "256": "ABM-enumerative",
+    "512": "ABM-enumerative"
+  }
+}
