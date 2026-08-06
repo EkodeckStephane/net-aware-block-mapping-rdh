@@ -112,9 +112,9 @@
 \begin{abstract}
 This paper presents a reversible data hiding scheme for plaintext binary
 images under an explicit synchronization model. Its technical contribution is
-serialization-aware net-payload-driven activation of reversible PEAK/ZERO
-$3\times3$ mappings: the active mapping configuration is selected by useful
-payload after charging the exact serialized description required for
+serialization-aware net-capacity-driven activation of reversible PEAK/ZERO
+$3\times3$ mappings: the active mapping configuration is selected by usable
+mapping capacity after charging the exact serialized description required for
 deterministic recovery. The implementation represents the active
 PEAK subset by a combinatorial rank and the distance-one flip positions by
 base-9 digits; a convolutional neural network (CNN) supplies the learned
@@ -200,8 +200,8 @@ CNN ranking, serialization-aware activation, and enumerative auxiliary stream.
 The main scientific contributions of this paper are:
 \begin{enumerate}
 \RevisionAddBegin
-    \item Serialization-aware net-payload-driven activation of reversible
-    PEAK/ZERO mappings, where active tables are selected by useful payload
+    \item Serialization-aware net-capacity-driven activation of reversible
+    PEAK/ZERO mappings, where active tables are selected by usable mapping capacity
     after the exact serialized description cost required for deterministic
     recovery.
     \item An executable enumerative wire representation for the active PEAK
@@ -330,7 +330,7 @@ statistically separable from covers.
 Table~\ref{tab:modern_comparison} consolidates the direct and conceptual
 neighbors. The relevant gap is an executable plaintext binary-image PEAK/ZERO
 method in which the active reversible mapping configuration is selected by
-useful payload after the exact serialized description cost needed for
+usable mapping capacity after the exact serialized description cost needed for
 deterministic recovery. Within the reviewed corpus, this study contributes the
 joint treatment of serialization-aware activation, an enumerative
 PEAK/flip-position wire representation, and a common executable comparison
@@ -359,7 +359,7 @@ Zhang et al. 2019 \cite{Zhang2019Magnification} & 369 & Open & 32.31 & 0.08 & Fi
 Chhajed \& Garg 2023 \cite{Chhajed2023BlockDiagonal} & $<$2000 & Open & $\sim$25 & $<$1 & Fixed & Reserved & Not extracted \\
 Yang 2023 \cite{Yang2023Large} & $>$2000 & Open & $\sim$23 & $<$1 & Partial & Reserved & Not extracted \\
 Huynh \& Nguyen 2025 \cite{Huynh2025BlockMapping} & 2070 & Open & 24.13 & 0.55 & Fixed & Reserved & Not extracted \\
-\textbf{Proposed} & \textbf{2874 gross} & \textbf{2245 net} & \textbf{per-image} & \textbf{0.76} & \textbf{Yes} & \textbf{Evaluated} & \textbf{Yes} \\
+\textbf{Proposed} & \textbf{2874 gross} & \textbf{2245 net} & \textbf{--} & \textbf{0.76} & \textbf{Yes} & \textbf{Evaluated} & \textbf{Yes} \\
 \bottomrule
 \end{tabular}
 }
@@ -370,7 +370,9 @@ $512\times512$ protocol. Values provide cross-protocol context because
 datasets, payload definitions, and side-information accounting differ.
 ``Steg. eval.'': whether a steganalysis result was extracted for this overview
 table; Section~\ref{subsec:steganalysis} reports the common-protocol detector
-evaluation.\par}
+evaluation. For the proposed method, DRD is the reported common-protocol
+distortion summary; per-image PSNR and changed-pixel outputs are included in
+the reproducibility artifacts.\par}
 \RevisionAddEnd
 \end{table*}
 
@@ -384,7 +386,7 @@ evaluation.\par}
 This section specifies the complete system evaluated in
 Section~\ref{sec:experimental}. The design uses the established
 $3\times3$ PEAK/ZERO block-mapping family, but the active mapping tables are
-chosen by useful payload after the exact serialized mapping description is
+chosen by usable mapping capacity after the exact serialized mapping description is
 charged. The encoder and decoder are therefore defined as the pair of maps
 \begin{equation}
 \mathrm{Enc}(I,M)\rightarrow(I',A_{\mathrm{wire}})
@@ -408,8 +410,10 @@ The evaluated system proceeds in four deterministic steps:
 \begin{itemize}
     \item learns a perceptual ordering of absent distance-one patterns;
     \item enforces a globally injective PEAK/ZERO assignment;
-    \item selects the frequency-ordered table prefix that maximizes net
-    capacity; and
+\RevisionAddBegin
+    \item selects the frequency-ordered table prefix that maximizes map-level
+    net capacity; and
+\RevisionAddEnd
     \item serializes the payload length, active PEAK subset, and flip positions
     with an enumerative codec.
 \end{itemize}
@@ -469,7 +473,7 @@ frequency and then by numerical index. The pattern space is divided into:
 
 The final active set $\mathcal{P}\subseteq\mathcal{P}_0$ is selected by the
 \RevisionAddBegin
-explicit net-capacity rule defined below.
+explicit map-level net-capacity rule defined below.
 \RevisionAddEnd
 
 \subsubsection*{Pattern distance analysis}
@@ -501,8 +505,8 @@ and
 where $\alpha$ controls the capacity--distortion trade-off.
 
 \RevisionAddBegin
-This formulation relies solely on empirical statistics and remains
-distribution-free with respect to the distance values.
+This formulation uses empirical distance statistics rather than a parametric
+model for the observed distance values.
 \RevisionAddEnd
 
 \subsubsection{Globally Injective Mapping Construction}
@@ -542,7 +546,8 @@ Each block is visited exactly once during both embedding and extraction.
 During embedding, frequent patterns are processed in descending order of occurrence.
 However, the spatial traversal order of blocks remains unchanged.
 \RevisionAddBegin
-Each block is modified at most once, and block decisions remain independent.
+Each block is modified at most once, and block decisions are spatially local
+once the mapping tables are fixed.
 \RevisionAddEnd
 
 \subsubsection*{Multi-pattern embedding strategy}
@@ -588,7 +593,7 @@ stego pattern.
 
 The final selection stage is the serialization-aware part of the method. After
 candidate assignments have been fixed, the encoder considers frequency-ordered
-prefixes of active mappings and selects the prefix that maximizes useful payload
+prefixes of active mappings and selects the prefix that maximizes usable mapping capacity
 after charging the exact serialized description of that prefix. The message bits
 are then embedded during one raster scan: a payload bit 0 leaves an active PEAK
 block unchanged, while a payload bit 1 replaces it by the assigned ZERO. The
@@ -615,7 +620,7 @@ giving the decoder an explicit stopping point.
 \node[process, right=of partition] (hist) {Histogram $H$\\PEAKs $H(d)\ge2$; absent ZEROs};
 \node[process, below=of hist] (rank) {For each PEAK, rank unassigned\\distance-one ZEROs with the CNN};
 \node[process, left=of rank] (inject) {Assign one ZERO per PEAK\\and enforce global disjointness};
-\node[process, left=of inject] (net) {Sort PEAKs by frequency\\select prefix maximizing\\$C_{\rm gross}-|A_{\rm wire}|_2$};
+\node[process, left=of inject] (net) {Sort PEAKs by frequency\\select prefix maximizing\\$C_{\rm net}^{\rm map}$};
 \node[data, below=of net] (message) {Payload $M$ and declared length $q$};
 \node[process, right=of message] (embed) {Raster scan: $0\mapsto P_i$\\$1\mapsto Z_i$};
 \node[data, right=of embed] (stego) {Stego image $I'$};
@@ -656,7 +661,10 @@ within a reversible-data-hiding synchronization model.}
     \EndIf
 \EndFor
 \State Select the frequency-ordered prefix $\mathcal T^\star$ maximizing
-$\sum_{P_i\in\mathcal T^\star}H(P_i)-|A_{\rm wire}(\mathcal T^\star)|_2$
+\RevisionAddBegin
+$C_{\rm net}^{\rm map}(\mathcal S)=
+\sum_{P_i\in\mathcal S}H(P_i)-|A_{\rm wire}(\mathcal S)|_2$
+\RevisionAddEnd
 \If{$q>\sum_{P_i\in\mathcal T^\star}H(P_i)$}
     \State reject the requested payload
 \EndIf
@@ -802,7 +810,12 @@ final tables use the independently specified distance-one policy. Optimizing
 $\alpha$ alone provides incomplete control of
 \RevisionAddEnd
 $\mathrm{DRD}<1$, motivating the constrained distance-one policy used by the
-integrated system. The exploratory search uses
+\RevisionAddBegin
+integrated system. The adaptive-threshold parameter $\alpha$ belongs to this
+unconstrained diagnostic; the deployed codec fixes the policy to Hamming
+distance one, and the final operating tables are governed by that fixed policy.
+The exploratory search uses
+\RevisionAddEnd
 $\alpha\in[0,1.5]$, initial points $\{0,0.5,1,1.5\}$, six EI iterations on a
 \RevisionAddBegin
 151-point grid, $\lambda=0.5$, exploration 0.01, and a Mat\'ern-$5/2$ kernel
@@ -896,9 +909,11 @@ coordinate stream outweighs the measured gross gain.
 
 \subsubsection*{Net-capacity accounting}
 
-Useful capacity subtracts the exact serialized side information:
+Gross mapping capacity is the number of embeddable symbols offered by the
+selected active tables before the requested application payload is truncated.
+The map-selection score subtracts the exact serialized side information:
 \begin{equation}
-C_{\mathrm{net}}=C_{\mathrm{gross}}-|A_{\mathrm{wire}}|_2.
+C_{\mathrm{net}}^{\mathrm{map}}=C_{\mathrm{gross}}-|A_{\mathrm{wire}}|_2.
 \label{eq:net-capacity}
 \end{equation}
 For distance-one mappings, the wire format ranks the sorted active-PEAK subset
@@ -907,8 +922,8 @@ in the combinatorial number system. The corresponding nine possible flip
 positions are then represented as base-9 digits. This representation closely
 matches the information content of the mapping set and is more compact than
 independent fixed-width pairs. Mapping pairs are ordered by occurrence count,
-and the net-maximizing prefix is retained. When every subset has nonpositive
-useful capacity, the encoder returns the unchanged image.
+and the highest-scoring prefix is retained. When the best score is at most
+zero, the encoder returns the unchanged image.
 \RevisionAddEnd
 
 For $t$ active PEAKs $0\le p_1<\cdots<p_t<512$, the subset rank is
@@ -989,7 +1004,7 @@ $3\times3$ PEAK/ZERO block-mapping comparator. The comparison therefore
 isolates one difference: the block representation, the PEAK/ZERO idea, and
 Hamming-distance control are established foundations, while the evaluated
 change is serialization-aware activation. The same reversible mapping family is
-retained when its exact encoded description leaves useful payload after
+retained when its exact encoded description leaves usable mapping capacity after
 Equation~\ref{eq:net-capacity}. On the eight document benchmarks, the proposed
 implementation provides 2874 gross bits and 2245 net bits on average after 629
 auxiliary bits are charged. Huynh--Nguyen report 2070 gross bits under their
@@ -1006,7 +1021,7 @@ guarantees of the deployed embedding and extraction algorithms. The analysis
 uses the finite 512-state $3\times3$ alphabet to show that histogram, mapping,
 and inverse-dictionary structures remain constant with respect to image size,
 while image traversal dominates runtime. The final propositions establish
-deterministic reversibility and block independence.
+deterministic reversibility and block non-interference.
 \RevisionAddEnd
 
 \paragraph{Notation.}
@@ -1108,15 +1123,19 @@ modified. Hence both the embedded message and original image are reconstructed
 exactly.
 \end{proof}
 
-\begin{proposition}[Independent Blocks]
-Embedding operations on distinct blocks are independent.
+\begin{proposition}[Non-interference of Distinct Blocks]
+Conditional on the fixed mapping tables, an embedding modification is confined
+to its current non-overlapping block and preserves the pixel state of every
+other block.
 \end{proposition}
 
 \begin{proof}
-Each block is processed independently using a pattern-specific mapping table.
 \RevisionAddBegin
-Each operation is confined to the current block and uses the block's own state.
-Therefore, embedding decisions are local and preserve inter-block independence.
+Each operation uses the pattern-specific table for the current block and writes
+only the nine pixels in that block. The raster order determines which payload
+symbol is consumed next, while the pixel update remains spatially confined to
+the current block. Distinct complete blocks are disjoint, so one block update
+leaves all other blocks unchanged.
 \RevisionAddEnd
 \end{proof}
 
@@ -1168,21 +1187,26 @@ byte-stream conventions.
 
 \subsection{Metrics and Statistical Protocol}
 
-Gross payload is the message length, auxiliary bits are the exact serialized
-wire length, and useful payload is
 \RevisionAddBegin
-$C_{\mathrm{net}}=C_{\mathrm{gross}}-C_{\mathrm{aux}}$, where
-$C_{\mathrm{aux}}=|A_{\mathrm{wire}}|_2$. Distortion is measured
-with changed pixels, PSNR, and DRD \cite{Lu2004DRD}. Availability is the fraction of
+The requested application payload is the message length $q=|M|$. Gross mapping
+capacity is $C_{\mathrm{gross}}$, auxiliary bits are the exact serialized wire
+length $C_{\mathrm{aux}}=|A_{\mathrm{wire}}|_2$, and delivered net payload is
+$P_{\mathrm{net}}=q-C_{\mathrm{aux}}$. The main text reports DRD
+\cite{Lu2004DRD} as the primary distortion metric; changed-pixel and PSNR
+outputs are retained in the reproducibility artifacts. Availability is the
+fraction of test images that carry the target and complete the exact round trip.
 \RevisionAddEnd
-test images that carry the target and complete the exact round trip.
 
 Primary per-payload comparisons use common available images. A secondary fixed
 cohort contains the 46 images on which all four methods are available at all
 four payloads. ABM is paired with each baseline for net bits and DRD using the
 Wilcoxon signed-rank test and Holm correction within each payload. Mean net
 payload is accompanied by a 95\% percentile bootstrap interval with 10,000
-image-level resamples and seed 20260608. Runtime includes embedding,
+\RevisionAddBegin
+image-level resamples and seed 20260608. Median DRD uses the analogous 95\%
+percentile bootstrap interval computed from the same image-level resamples.
+Runtime includes embedding,
+\RevisionAddEnd
 serialization, extraction, and verification. Memory is peak process RSS minus
 pre-call RSS, sampled every 2 ms. Experiments used Python 3.13.5, NumPy 2.2.6,
 PyTorch 2.8.0 CPU, scikit-learn 1.7.2, and SciPy 1.17.1 on 64-bit Windows with
@@ -1258,7 +1282,7 @@ Table~\ref{tab:cnn-architecture-ablation} gives the controlled CNN
 architecture diagnostic. All configurations use 20 epochs, AdamW with learning
 rate $10^{-3}$, Smooth-L1 loss, batch size 128, the same two-image
 train/validation split, and deterministic seeds. The deployed two-layer
-$9\times9$ model is retained as a compact compromise: it is close to the
+w16 $9\times9$ model is retained as a compact compromise: it is close to the
 lowest-MAE wider model, faster at inference, and keeps held-out placement DRD
 within the same practical range.
 
@@ -1280,7 +1304,7 @@ configurations share the reversible mapping and auxiliary stream.}
 3 conv., $9\times9$, w24 & 44073 & 27.80 & 38.21 & 0.0347 & 0.991 & 0.848 \\
 2 conv., $7\times7$, w24 & 38865 & 18.11 & 19.51 & 0.0383 & 0.989 & 0.845 \\
 2 conv., $11\times11$, w24 & 38865 & 27.77 & 56.13 & 0.0485 & 0.985 & 0.825 \\
-2 conv., $9\times9$, w16 & 23649 & 15.16 & 24.86 & 0.0379 & 0.990 & 0.839 \\
+2 conv., $9\times9$, w16 (deployed) & 23649 & 15.16 & 24.86 & 0.0379 & 0.990 & 0.839 \\
 2 conv., $9\times9$, w32 & 56385 & 27.27 & 40.62 & 0.0303 & 0.992 & 0.847 \\
 \bottomrule
 \end{tabular*}
@@ -1373,11 +1397,12 @@ transfer setting.
 \subsection{Multi-Payload Common-Protocol Results}
 
 Table~\ref{tab:multiload} and Figure~\ref{fig:multiload} summarize the
-all-method matched subsets. ABM moves from metadata-dominated operation at 64
-bits to a median-positive point at 128 bits and a clearly positive operating
 \RevisionAddBegin
-region at 256 and 512 bits. PPOCP defines the lowest-DRD curve, while ABM
-defines the highest-net curve.
+all-method matched subsets. ABM moves from metadata-dominated operation at
+64 bits to a near break-even 128-bit point: the payload-specific matched cohort
+has a $-7$-bit mean, while the fixed 46-image cohort has an 8-bit mean. It
+reaches positive mean net payload at 256 and 512 bits. PPOCP defines the
+lowest-DRD curve, while ABM defines the highest-net curve.
 \RevisionAddEnd
 
 \begin{table*}[t]
@@ -1436,8 +1461,10 @@ intervals; DRD is the cohort median.}
 \end{table*}
 
 Table~\ref{tab:fixed-cohort} preserves the ordering observed in the
-payload-specific matched analysis. It also removes changing-cohort composition
-as an explanation for the positive ABM net payload from 128 bits onward.
+\RevisionAddBegin
+payload-specific matched analysis. It also shows that ABM reaches a positive
+128-bit mean on the fixed cohort.
+\RevisionAddEnd
 
 \begin{figure*}[t]
 \centering
@@ -1553,9 +1580,12 @@ Serialization & 0.00015 \\
 Extraction & 0.1926 \\
 Round-trip verification & 0.00008 \\
 \midrule
-Total & 1.7857 \\
+End-to-end total & 1.7857 \\
 \bottomrule
 \end{tabular}
+\vspace{2pt}
+{\footnotesize\RaggedRight The end-to-end timer includes minor orchestration
+overhead outside the module timers.\par}
 \end{table}
 
 \begin{figure*}[t]
@@ -1691,12 +1721,13 @@ detector AUC. This extension builds directly on the validated ranker and
 preserves the exact reversible wire format.
 
 \RevisionAddBegin
-The present measurements define the operating envelope. At 256 and
-512 bits, logistic AUC values of 0.900 and 0.957 place the current ABM
-configuration in a capacity-oriented reversible-annotation regime, despite its
-positive net payload and exact reversibility. At 64 bits, AUC 0.706 reflects
-lower detectability, although metadata overhead dominates useful capacity.
-PPOCP remains the
+The present measurements define the operating envelope. The tested settings
+are interpreted as detectability-characterized annotation operating points
+rather than covert-security thresholds. At 256 and 512 bits, logistic AUC
+values of 0.900 and 0.957 place the current ABM configuration in a
+capacity-oriented reversible-annotation regime, despite its positive net
+payload and exact reversibility. At 64 bits, AUC 0.706 reflects lower
+detectability, although metadata overhead dominates useful capacity. PPOCP remains the
 \RevisionAddEnd
 preferred evaluated method for security-prioritized operation, whereas ABM
 addresses applications in which useful reversible capacity is primary and
@@ -1757,7 +1788,7 @@ One-pixel noise & Altered & Mismatch & Mismatch \\
 
 \RevisionAddBegin
 This work develops and evaluates serialization-aware activation for
-net-payload-driven PEAK/ZERO block mapping in binary-image RDH. The
+net-capacity-driven PEAK/ZERO block mapping in binary-image RDH. The
 enumerative codec makes the active mapping description executable and charged;
 the CNN ranker improves candidate placement on held-out images as a secondary
 cost-ordering component. The complete system delivers 2245 net bits on average
@@ -2143,23 +2174,29 @@ The system:\par
 
 \begin{RevisionDeletion}
 Deleted block 26\par
-\textbackslash{}[\par
+    \textbackslash{}item selects the frequency-ordered table prefix that maximizes net\par
+    capacity; and\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 27\par
-\textbackslash{}]\par
-The product, rather than the sum, gives the block count:\par
 \textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 28\par
 \textbackslash{}]\par
+The product, rather than the sum, gives the block count:\par
+\textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 29\par
+\textbackslash{}]\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 30\par
 \textbackslash{}[\par
 d\_k = \textbackslash{}sum\_\{i=0\}\textasciicircum{}\{8\} b\_i 2\textasciicircum{}i,\par
 \textbackslash{}]\par
@@ -2170,27 +2207,27 @@ or extraction.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 30\par
+Deleted block 31\par
     \textbackslash{}item \textbackslash{}textbf\{Residual patterns\}: patterns not involved in embedding.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 31\par
+Deleted block 32\par
 net-capacity rule defined below, not by an unspecified histogram tail.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 32\par
+Deleted block 33\par
 \textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 33\par
+Deleted block 34\par
 \textbackslash{}]\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 34\par
+Deleted block 35\par
 The candidate set is defined as:\par
 \textbackslash{}[\par
 \textbackslash{}mathcal\{Z\}\_i = \textbackslash{}\{ Z\_j \textbackslash{}in \textbackslash{}mathcal\{Z\} \textbackslash{}mid D\_\{i,j\} \textbackslash{}le \textbackslash{}mu\_i + \textbackslash{}alpha \textbackslash{}sigma\_i \textbackslash{}\},\par
@@ -2198,84 +2235,79 @@ The candidate set is defined as:\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 35\par
+Deleted block 36\par
 This formulation relies solely on empirical statistics and does not assume any specific distance distribution.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 36\par
-\textbackslash{}[\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
 Deleted block 37\par
-\textbackslash{}]\par
+\textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 38\par
-\textbackslash{}[\par
+\textbackslash{}]\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 39\par
-\textbackslash{}]\par
+\textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 40\par
-\textbackslash{}[\par
+\textbackslash{}]\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 41\par
-\textbackslash{}]\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 42\par
-Each block is modified at most once, and no inter-block dependencies are introduced.\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 43\par
-extraction; for the deployed one-bit codec, no padding ambiguity arises.\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 44\par
 \textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 45\par
+Deleted block 42\par
 \textbackslash{}]\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
+Deleted block 43\par
+Each block is modified at most once, and no inter-block dependencies are introduced.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 44\par
+extraction; for the deployed one-bit codec, no padding ambiguity arises.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 45\par
+\textbackslash{}[\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
 Deleted block 46\par
+\textbackslash{}]\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 47\par
+\textbackslash{}node[process, left=of inject] (net) \{Sort PEAKs by frequency\textbackslash{}\textbackslash{}select prefix maximizing\textbackslash{}\textbackslash{}\$C\_\{\textbackslash{}rm gross\}-|A\_\{\textbackslash{}rm wire\}|\_2\$\};\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 48\par
 followed by explicit net-capacity optimization and enumerative serialization;\par
 no cryptographic operation is assumed.\}\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 47\par
-\textbackslash{}draw[arrow] (done) -- node[above]\{No\} (lookup);\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 48\par
-\textbackslash{}[\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
 Deleted block 49\par
-\textbackslash{}]\par
+\$\textbackslash{}sum\_\{P\_i\textbackslash{}in\textbackslash{}mathcal T\textasciicircum{}\textbackslash{}star\}H(P\_i)-|A\_\{\textbackslash{}rm wire\}(\textbackslash{}mathcal T\textasciicircum{}\textbackslash{}star)|\_2\$\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 50\par
-    \textbackslash{}State reject the malformed stego/auxiliary pair\par
+\textbackslash{}draw[arrow] (done) -- node[above]\{No\} (lookup);\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
@@ -2290,17 +2322,32 @@ Deleted block 52\par
 
 \begin{RevisionDeletion}
 Deleted block 53\par
-\textbackslash{}[\par
+    \textbackslash{}State reject the malformed stego/auxiliary pair\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 54\par
+\textbackslash{}[\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 55\par
+\textbackslash{}]\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 56\par
+\textbackslash{}[\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 57\par
 \textbackslash{}]\par
 Expected Improvement selects the next value of \$\textbackslash{}alpha\$. The equal weighting\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 55\par
+Deleted block 58\par
 it is not used to select or train the deployed distance-one system. A\par
 \$\textbackslash{}lambda\$ sweep is consequently not used to support any reported deployment\par
 claim: changing this diagnostic scalarization would alter only the exploratory\par
@@ -2309,57 +2356,60 @@ distance-one policy. Optimizing \$\textbackslash{}alpha\$ alone does not guarant
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 56\par
+Deleted block 59\par
+integrated system. The exploratory search uses\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 60\par
 151-point grid, \$\textbackslash{}lambda=0.5\$, exploration 0.01, and a Matérn-\$5/2\$ kernel\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 57\par
+Deleted block 61\par
 \$9\textbackslash{}times9\$ channels: the centred PEAK, the centred candidate, and the average\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 58\par
+Deleted block 62\par
 cost is assigned to symbol one, while symbol zero preserves the PEAK.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 59\par
+Deleted block 63\par
 embedding block; a \$7\textbackslash{}times7\$ patch cannot provide that support for corner\par
 flips. Larger patches add context that is not used by the local training\par
 target.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 60\par
+Deleted block 64\par
 and seed 20260607. Complete source images, rather than candidate samples, define\par
 the train/validation split.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 61\par
+Deleted block 65\par
 safety label uses a local reciprocal-distance cost no greater than 0.5.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 62\par
+Deleted block 66\par
 incurs coordinate overhead. They were not optimized on the reported test\par
 outcomes. This layer is an evaluated ablation and is not included in the final\par
 payload figures because its measured incremental net contribution is negative.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 63\par
+Deleted block 67\par
+Useful capacity subtracts the exact serialized side information:\par
 \textbackslash{}[\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 64\par
+C\_\{\textbackslash{}mathrm\{net\}\}=C\_\{\textbackslash{}mathrm\{gross\}\}-|A\_\{\textbackslash{}mathrm\{wire\}\}|\_2.\par
 \textbackslash{}]\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 65\par
+Deleted block 68\par
 positions are then represented as base-9 digits. This approaches the\par
 information content of the mapping set more closely than independent fixed\par
 width pairs. Mapping pairs are ordered by occurrence count, and only the prefix\par
@@ -2368,27 +2418,27 @@ left unchanged.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 66\par
-\textbackslash{}[\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 67\par
-\textbackslash{}]\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 68\par
-\textbackslash{}[\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
 Deleted block 69\par
-\textbackslash{}]\par
+\textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 70\par
+\textbackslash{}]\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 71\par
+\textbackslash{}[\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 72\par
+\textbackslash{}]\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 73\par
 The wire stream contains the magic identifier, format version, 32-bit payload\par
 length \$q\$, 16-bit table count \$t\$, and the shortest fixed byte string capable\par
 of representing the state space \$\textbackslash{}binom\{512\}\{t\}9\textasciicircum{}t\$. Image dimensions are\par
@@ -2398,7 +2448,7 @@ when required by an application, are orthogonal transport-layer services.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 71\par
+Deleted block 74\par
 Compared with\textasciitilde{}\textbackslash{}cite\{Huynh2025BlockMapping\}, the proposed scheme introduces adaptive candidate selection,\par
 pattern-aware capacity allocation, and multi-pattern embedding,\par
 resulting in improved embedding efficiency while preserving reversibility.\par
@@ -2410,7 +2460,7 @@ comparison because their serialized auxiliary cost is not reported.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 72\par
+Deleted block 75\par
 This subsection provides a formal analysis of the computational complexity and\par
 theoretical guarantees of the proposed adaptive block-mapping embedding and\par
 optimized extraction algorithms. In particular, we derive tight asymptotic\par
@@ -2422,47 +2472,54 @@ applications.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 73\par
-\textbackslash{}[\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 74\par
-\textbackslash{}]\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 75\par
-\textbackslash{}[\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
 Deleted block 76\par
-\textbackslash{}]\par
+\textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 77\par
-\textbackslash{}[\par
+\textbackslash{}]\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
 Deleted block 78\par
-\textbackslash{}]\par
-\end{RevisionDeletion}
-
-\begin{RevisionDeletion}
-Deleted block 79\par
 \textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 80\par
+Deleted block 79\par
 \textbackslash{}]\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
+Deleted block 80\par
+\textbackslash{}[\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
 Deleted block 81\par
+\textbackslash{}]\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 82\par
+\textbackslash{}[\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 83\par
+\textbackslash{}]\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 84\par
+\textbackslash{}begin\{proposition\}[Independent Blocks]\par
+Embedding operations on distinct blocks are independent.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 85\par
+Each block is processed independently using a pattern-specific mapping table.\par
 No embedding operation modifies neighboring blocks or depends on the state of\par
 other blocks.\par
 Therefore, embedding decisions are local and do not introduce inter-block\par
@@ -2470,42 +2527,50 @@ interference.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 82\par
+Deleted block 86\par
 test images. The profile split supplies only the image-level statistics needed\par
 by the conservative Dong implementation. Test images are binarized at\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 83\par
+Deleted block 87\par
 without BOSSbase retraining, preventing test-set adaptation.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 84\par
+Deleted block 88\par
 128, 256, and 512 bits. Every available run is accepted only after exact\par
 message extraction and bitwise cover restoration. Huynh--Nguyen uses the\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 85\par
+Deleted block 89\par
 publications leave the independent wire representation open. These\par
 implementations are not presented as official author code. Accordingly,\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 86\par
+Deleted block 90\par
 study, while DRD and availability provide the less\par
 serialization-dependent comparison.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 87\par
+Deleted block 91\par
+Gross payload is the message length, auxiliary bits are the exact serialized\par
+wire length, and useful payload is\par
 \$C\_\{\textbackslash{}mathrm\{net\}\}=C\_\{\textbackslash{}mathrm\{gross\}\}-C\_\{\textbackslash{}mathrm\{aux\}\}\$. Distortion is measured\par
 with changed pixels, PSNR, and DRD \textbackslash{}cite\{3535\}. Availability is the fraction of\par
+test images that carry the target and complete the exact round trip.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 88\par
+Deleted block 92\par
+image-level resamples and seed 20260608. Runtime includes embedding,\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 93\par
 exactly. The previously defined two-image split gives MAE 0.081 and correlation\par
 0.950 and is retained only as a directly reproducible detailed case:\par
 CNN ranking reduces DRD from 0.825 to 0.795 on table1-3 and from 0.935 to 0.899\par
@@ -2516,7 +2581,7 @@ reproducibility artefacts.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 89\par
+Deleted block 94\par
 recall 0.970, and flip-position accuracy 0.971. The layer adds 179.8 gross bits\par
 per document image on average, while its current coordinate representation\par
 uses 2667.0 auxiliary bits. This identifies coordinate coding as a concrete\par
@@ -2525,7 +2590,7 @@ component.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 90\par
+Deleted block 95\par
 On the 100 BOSSbase test images, net-aware table selection gives 893.2 gross,\par
 377.1 auxiliary, and 516.1 net bits on average. Median net capacity is 362\par
 bits, 78 images are net positive, mean DRD is 0.402, and every evaluated\par
@@ -2534,130 +2599,138 @@ net capacity by 32.1\textbackslash{}\% relative to the preceding dense-or-sparse
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 91\par
+Deleted block 96\par
+all-method matched subsets. ABM moves from metadata-dominated operation at 64\par
+bits to a median-positive point at 128 bits and a clearly positive operating\par
 region at 256 and 512 bits. PPOCP defines the lowest-DRD trajectory, while ABM\par
 defines the highest-net trajectory.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 92\par
+Deleted block 97\par
 \textbackslash{}resizebox\{\textbackslash{}textwidth\}\{!\}\{\par
 \textbackslash{}begin\{tabular\}\{@\{\}rrcccccccc@\{\}\}\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 93\par
+Deleted block 98\par
 \textbackslash{}end\{tabular\}\}\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 94\par
+Deleted block 99\par
 64 \& Proposed ABM \& \$-48.5\textbackslash{};[-49.2,-48.0]\$ \& 0.022\textbackslash{}\textbackslash{}\par
    \& Dong / Huynh--Nguyen / PPOCP \& \$-226.3\textbackslash{};[-229.6,-223.1]\$ /\par
    \$-1644.7\textbackslash{};[-1855.7,-1450.9]\$ / \$-1028.0\textbackslash{};[-1063.1,-989.2]\$ \&\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 95\par
+Deleted block 100\par
    \& Dong / Huynh--Nguyen / PPOCP \& \$-178.3\textbackslash{};[-188.2,-169.7]\$ /\par
    \$-1582.8\textbackslash{};[-1794.4,-1386.3]\$ / \$-1707.8\textbackslash{};[-1767.1,-1645.0]\$ \&\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 96\par
+Deleted block 101\par
 256 \& Proposed ABM \& \$113.9\textbackslash{};[108.5,119.0]\$ \& 0.087\textbackslash{}\textbackslash{}\par
    \& Dong / Huynh--Nguyen / PPOCP \& \$-83.8\textbackslash{};[-106.1,-66.1]\$ /\par
    \$-1456.3\textbackslash{};[-1662.6,-1264.0]\$ / \$-2954.1\textbackslash{};[-3064.0,-2831.5]\$ \&\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 97\par
+Deleted block 102\par
 512 \& Proposed ABM \& \$309.0\textbackslash{};[289.7,326.1]\$ \& 0.176\textbackslash{}\textbackslash{}\par
    \& Dong / Huynh--Nguyen / PPOCP \& \$95.8\textbackslash{};[55.8,130.6]\$ /\par
    \$-1190.6\textbackslash{};[-1396.5,-994.8]\$ / \$-4821.7\textbackslash{};[-5028.9,-4612.9]\$ \&\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 98\par
+Deleted block 103\par
+payload-specific matched analysis. It also removes changing-cohort composition\par
+as an explanation for the positive ABM net payload from 128 bits onward.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+Deleted block 104\par
 (left) and median DRD (right).\}\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 99\par
+Deleted block 105\par
 the net-bits--DRD operating trajectories. PPOCP carries every target on all\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 100\par
+Deleted block 106\par
 The right panel is descriptive rather than a scalar ranking because the\par
 methods span different DRD ranges; Table\textasciitilde{}\textbackslash{}ref\{tab:fixed-cohort\} provides the\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 101\par
+Deleted block 107\par
 efficiency. Numbers on the right panel denote target payloads in bits.\}\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 102\par
+Deleted block 108\par
 3016 bits. DRD tests place ABM below Dong and above the perceptually focused\par
 PPOCP and Huynh--Nguyen trajectories, yielding a two-objective interpretation.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 103\par
+Deleted block 109\par
 Suitability therefore acts as an applicability indicator rather than a\par
 post-hoc explanation of net performance.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 104\par
+Deleted block 110\par
 34.2, and 0.024. Unavailability is therefore concentrated in near-empty or\par
 nearly uniform thresholded photographs with insufficient repeated\par
 non-uniform patterns, rather than in failed extraction or restoration.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 105\par
+Deleted block 111\par
 most resistant trajectory from 128 to 512 bits. ABM's AUC increases with useful\par
 payload, making statistical footprint the principal optimization signal for\par
 the next design iteration. The Random Forest gives ABM AUC values 0.623, 0.691,\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 106\par
+Deleted block 112\par
 comparisons. In useful capacity, ABM establishes the highest observed\par
 trajectory and becomes mean-net-positive between 128 and 256 bits. In\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 107\par
+Deleted block 113\par
 least-detectable trajectory. This conclusion rests on exact round trips,\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 108\par
+Deleted block 114\par
 not presented as a universal ranking of the original publications.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 109\par
+Deleted block 115\par
 The measured AUC curves provide a direct route to strengthen the method. The\par
 current CNN predicts reciprocal-distance cost, whereas the steganalysis\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 110\par
+Deleted block 116\par
 \textbackslash{}[\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 111\par
+Deleted block 117\par
 \textbackslash{}]\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 112\par
+Deleted block 118\par
 The present measurements define an operational distinction. At 256 and\par
 512 bits, logistic AUC values of 0.900 and 0.957 make the current ABM\par
 configuration unsuitable when covert undetectability is the primary\par
@@ -2668,30 +2741,30 @@ less detectable but metadata-negative operating point. PPOCP remains the\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 113\par
+Deleted block 119\par
 The RF uniform-block experiment supplies a second concrete direction:\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 114\par
+Deleted block 120\par
 binarization is a transfer test rather than a substitute for a large scanned\par
 document corpus. The 512-bit all-method cohort contains 46 images, so both\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 115\par
+Deleted block 121\par
 visual DRD remains moderate. These measured boundaries delimit the validated\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 116\par
+Deleted block 122\par
 The reversible channel assumes lossless storage and transmission; geometric\par
 or lossy transformations require an external synchronization or error-control\par
 layer.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 117\par
+Deleted block 123\par
 This work develops and evaluates a net-aware, machine-learning-assisted\par
 block-mapping framework for exactly reversible data hiding in binary images.\par
 The CNN ranker improves candidate placement on held-out images, the\par
@@ -2702,32 +2775,32 @@ cover exactly.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 118\par
+Deleted block 124\par
 \$6.7\textbackslash{}times10\textasciicircum{}\{-13\}\$. Availability, binarization, runtime, memory, and two-classifier\par
 steganalysis turn this result into a reproducible practical profile rather than\par
 a single capacity number.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 119\par
+Deleted block 125\par
 evidence identifies ABM as the highest observed net-payload operating point,\par
 while PPOCP retains the strongest measured distortion and steganalysis\par
 profile. The result therefore adds a concrete net-capacity benchmark and an\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 120\par
+Deleted block 126\par
 also identify local-distribution preservation as the principal optimization\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 121\par
+Deleted block 127\par
 This work was supported by the authors' institutions. No external financial\par
 support was received.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 122\par
+Deleted block 128\par
 personal relationships that could have appeared to influence the work\par
 reported in this paper. The companion publication cited in the related work\par
 shares authors with this study and is identified explicitly; it is not used\par
@@ -2736,7 +2809,7 @@ here.\par
 \end{RevisionDeletion}
 
 \begin{RevisionDeletion}
-Deleted block 123\par
+Deleted block 129\par
 \par
 \end{RevisionDeletion}
 

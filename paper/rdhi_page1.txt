@@ -20,10 +20,10 @@ Auxiliary-information coding
 Learned distortion ranking
 
 This paper presents a reversible data hiding scheme for plaintext binary images under an explicit
-synchronization model. Its technical contribution is serialization-aware net-payload-driven activation
-of reversible PEAK/ZERO 3 × 3 mappings: the active mapping configuration is selected by useful
-payload after charging the exact serialized description required for deterministic recovery. The
-implementation represents the active PEAK subset by a combinatorial rank and the distance-one
+synchronization model. Its technical contribution is serialization-aware net-capacity-driven activation
+of reversible PEAK/ZERO 3 × 3 mappings: the active mapping configuration is selected by usable
+mapping capacity after charging the exact serialized description required for deterministic recovery.
+The implementation represents the active PEAK subset by a combinatorial rank and the distance-one
 flip positions by base-9 digits; a convolutional neural network (CNN) supplies the learned distortion
 ranking for admissible ZERO candidates. On eight 512 × 512 document images, this activation
 raises mean net payload from 2139 to 2245 bits relative to an otherwise identical wire-charged grossselection variant and preserves exact round-trip reversibility. In a common executable protocol on 100
@@ -84,8 +84,8 @@ of the deterministic PEAK/ZERO mapping, CNN ranking,
 serialization-aware activation, and enumerative auxiliary
 stream.
 The main scientific contributions of this paper are:
-1. Serialization-aware net-payload-driven activation of
-reversible PEAK/ZERO mappings, where active tables are selected by useful payload after the exact
+1. Serialization-aware net-capacity-driven activation of
+reversible PEAK/ZERO mappings, where active tables are selected by usable mapping capacity after the
 Page 1 of 17
 
 

@@ -191,3 +191,46 @@ Declaration restoration update 2026-08-06:
 - Refreshed `paper/article_v1_0_clean.pdf`, `paper/source_package_v1_0`,
   `paper/latex_source_v1_0_revised.zip`, root `paper.zip`, and the page-1
   text/PNG preview artifacts after the declaration restoration.
+
+Final precision-pass update 2026-08-06:
+- Applied the user's reading-report corrections surgically, without adding new
+  experiments or changing the title.
+- Harmonized the central terminology from net-payload-driven activation to
+  serialization-aware net-capacity-driven activation:
+  `C_{\mathrm{gross}}` is gross mapping capacity, `q=|M|` is the requested
+  application payload, `P_{\mathrm{net}}=q-|A_{\mathrm{wire}}|_2` is delivered
+  net payload, and `C_{\mathrm{net}}^{\mathrm{map}}` is the map-level selection
+  criterion.
+- Corrected Table 1 by replacing the invalid PSNR cell with `--` and adding a
+  note that DRD is the main reported distortion metric while per-image PSNR and
+  changed-pixel outputs are kept in the reproducibility artifacts.
+- Updated the cover letters to point reproducibility materials to the public
+  GitHub repository cited in the Code Availability statement rather than to an
+  ambiguous accompanying source package.
+- Strengthened the Reviewer 5 security-threshold answer: no tested payload is
+  claimed as a covert-security threshold; 256/512-bit settings are presented as
+  capacity-oriented reversible annotation points, and 64/128-bit settings are
+  reported only as measured lower-detectability operating points.
+- Replaced `optional CNN ranking` with secondary/deployed CNN cost ranking in
+  the response letter and marked Table 5's w16 architecture as deployed.
+- Aligned response wording with manuscript evidence for low-payload limits,
+  high-payload operating scope, changed-pixel artifacts, and the diagnostic-only
+  role of the adaptive-threshold parameter `alpha`.
+- Added the bootstrap statement for median DRD confidence bands, renamed Table
+  10 `Total` to `End-to-end total`, and explained the minor orchestration
+  overhead included in that timer.
+- Replaced the unsupported `median-positive at 128 bits` wording with the
+  reported mean-net behavior on the payload-specific and fixed cohorts.
+- Renamed Proposition 3.6 to `Non-interference of Distinct Blocks` and softened
+  the statistical wording around distributional assumptions.
+- Recompiled `paper/main.tex`, `paper/response_to_reviewers.tex`,
+  `paper/revision_cover_letter.tex`, `paper/cover_letter.tex`,
+  `paper/article_v1_0_blue_changes.tex`, and
+  `paper/article_v1_0_red_blue_changes.tex`.
+- The final LaTeX log scan found no fatal errors, unresolved citations,
+  unresolved references, duplicate-label warnings, or remaining rerun requests
+  in the clean manuscript, response letter, cover letters, or annotated article
+  logs.
+- Refreshed `paper/article_v1_0_clean.pdf`, `paper/source_package_v1_0`,
+  `paper/latex_source_v1_0_revised.zip`, root `paper.zip`, and the page-1
+  text/PNG preview artifacts after the final precision pass.

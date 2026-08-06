@@ -4,7 +4,7 @@ Date: 2026-08-06
 
 ## Scope
 
-The revision work was executed on the active v1.0 manuscript and its companion
+The revision work was executed on the active v1.0 manuscript and its associated
 submission files. The clean manuscript remains self-contained: it does not refer
 to an earlier manuscript version, a previous version, reviewer text, or a
 companion article. The red/blue comparison file is the only artifact that keeps
@@ -14,7 +14,7 @@ deleted text, by design.
 
 | Action area | Status | Evidence |
 |---|---:|---|
-| Novelty repositioning | Done | Abstract, Introduction, Related Work, Discussion, Conclusion now center the contribution on serialization-aware active PEAK/ZERO mapping selection. Net capacity itself is treated as established accounting, not as the novelty. |
+| Novelty repositioning | Done | Abstract, Introduction, Related Work, Discussion, Conclusion now center the contribution on serialization-aware net-capacity-driven active PEAK/ZERO mapping selection. Net capacity itself is treated as established accounting, not as the novelty. |
 | Central ablation | Done | Table A0/A1/A2 isolates gross reporting, post-hoc wire charging, and serialized-net activation. Labels are synchronized in `main.tex`, `run_revision_ablations.py`, and the JSON/CSV results. |
 | Exact wire model | Done | `main.tex` and `abm_rdh.py` agree on the byte-level ABM stream: marker byte, magic/version, `uint32` payload length, `uint16` table count, and byte-aligned joint combinatorial/base-9 state. |
 | CNN ablation | Done | CNN diagnostic uses 20 epochs, same optimizer/loss/LR/batch/split/seeds, depth/window/width variants, MAE/Pearson/DRD, parameter count, training time, and inference time. |
@@ -31,7 +31,8 @@ deleted text, by design.
 | Bibliography | Done | Frazier 2018 is restored in the GP paragraph; Sedighi 2018 supports the future detectability-aware direction. Bibliography now has 28 cited keys and 28 entries, with no missing or uncited entries. |
 | Declarations | Done | The manuscript retains non-AI declarations for ethics, competing interests, funding, data availability, and code availability. No AI-use declaration is included. Cover letters use `Submission statements`. |
 | Response to reviewers | Done | `response_to_reviewers.tex/pdf` follows the requested template style and is aligned to the experiments actually performed. |
-| Cover letter | Done | `revision_cover_letter.tex/pdf` follows the requested submission-cover-letter model. |
+| Cover letter | Done | `revision_cover_letter.tex/pdf` follows the requested submission-cover-letter model and points reproducibility materials to the public GitHub repository cited in Code Availability. |
+| Final precision pass | Done | Capacity/message terminology now distinguishes gross mapping capacity, requested payload `q`, delivered net payload `P_net`, and map-selection score `C_net^{map}`. Table 1 PSNR, Table 5 deployed CNN label, Table 10 end-to-end timing, Figure 5 bootstrap wording, 128-bit payload wording, and Reviewer responses R1/R2/R4/R5 were corrected. |
 
 ## Numerical Traceability
 
