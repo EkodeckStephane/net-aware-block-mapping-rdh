@@ -109,19 +109,24 @@ deterministic recovery. The implementation represents the active
 PEAK subset by a combinatorial rank and the distance-one flip positions by
 base-9 digits; a convolutional neural network (CNN) supplies the learned
 distortion ranking for admissible ZERO candidates. On eight $512\times512$
-document images, this activation
-raises mean net payload from 2139 to 2245 bits relative to an otherwise
-identical wire-charged gross-selection variant and preserves exact round-trip
-reversibility. In a common executable protocol on 100 disjoint thresholded
-BOSSbase images, the proposed adaptive block-mapping method (ABM), Dong,
-Huynh--Nguyen, and the opposite-center-pair method (PPOCP) are compared with
-identical messages, payload targets, distance-reciprocal distortion (DRD)
-computation, auxiliary-bit accounting, and reversibility checks. The proposed
-method achieves the highest useful
+document images, this activation raises mean net payload from 2139 to 2245 bits
+relative to an otherwise identical wire-charged gross-selection variant and
+preserves exact round-trip reversibility. Frozen external validation on all 199
+scanned FUNSD documents, with no training or tuning on FUNSD, preserves exact
+message and cover recovery for every available run under both fixed-threshold
+and Otsu binarization. Relative to all-feasible wire-charged activation, the
+serialization-aware variant saves about 239--241 auxiliary bits per paired
+image and is never worse in delivered net payload, although positive net
+payload remains uncommon at targets up to 512 bits. In a common executable
+protocol on 100 disjoint thresholded BOSSbase images, the proposed adaptive
+block-mapping method (ABM), Dong, Huynh--Nguyen, and the opposite-center-pair
+method (PPOCP) are compared with identical messages, payload targets,
+distance-reciprocal distortion (DRD) computation, auxiliary-bit accounting,
+and reversibility checks. The proposed method achieves the highest useful
 capacity among the evaluated implementations, while PPOCP retains the
-lowest-distortion and most favorable detectability profile. Logistic detector AUC reaches
-0.900 and 0.957 at 256 and 512 bits, placing the validated operating region in
-capacity-oriented reversible annotation over a lossless channel with
+lowest-distortion and most favorable detectability profile. Logistic detector
+AUC reaches 0.900 and 0.957 at 256 and 512 bits, placing the validated operating
+region in capacity-oriented reversible annotation over a lossless channel with
 detectability-aware payload selection.
 \end{abstract}
 
@@ -195,13 +200,18 @@ The main scientific contributions of this paper are:
     covers, messages, payload targets, reversibility checks,
     distance-reciprocal distortion (DRD) implementation, auxiliary-bit
     accounting, paired statistics, resources, and grouped steganalysis.
+    \item Frozen external validation of the deployed CNN-ranked codec on all
+    199 real scanned FUNSD documents under fixed-128 and Otsu binarization,
+    without retraining or tuning, including exact round-trip, availability,
+    auxiliary-cost, net-payload, DRD, and paired A1/A2 activation analyses.
 \end{enumerate}
 
 Section~\ref{sec:relatedwork} positions the work in binary RDH and
 steganalysis. Section~\ref{sec:proposedmethod} defines the reversible mapping,
 learned ranking, and net-capacity codec. Section~\ref{sec:experimental}
-describes the common protocol and reports document-image and BOSSbase results.
-Section~\ref{sec:discussion} synthesizes the practical operating region, and
+describes the common protocol and reports document-image, BOSSbase, and FUNSD
+results. Section~\ref{sec:discussion} synthesizes the practical operating
+region, validity conditions, and remaining limitations, and
 Section~\ref{sec:conclusion} concludes the study.
 
 
@@ -1051,17 +1061,20 @@ leaves all other blocks unchanged.
 
 \subsection{Datasets, Splits, and Reproducibility}
 
-The evaluation has two complementary scales. The eight standard
+The evaluation has three complementary validation layers. The eight standard
 $512\times512$ binary document images used by Huynh--Nguyen
-\cite{Huynh2025BlockMapping} support
-direct validation against the block-mapping literature; their diversity is
-shown in Figure~\ref{fig:dataset-final}. BOSSbase~\cite{Bas2011BOSS} provides
-10,000 grayscale
-images, from which seed 20260608 selects 100 profile images and 100 disjoint
-test images. The profile split supplies the image-level statistics needed by
-the conservative Dong implementation. Test images are binarized at
-threshold 128. The CNN ranker trained on the document images is transferred
-directly to BOSSbase, preventing test-set adaptation.
+\cite{Huynh2025BlockMapping} support direct validation against the block-mapping
+literature; their diversity is shown in Figure~\ref{fig:dataset-final}.
+BOSSbase~\cite{Bas2011BOSS} provides 10,000 grayscale images, from which seed
+20260608 selects 100 profile images and 100 disjoint test images. The profile
+split supplies the image-level statistics needed by the conservative Dong
+implementation. BOSSbase test images are binarized at threshold 128. The CNN
+ranker trained on the document images is transferred directly to BOSSbase,
+preventing test-set adaptation. Finally, all 199 scanned documents in FUNSD
+form an external real-document validation set. The committed CNN ranker is
+frozen for this experiment: no training, fine-tuning, threshold fitting, or
+other model tuning is performed on FUNSD. Each FUNSD page is evaluated under
+both fixed threshold 128 and Otsu binarization.
 
 \begin{figure*}[t]
 \centering
@@ -1070,9 +1083,9 @@ directly to BOSSbase, preventing test-set adaptation.
 \label{fig:dataset-final}
 \end{figure*}
 
-The four-method protocol embeds identical pseudorandom messages at targets 64,
-128, 256, and 512 bits. A run counts as available after exact message
-extraction and bitwise cover restoration. Huynh--Nguyen uses the
+The four-method BOSSbase protocol embeds identical pseudorandom messages at
+targets 64, 128, 256, and 512 bits. A run counts as available after exact
+message extraction and bitwise cover restoration. Huynh--Nguyen uses the
 published threshold $T=5$. Dong evaluates all context divisors
 $l\in\{1,\ldots,10\}$ and retains the exact minimum-DRD result. PPOCP and Dong
 use conservative serialized synchronization or location information where the
@@ -1080,6 +1093,15 @@ publications leave the independent wire representation open. Accordingly,
 net-payload conclusions apply to the executable wire formats defined in this
 study, while DRD and availability provide a comparison less sensitive to
 byte-stream conventions.
+
+The FUNSD protocol is deliberately narrower and tests transfer rather than a
+new four-method ranking. At each target $q\in\{64,128,256,512\}$, it compares
+A1, which activates all feasible tables and then charges their exact wire cost,
+with the proposed A2 serialization-aware prefix selection. The same frozen CNN
+weights and seed 20260608 are used throughout. Availability, auxiliary bits,
+delivered net payload, DRD, positive-net fraction, and exact message/cover
+round-trip recovery are recorded per image; paired A1/A2 summaries are computed
+only where both variants are available.
 
 \subsection{Metrics and Statistical Protocol}
 
@@ -1280,14 +1302,73 @@ the same sample yields 832.5 gross, 731.4 auxiliary, and 101.1 net bits on
 average, showing that the active-prefix decision also improves the external
 transfer setting.
 
+\subsection{Frozen External Validation on FUNSD}
+\label{subsec:funsd-external}
+
+Table~\ref{tab:funsd-external} reports the frozen external validation on all
+199 FUNSD scanned documents. The existing CNN ranker is used without retraining
+or tuning. Two independently generated binary inputs are tested per source page:
+fixed threshold 128 and Otsu. A1 activates all feasible tables and charges the
+resulting wire, whereas A2 applies the proposed serialization-aware prefix
+selection. Means are computed over available runs for each variant.
+
+\begin{table*}[t]
+\centering
+\caption{Frozen external validation on 199 FUNSD scanned documents. Auxiliary
+and net values are mean bits over available runs; DRD and positive-net counts
+refer to A2. Availability is shown as available/199.}
+\label{tab:funsd-external}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{@{}lrrrrrrrrr@{}}
+\toprule
+\textbf{Binarization} & \textbf{$q$} & \textbf{A1 avail.} & \textbf{A2 avail.} &
+\textbf{A1 aux.} & \textbf{A2 aux.} & \textbf{A1 net} & \textbf{A2 net} &
+\textbf{A2 DRD} & \textbf{A2 net$>0$} \\
+\midrule
+Fixed 128 & 64  & 199/199 & 199/199 & 965.7 & 725.4 & $-901.7$ & $-661.4$ & 0.01049 & 0/199 \\
+Fixed 128 & 128 & 199/199 & 199/199 & 965.7 & 725.4 & $-837.7$ & $-597.4$ & 0.02082 & 0/199 \\
+Fixed 128 & 256 & 199/199 & 199/199 & 965.7 & 725.4 & $-709.7$ & $-469.4$ & 0.04124 & 1/199 \\
+Fixed 128 & 512 & 198/199 & 198/199 & 969.3 & 727.8 & $-457.3$ & $-215.8$ & 0.08255 & 4/198 \\
+\midrule
+Otsu & 64  & 199/199 & 198/199 & 985.9 & 750.9 & $-921.9$ & $-686.9$ & 0.01015 & 0/198 \\
+Otsu & 128 & 199/199 & 198/199 & 985.9 & 750.9 & $-857.9$ & $-622.9$ & 0.02008 & 0/198 \\
+Otsu & 256 & 198/199 & 198/199 & 989.8 & 750.9 & $-733.8$ & $-494.9$ & 0.03981 & 0/198 \\
+Otsu & 512 & 197/199 & 197/199 & 993.2 & 753.4 & $-481.2$ & $-241.4$ & 0.07928 & 3/197 \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+Every available FUNSD run recovers the payload exactly and restores the binary
+cover bit-for-bit. On paired available images, A2 is never worse than A1 in
+net payload: the fraction $P_{\mathrm{net}}^{A2}\geq P_{\mathrm{net}}^{A1}$ is
+1.0 at every payload under both binarizations. For fixed-128, mean A2 net gains
+(and equal auxiliary savings) are 240.3, 240.3, 240.3, and 241.4 bits at 64,
+128, 256, and 512 bits, respectively; for Otsu they are 238.9, 238.9, 238.9,
+and 239.8 bits. The median gain is 232 bits in every condition. The associated
+mean DRD differences $\mathrm{DRD}_{A2}-\mathrm{DRD}_{A1}$ remain small,
+ranging from $6.66\times10^{-5}$ to $7.99\times10^{-4}$ across the eight
+binarization/payload conditions.
+
+The external result therefore supports two transfer claims that are distinct
+from net-efficiency claims. First, exact reversible operation generalizes to a
+large real scanned-document corpus without retraining. Second, the proposed
+serialization-aware activation continues to reduce synchronization overhead on
+every paired operating point. By contrast, the delivered net payload remains
+metadata-dominated throughout the tested FUNSD range: mean net payload is
+negative through 512 bits, and the largest observed positive-net fraction is
+4/198 (2.02\%). Thus FUNSD validates reversibility and the A2 activation
+benefit, but it does not establish positive net efficiency for scanned
+documents at these payload sizes.
+
 \subsection{Multi-Payload Common-Protocol Results}
 
 Table~\ref{tab:multiload} and Figure~\ref{fig:multiload} summarize the
-all-method matched subsets. ABM moves from metadata-dominated operation at
-64 bits to a near break-even 128-bit point: the payload-specific matched cohort
-has a $-7$-bit mean, while the fixed 46-image cohort has an 8-bit mean. It
-reaches positive mean net payload at 256 and 512 bits. PPOCP defines the
-lowest-DRD curve, while ABM defines the highest-net curve.
+all-method matched BOSSbase subsets. ABM moves from metadata-dominated operation
+at 64 bits to a near break-even 128-bit point: the payload-specific matched
+cohort has a $-7$-bit mean, while the fixed 46-image cohort has an 8-bit mean.
+It reaches positive mean net payload at 256 and 512 bits on these BOSSbase
+cohorts. PPOCP defines the lowest-DRD curve, while ABM defines the highest-net
+curve.
 
 \begin{table*}[t]
 \centering
@@ -1544,13 +1625,14 @@ the same payload.}
 \subsection{Positioning Across Practical Objectives}
 
 The experiments separate four objectives that are frequently merged in RDH
-comparisons. In useful capacity, ABM provides the highest net-payload curve and
-crosses into mean-positive net payload between 128 and 256 bits. In
-perceptual quality, PPOCP defines the lowest median DRD, followed closely by
-Huynh--Nguyen at the higher target. In applicability, PPOCP has universal
-target availability, while ABM combines high availability with compact side
-information. In computational cost, ABM remains practical and is substantially
-faster than the complete Dong parameter search.
+comparisons. In the BOSSbase common protocol, ABM provides the highest
+net-payload curve and crosses into mean-positive net payload between 128 and
+256 bits on the payload-specific matched cohorts. In perceptual quality, PPOCP
+defines the lowest median DRD, followed closely by Huynh--Nguyen at the higher
+target. In applicability, PPOCP has universal target availability, while ABM
+combines high availability with compact side information. In computational
+cost, ABM remains practical and is substantially faster than the complete Dong
+parameter search.
 
 This decomposition supports a specific, protocol-bounded position: among the
 four evaluated implementations, ABM provides the highest net payload after
@@ -1559,6 +1641,16 @@ most favorable detectability profile. This conclusion rests on exact round trips
 multi-payload curves, a fixed-cohort sensitivity analysis, and paired tests.
 Because synchronization formats materially affect net payload, the result is
 framed as a protocol-bounded comparison of the evaluated implementations.
+
+FUNSD separates external-document transfer from net efficiency. The frozen
+codec remains exactly reversible on every available run and A2 reduces
+auxiliary cost on every paired operating point under both binarizations, which
+materially strengthens the evidence for transfer of the reversible mechanism
+and the serialization-aware activation rule. At the same time, mean delivered
+net payload remains negative through 512 bits and positive-net cases are rare.
+Those values characterize the tested low-to-moderate-payload operating regime
+on scanned documents; they should not be generalized into a claim of positive
+net efficiency on FUNSD.
 
 \subsection{Security-Aware Optimization Direction}
 
@@ -1601,22 +1693,47 @@ measured source of overhead.
 \label{subsec:scope}
 
 The eight document images provide continuity with the binary block-mapping
-literature, and the disjoint BOSSbase protocol adds 100 external test images,
-four payloads, paired inference, resources, and steganalysis. BOSSbase
-binarization should be read as a transfer test, with a large scanned document
-corpus remaining a natural next benchmark. The 512-bit all-method cohort
-contains 46 images, so both
-availability and fixed-cohort results are reported. The logistic AUC of 0.957
-at that payload identifies a high-order statistical footprint even though the
-visual DRD remains moderate. These measured boundaries define the validated
-operating region and provide explicit targets for distribution-aware ranking.
-The reversible channel assumes lossless storage and transmission. A stress test
-on table1-3 at 256 bits confirms exact recovery after PNG and TIFF round trips,
-while JPEG recompression at quality 5 and one-pixel perturbation convert the
-input into mismatched stego/auxiliary pairs, illustrating the required
-lossless-channel assumption (Table~\ref{tab:channel-stress}). Geometric,
-noisy, or lossy transformations therefore require an external synchronization
-or error-control layer.
+literature, the disjoint BOSSbase protocol adds 100 external test images with a
+four-method common evaluation, and FUNSD adds a separate frozen external test
+on all 199 real scanned documents under two binarization rules. The latter
+removes the earlier absence of a sizeable real scanned-document benchmark as a
+primary limitation of the evidence: exact recovery and the A2-over-A1
+serialization benefit are now observed without retraining on that corpus.
+
+\paragraph{Conditions of validity.}
+The exact-reversibility guarantee is conditional on a matched stego image and
+its valid auxiliary stream being preserved through a lossless storage or
+transmission path. The encoder may reject a requested payload when the binary
+cover does not offer sufficient active mapping capacity; such rejection is an
+availability outcome, not a recovery failure. A stress test on table1-3 at 256
+bits confirms exact recovery after PNG and TIFF round trips, while JPEG
+recompression at quality 5 and a one-pixel perturbation produce mismatched
+stego/auxiliary pairs (Table~\ref{tab:channel-stress}). Applications requiring
+lossy, noisy, or geometrically transformed channels therefore require an
+external synchronization or error-control layer before the present exact
+recovery contract applies.
+
+\paragraph{Operating characteristics.}
+Auxiliary overhead is amortized differently across image distributions and
+payload sizes. On BOSSbase matched cohorts, mean net payload becomes positive
+between 128 and 256 bits, whereas on FUNSD the fixed and mapping-dependent
+serialization cost dominates through the tested 512-bit target. FUNSD
+availability remains 98.99--100\% depending on binarization, activation, and
+payload, and every available run is exact. DRD and detectability also increase
+with payload. These are measured properties of the operating envelope rather
+than failures of the reversible contract.
+
+\paragraph{Remaining limitations.}
+Three limitations remain material. First, the high logistic AUC at larger
+BOSSbase payloads limits claims for covert or security-prioritized use under the
+tested detector. Second, cross-method net-payload rankings remain partly
+protocol-dependent because the baseline publications do not completely specify
+standalone serialized synchronization formats. Third, although FUNSD provides
+substantially stronger real-document evidence, it is one external scanned-form
+corpus; generalization across additional independent document collections,
+scanner pipelines, languages, and acquisition conditions remains unverified.
+The present evidence also does not establish positive-net efficiency for real
+scanned FUNSD documents at payloads up to 512 bits.
 
 \begin{table}[t]
 \centering
@@ -1643,13 +1760,23 @@ net-capacity-driven PEAK/ZERO block mapping in binary-image RDH. The
 enumerative codec makes the active mapping description executable and charged;
 the CNN ranker improves candidate placement on held-out images as a secondary
 cost-ordering component. The complete system delivers 2245 net bits on average
-on eight document images and 292.5 net bits on 100 BOSSbase images. Every
-reported available experiment restores the message and cover exactly.
+on eight document images and 292.5 net bits on 100 BOSSbase images. A frozen
+external validation on all 199 FUNSD scanned documents further shows that every
+available run restores both message and binary cover exactly without training
+or tuning on FUNSD.
 
-Under the common protocol, ABM obtains mean net payloads of $-57$, $-7$, $93$,
-and $309$ bits at targets 64, 128, 256, and 512 bits on matched images. Its
-paired net advantage is significant against every baseline after Holm
-correction; at 256 bits, all adjusted $p$-values are below
+On FUNSD, serialization-aware A2 activation reduces auxiliary cost by about
+239--241 bits relative to A1 on paired available images and is never worse in
+net payload under either fixed-128 or Otsu binarization. This is strong evidence
+that exact reversibility and the activation benefit transfer to real scanned
+documents. It is not evidence of positive net efficiency in the tested FUNSD
+payload range: mean net payload remains negative through 512 bits and the
+largest positive-net fraction is 2.02\%.
+
+Under the BOSSbase common protocol, ABM obtains mean net payloads of $-57$,
+$-7$, $93$, and $309$ bits at targets 64, 128, 256, and 512 bits on matched
+images. Its paired net advantage is significant against every baseline after
+Holm correction; at 256 bits, all adjusted $p$-values are below
 $6.7\times10^{-13}$. Together, availability, binarization, runtime, memory,
 and two-classifier steganalysis make this result a reproducible practical
 profile beyond a single capacity number.
@@ -1657,11 +1784,11 @@ profile beyond a single capacity number.
 Under the stated implementations and wire-level accounting, the combined
 evidence identifies ABM as the highest useful-capacity curve in the evaluated
 common protocol, while PPOCP retains the lowest measured distortion and most
-favorable detectability profile. This evidence therefore adds a concrete
-net-capacity benchmark and an
-exactly reversible reference implementation. The measured security curves
-also identify local-distribution preservation as the main optimization
-target while retaining compact metadata and exact restoration.
+favorable detectability profile. The validity of exact recovery is conditional
+on matched stego/auxiliary data over a lossless path; metadata-dominated
+low-payload behavior is an operating characteristic; and the remaining true
+limitations concern high-payload detectability, protocol dependence of baseline
+serialization, and external breadth beyond the single FUNSD document corpus.
 
 \section*{Acknowledgements}
 This work was supported by the authors' institutions.
@@ -1688,9 +1815,12 @@ This research received no external funding.
 \noindent\textbf{Data availability.}
 BOSSbase is publicly available from its original distributor at
 \url{https://dde.binghamton.edu/download/ImageDB/BOSSbase_1.01.zip} under its
-applicable terms. The eight document images used for block-mapping validation,
-derived aggregate results, and per-image evaluation artefacts accompany the
-reproducibility package.
+applicable terms. FUNSD is publicly available from the dataset provider at
+\url{https://guillaumejaume.github.io/FUNSD/dataset.zip}. The eight document
+images used for block-mapping validation, derived aggregate results, per-image
+evaluation artefacts, and the fixed-128/Otsu FUNSD external-validation
+summaries and paired/per-image result tables accompany the reproducibility
+package.
 
 \medskip
 \noindent\textbf{Code availability.}
