@@ -1,6 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
 # Rebuild the JVCIR revised LaTeX source package from the current paper tree.
+# Compatible with Windows PowerShell 5.1 and PowerShell 7+.
 # Run this script from the paper directory after pulling the revision branch.
 
 $paperDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -8,11 +9,15 @@ Set-Location $paperDir
 
 $zipPath = Join-Path $paperDir 'latex_source_v1_0_revised.zip'
 $staging = Join-Path $env:TEMP ('rdh_latex_source_' + [Guid]::NewGuid().ToString('N'))
+$stagingImages = Join-Path $staging 'images'
+$stagingTracked = Join-Path $staging 'tracked_revision'
+$paperImages = Join-Path $paperDir 'images'
+$paperTracked = Join-Path $paperDir 'tracked_revision'
 
 try {
     New-Item -ItemType Directory -Path $staging | Out-Null
-    New-Item -ItemType Directory -Path (Join-Path $staging 'images') | Out-Null
-    New-Item -ItemType Directory -Path (Join-Path $staging 'tracked_revision') | Out-Null
+    New-Item -ItemType Directory -Path $stagingImages | Out-Null
+    New-Item -ItemType Directory -Path $stagingTracked | Out-Null
 
     # Clean manuscript and Elsevier support files.
     $rootFiles = @(
@@ -33,38 +38,44 @@ try {
 
     foreach ($file in $rootFiles) {
         $src = Join-Path $paperDir $file
-        if (-not (Test-Path $src)) {
+        if (-not (Test-Path -LiteralPath $src)) {
             throw "Required source file is missing: $file"
         }
-        Copy-Item $src (Join-Path $staging $file)
+        $dst = Join-Path $staging $file
+        Copy-Item -LiteralPath $src -Destination $dst -Force
     }
 
     # Tracked-change fragments required by the blue and red-blue source wrappers.
-    Get-ChildItem (Join-Path $paperDir 'tracked_revision') -File | ForEach-Object {
-        Copy-Item $_.FullName (Join-Path $staging 'tracked_revision' $_.Name)
+    if (-not (Test-Path -LiteralPath $paperTracked)) {
+        throw 'Required directory is missing: tracked_revision'
+    }
+    Get-ChildItem -LiteralPath $paperTracked -File | ForEach-Object {
+        $dst = Join-Path $stagingTracked $_.Name
+        Copy-Item -LiteralPath $_.FullName -Destination $dst -Force
     }
 
     # Only the figure PDFs actually referenced by the manuscript are needed.
-    4..10 | ForEach-Object {
-        $name = "Figure_$_.pdf"
-        $src = Join-Path $paperDir 'images' $name
-        if (-not (Test-Path $src)) {
+    foreach ($number in 4..10) {
+        $name = "Figure_$number.pdf"
+        $src = Join-Path $paperImages $name
+        if (-not (Test-Path -LiteralPath $src)) {
             throw "Required figure is missing: images/$name"
         }
-        Copy-Item $src (Join-Path $staging 'images' $name)
+        $dst = Join-Path $stagingImages $name
+        Copy-Item -LiteralPath $src -Destination $dst -Force
     }
 
-    if (Test-Path $zipPath) {
-        Remove-Item $zipPath -Force
+    if (Test-Path -LiteralPath $zipPath) {
+        Remove-Item -LiteralPath $zipPath -Force
     }
 
-    Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $zipPath -CompressionLevel Optimal
+    Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $zipPath -CompressionLevel Optimal -Force
 
     # Verify mandatory entries before reporting success.
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $zip = [System.IO.Compression.ZipFile]::OpenRead($zipPath)
     try {
-        $names = $zip.Entries.FullName
+        $names = @($zip.Entries | ForEach-Object { $_.FullName.Replace('\', '/') })
         $mandatory = @(
             'main.tex',
             'references.bib',
@@ -85,17 +96,19 @@ try {
         }
     }
     finally {
-        $zip.Dispose()
+        if ($null -ne $zip) {
+            $zip.Dispose()
+        }
     }
 
-    $hash = (Get-FileHash $zipPath -Algorithm SHA256).Hash.ToLowerInvariant()
-    $size = (Get-Item $zipPath).Length
+    $hash = (Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    $size = (Get-Item -LiteralPath $zipPath).Length
     Write-Host "Created: $zipPath"
     Write-Host "Size:    $size bytes"
     Write-Host "SHA256:  $hash"
 }
 finally {
-    if (Test-Path $staging) {
-        Remove-Item $staging -Recurse -Force
+    if (Test-Path -LiteralPath $staging) {
+        Remove-Item -LiteralPath $staging -Recurse -Force
     }
 }
