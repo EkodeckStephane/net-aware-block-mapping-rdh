@@ -61,7 +61,7 @@ Zhang et al. 2019 \cite{Zhang2019Magnification} & 369 & Open & 32.31 & 0.08 & Fi
 Chhajed \& Garg 2023 \cite{Chhajed2023BlockDiagonal} & $<$2000 & Open & $\sim$25 & $<$1 & Fixed & Reserved & Not extracted \\
 Yang 2023 \cite{Yang2023Large} & $>$2000 & Open & $\sim$23 & $<$1 & Partial & Reserved & Not extracted \\
 Huynh \& Nguyen 2025 \cite{Huynh2025BlockMapping} & 2070 & Open & 24.13 & 0.55 & Fixed & Reserved & Not extracted \\
-\textbf{Proposed} & \textbf{2874 gross} & \textbf{2245 net} & \textbf{--} & \textbf{0.76} & \textbf{Yes} & \textbf{Evaluated} & \textbf{Yes} \\
+\textbf{Proposed} & \textbf{3832 gross cap.} & \textbf{2245 net at $q=2874$} & \textbf{--} & \textbf{0.76} & \textbf{Yes} & \textbf{Evaluated} & \textbf{Yes} \\
 \bottomrule
 \end{tabular}
 }
@@ -72,9 +72,11 @@ $512\times512$ protocol. Values provide cross-protocol context because
 datasets, payload definitions, and side-information accounting differ.
 ``Steg. eval.'': whether a steganalysis result was extracted for this overview
 table; Section~\ref{subsec:steganalysis} reports the common-protocol detector
-evaluation. For the proposed method, DRD is the reported common-protocol
-distortion summary; per-image PSNR and changed-pixel outputs are included in
-the reproducibility artifacts.\par}
+evaluation. For the proposed method, 3832 is the rounded mean A2 gross mapping
+capacity, $q=2874$ is the mean embedded application payload at the 75\% budget,
+and 2245 is the resulting mean delivered net payload. DRD is the reported
+common-protocol distortion summary; per-image PSNR and changed-pixel outputs are
+included in the reproducibility artifacts.\par}
 \RevisionAddEnd
 \end{table*}
 
