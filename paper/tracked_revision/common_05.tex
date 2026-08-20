@@ -179,7 +179,7 @@ all eight messages and covers are recovered exactly.
 \label{tab:document-net}
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
-\textbf{Image} & \textbf{Gross} & \textbf{Aux.} & \textbf{Net} & \textbf{DRD} \\
+\textbf{Image} & \textbf{Payload} & \textbf{Aux.} & \textbf{Net} & \textbf{DRD} \\
 \midrule
 circuit-2 & 1576 & 592 & 984 & 0.583 \\
 formula-5 & 3692 & 672 & 3020 & 0.900 \\
@@ -196,13 +196,13 @@ french-4 & 5729 & 688 & 5041 & 0.864 \\
 \end{table}
 
 \RevisionAddBegin
-On the 100 BOSSbase test images, net-aware table selection gives 669.6 gross,
-377.1 auxiliary, and 292.5 net bits on average. Median net capacity is 159
-bits, 75 images are net positive, mean DRD is 0.300, and every evaluated
-message and cover is recovered exactly. Disabling net-aware table selection on
-the same sample yields 832.5 gross, 731.4 auxiliary, and 101.1 net bits on
-average, showing that the active-prefix decision also improves the external
-transfer setting.
+On the 100 BOSSbase test images, net-aware table selection gives a mean
+embedded payload of 669.6 bits, 377.1 auxiliary bits, and 292.5 delivered net
+bits. Median net capacity is 159 bits, 75 images are net positive, mean DRD is
+0.300, and every evaluated message and cover is recovered exactly. Disabling
+net-aware table selection on the same sample yields a mean embedded payload of
+832.5 bits, 731.4 auxiliary bits, and 101.1 delivered net bits, showing that the
+active-prefix decision also improves the external transfer setting.
 \RevisionAddEnd
 
 \RevisionAddBegin
