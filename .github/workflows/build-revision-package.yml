@@ -62,21 +62,22 @@ jobs:
           cp paper/article_v1_0_red_blue_changes.tex paper/article_v1_0_blue_changes.tex
           python - <<'PY'
           from pathlib import Path
+
           p = Path('paper/article_v1_0_blue_changes.tex')
           s = p.read_text(encoding='utf-8')
-          marker = r'\\begin{document}'
+          marker = r'\begin{document}'
           override = r'''
 % Blue-only revision view: additions remain blue; submitted deletions are hidden.
-\\makeatletter
-\\renewcommand{\\DIFdel}[1]{}
-\\renewcommand{\\DIFdelbegin}{}
-\\renewcommand{\\DIFdelend}{}
-\\renewcommand{\\DIFmodbegin}{}
-\\renewcommand{\\DIFmodend}{}
-\\makeatother
+\makeatletter
+\renewcommand{\DIFdel}[1]{}
+\renewcommand{\DIFdelbegin}{}
+\renewcommand{\DIFdelend}{}
+\renewcommand{\DIFmodbegin}{}
+\renewcommand{\DIFmodend}{}
+\makeatother
 '''
           if marker not in s:
-              raise SystemExit('Could not locate \\begin{document} in latexdiff output')
+              raise SystemExit(r'Could not locate \begin{document} in latexdiff output')
           s = s.replace(marker, override + '\n' + marker, 1)
           p.write_text(s, encoding='utf-8')
           PY
@@ -125,10 +126,10 @@ jobs:
             test -s "$f"
             pdfinfo "$f" | grep -E '^(Pages|Page size):'
           done
-          ! grep -R -nE 'LaTeX Warning:.*undefined|Citation .* undefined|Reference .* undefined|Overfull \\hbox \\([1-9][0-9]*\.[0-9]+pt too wide\\)' *.log || {
+          if grep -R -nE 'LaTeX Warning:.*undefined|Citation .* undefined|Reference .* undefined|Overfull \\hbox \\([1-9][0-9]*\.[0-9]+pt too wide\\)' -- *.log; then
             echo 'LaTeX warnings requiring manual audit were found.' >&2
             exit 1
-          }
+          fi
 
       - name: Rebuild revised LaTeX source ZIP
         working-directory: paper
