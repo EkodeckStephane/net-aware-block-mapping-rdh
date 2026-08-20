@@ -15,7 +15,7 @@
 
 \opening{Dear Professor Bianchi,}
 
-We submit the revised manuscript JVCI-26-1814, ``Net-Aware Learned Block Mapping for Reversible Data Hiding in Binary Images,'' for further consideration in the \emph{Journal of Visual Communication and Image Representation}. We thank you and the reviewers for the detailed comments, which led to a substantial revision of the manuscript, experiments, figures, bibliography, and response package.
+We submit the revised manuscript JVCI-26-1814, ``Net-Aware Learned Block Mapping for Reversible Data Hiding in Binary Images,'' for further consideration in the \emph{Journal of Visual Communication and Image Representation}. We thank you and the reviewers for the detailed comments, which led to a substantial revision of the manuscript, experiments, figures, bibliography, external validation, and response package.
 
 The revision clarifies the contribution by centering it on serialization-aware activation. The manuscript now states explicitly that net-capacity accounting, binary RDH, PEAK/ZERO block mapping, side information, and distortion-aware ranking are established concepts. The technical contribution is defined as serialization-aware mapping activation: the active reversible PEAK/ZERO configuration is selected according to usable mapping capacity after charging the exact serialized description required for deterministic recovery.
 
@@ -26,15 +26,18 @@ The main changes are as follows:
   \item A central activation ablation isolates the effect of serialization-aware selection: mean net payload increases from 2139 to 2245 bits relative to an otherwise identical wire-charged activation.
   \item Additional ablations compare CNN ranking with Hamming, direct DRD, transition-preserving, and connectivity-aware rankers, and a CNN architecture diagnostic now covers depth, window size, width, and inference time.
   \item The experiments now include serialization sensitivity for baselines, module-level runtime, confidence intervals in the payload/DRD figures, detectability-cause diagnostics, visual residual comparisons, and channel stress tests.
-  \item The claims are narrowed: the method is positioned as capacity-oriented reversible annotation over lossless channels, with detectability-aware interpretation at high payload.
+  \item We added a frozen external validation on all 199 real scanned FUNSD documents, using the committed CNN without retraining or tuning and testing both fixed-threshold and Otsu binarization at 64, 128, 256, and 512 bits. Every available run recovers the payload and binary cover exactly. Compared with all-feasible wire-charged activation, the proposed serialization-aware activation saves approximately 239--241 auxiliary bits per paired image and is never worse in delivered net payload. We also report the unfavorable result transparently: mean net payload remains negative through 512 bits and positive-net cases remain rare on FUNSD.
+  \item The scope is now classified explicitly rather than using ``limitation'' as a generic label. The matched stego/auxiliary pair and lossless path are stated as \emph{conditions of validity}; metadata-dominated low-payload behavior, availability, distortion, and payload-dependent detectability are reported as \emph{operating characteristics}; and the remaining \emph{true limitations} are high-payload detectability for covert use, protocol dependence of baseline serialization, and external breadth beyond the single FUNSD corpus.
   \item The related work was shortened and corrected, with additional relevant binary-cover, side-information, and distortion-aware references.
 \end{itemize}
 
+The new FUNSD experiment materially addresses the earlier concern that external document generalization had only been assessed on the small canonical document set and on thresholded photographic images. It supports transfer of exact reversibility and of the serialization-aware activation benefit to a substantially larger real scanned-document corpus without retraining, while deliberately avoiding any claim of positive net efficiency in the tested FUNSD payload range.
+
 The submission package includes the revised source manuscript and figures, updated highlights, a clean PDF, a PDF with changes shown in blue, a PDF with deletions shown in red and additions shown in blue, and a point-by-point response to every reviewer comment.
 
-\textbf{Submission statements.} The manuscript is original, has not been published previously, is not under consideration elsewhere, and has been approved by all authors. The authors have no known competing financial or personal interests. The reproducibility materials and experiment outputs are described in the manuscript and are publicly available through the GitHub repository cited in the Code Availability statement.
+\textbf{Submission statements.} The manuscript is original, has not been published previously, is not under consideration elsewhere, and has been approved by all authors. The authors have no known competing financial or personal interests. The reproducibility materials and experiment outputs, including the fixed-128 and Otsu FUNSD aggregate, paired, and per-image validation results, are described in the manuscript and are publicly available through the GitHub repository cited in the Code Availability statement.
 
-We believe the revised manuscript provides a clearer, more limited, and more defensible contribution, and we thank you for considering it for further review.
+We believe the revised manuscript provides a clearer, more rigorously bounded, and more defensible contribution, and we thank you for considering it for further review.
 
 \closing{Yours sincerely,}
 
