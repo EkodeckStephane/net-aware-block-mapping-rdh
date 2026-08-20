@@ -110,15 +110,6 @@ Suitability therefore serves as an applicability indicator, with net
 performance reported separately in both strata.
 \RevisionAddEnd
 
-At 512 bits, the 70 available images have mean foreground fraction 0.289,
-189.2 eligible non-uniform PEAK patterns, and non-uniform $8\times8$ block
-fraction 0.227. The 30 unavailable images have corresponding means 0.025,
-\RevisionAddBegin
-34.2, and 0.024. Unavailable cases are therefore concentrated in near-empty or
-nearly uniform thresholded photographs with too few repeated non-uniform
-patterns; available cases still restore the message and cover exactly.
-\RevisionAddEnd
-
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{images/Figure_7.pdf}
@@ -166,14 +157,14 @@ enumerative serialization itself is negligible.
 \toprule
 \textbf{Module} & \textbf{Median time (s)} \\
 \midrule
-Candidate generation and ranking & 0.5771 \\
-Serialized-prefix optimization & 0.2832 \\
-Embedding & 0.7155 \\
-Serialization & 0.00015 \\
-Extraction & 0.1926 \\
-Round-trip verification & 0.00008 \\
+Candidate generation and ranking & 1.1601 \\
+Serialized-prefix optimization & 0.5268 \\
+Embedding & 1.3893 \\
+Serialization & 0.00025 \\
+Extraction & 0.3213 \\
+Round-trip verification & 0.00012 \\
 \midrule
-End-to-end total & 1.7857 \\
+End-to-end total & 3.4409 \\
 \bottomrule
 \end{tabular}
 \vspace{2pt}
