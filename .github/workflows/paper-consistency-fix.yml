@@ -1,0 +1,153 @@
+name: One-time manuscript consistency correction
+
+on:
+  push:
+    branches:
+      - funsd-external-validation
+    paths:
+      - '.github/workflows/paper-consistency-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-paper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: funsd-external-validation
+          fetch-depth: 0
+
+      - name: Apply audited consistency corrections
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_exact(path: str, old: str, new: str, *, minimum: int = 1) -> int:
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count < minimum:
+                  raise SystemExit(f'{path}: expected at least {minimum} occurrence(s), found {count}: {old!r}')
+              p.write_text(text.replace(old, new), encoding='utf-8')
+              print(f'{path}: replaced {count} occurrence(s)')
+              return count
+
+          # 1. Keep capacity, requested payload, and delivered net payload distinct.
+          for path in ('paper/main.tex', 'paper/tracked_revision/common_02.tex'):
+              replace_exact(
+                  path,
+                  r'\textbf{Proposed} & \textbf{2874 gross} & \textbf{2245 net}',
+                  r'\textbf{Proposed} & \textbf{3832 gross cap.} & \textbf{2245 net at $q=2874$}',
+              )
+              replace_exact(
+                  path,
+                  r'table; Section~\ref{subsec:steganalysis} reports the common-protocol detector\nevaluation. For the proposed method, DRD is the reported common-protocol\ndistortion summary; per-image PSNR and changed-pixel outputs are included in\nthe reproducibility artifacts.\par}',
+                  r'table; Section~\ref{subsec:steganalysis} reports the common-protocol detector\nevaluation. For the proposed method, 3832 is the rounded mean A2 gross mapping\ncapacity, $q=2874$ is the mean embedded application payload at the 75\% budget,\nand 2245 is the resulting mean delivered net payload. DRD is the reported\ncommon-protocol distortion summary; per-image PSNR and changed-pixel outputs\nare included in the reproducibility artifacts.\par}',
+              )
+
+          for path in ('paper/main.tex', 'paper/tracked_revision/common_05.tex'):
+              replace_exact(
+                  path,
+                  r'\textbf{Image} & \textbf{Gross} & \textbf{Aux.} & \textbf{Net} & \textbf{DRD}',
+                  r'\textbf{Image} & \textbf{Payload} & \textbf{Aux.} & \textbf{Net} & \textbf{DRD}',
+              )
+              replace_exact(
+                  path,
+                  'On the 100 BOSSbase test images, net-aware table selection gives 669.6 gross,\n377.1 auxiliary, and 292.5 net bits on average.',
+                  'On the 100 BOSSbase test images, net-aware table selection gives a mean\nembedded payload of 669.6 bits, 377.1 auxiliary bits, and 292.5 delivered net\nbits.',
+              )
+              replace_exact(
+                  path,
+                  'Disabling net-aware table selection on\nthe same sample yields 832.5 gross, 731.4 auxiliary, and 101.1 net bits on\naverage, showing that the active-prefix decision also improves the external\ntransfer setting.',
+                  'Disabling net-aware table selection on\nthe same sample yields a mean embedded payload of 832.5 bits, 731.4 auxiliary\nbits, and 101.1 delivered net bits, showing that the active-prefix decision\nalso improves the external transfer setting.',
+              )
+
+          # 2. Remove a paragraph whose diagnostic numbers were not frozen as an auditable result artifact.
+          untraceable = (
+              'At 512 bits, the 70 available images have mean foreground fraction 0.289,\n'
+              '189.2 eligible non-uniform PEAK patterns, and non-uniform $8\\times8$ block\n'
+              'fraction 0.227. The 30 unavailable images have corresponding means 0.025,\n'
+              '34.2, and 0.024. Unavailable cases are therefore concentrated in near-empty or\n'
+              'nearly uniform thresholded photographs with too few repeated non-uniform\n'
+              'patterns; available cases still restore the message and cover exactly.\n\n'
+          )
+          for path in ('paper/main.tex', 'paper/tracked_revision/common_06.tex'):
+              replace_exact(path, untraceable, '')
+
+          # 3. Synchronize the module-runtime table to the frozen committed JSON result.
+          old_runtime = (
+              'Candidate generation and ranking & 0.5771 \\\\\n'
+              'Serialized-prefix optimization & 0.2832 \\\\\n'
+              'Embedding & 0.7155 \\\\\n'
+              'Serialization & 0.00015 \\\\\n'
+              'Extraction & 0.1926 \\\\\n'
+              'Round-trip verification & 0.00008 \\\\\n'
+              '\\midrule\n'
+              'End-to-end total & 1.7857 \\\\'
+          )
+          new_runtime = (
+              'Candidate generation and ranking & 1.1601 \\\\\n'
+              'Serialized-prefix optimization & 0.5268 \\\\\n'
+              'Embedding & 1.3893 \\\\\n'
+              'Serialization & 0.00025 \\\\\n'
+              'Extraction & 0.3213 \\\\\n'
+              'Round-trip verification & 0.00012 \\\\\n'
+              '\\midrule\n'
+              'End-to-end total & 3.4409 \\\\'
+          )
+          for path in ('paper/main.tex', 'paper/tracked_revision/common_06.tex'):
+              replace_exact(path, old_runtime, new_runtime)
+
+          # 4. Make the graphical-abstract 512-bit number cohort-explicit.
+          replace_exact(
+              'paper/graphical_abstract.tex',
+              r'Document benchmark\\mean net payload: 2245 bits\\BOSSbase target 512: 309 bits',
+              r'Document benchmark\\mean net payload: 2245 bits\\BOSSbase matched cohort, $q=512$: 309 net bits',
+          )
+
+          # 5. Correct author metadata against the publisher/DBLP records.
+          replace_exact(
+              'paper/references.bib',
+              'author  = {Yin, Xiaolin and Lu, Wei and Zhang, Jian and Chen, Jiaxin and Liu, Wenmin},',
+              'author  = {Yin, Xiaolin and Lu, Wei and Zhang, JunHong and Chen, Jianfei and Liu, Wanteng},',
+          )
+          replace_exact(
+              'paper/references.bib',
+              'author  = {Zhang, Fang and Lu, Wei and Liu, Hongli and Yeung, Yik and Xue, Yi},',
+              'author  = {Zhang, Fang and Lu, Wei and Liu, Hongmei and Yeung, Yuileong and Xue, Yingjie},',
+          )
+
+          # 6. Guard against the audited stale phrases reappearing in the clean manuscript.
+          clean = Path('paper/main.tex').read_text(encoding='utf-8')
+          forbidden = [
+              'Candidate generation and ranking & 0.5771',
+              'End-to-end total & 1.7857',
+              '189.2 eligible non-uniform PEAK patterns',
+              '669.6 gross',
+              '832.5 gross',
+              r'\textbf{Image} & \textbf{Gross}',
+              r'\textbf{Proposed} & \textbf{2874 gross}',
+          ]
+          remaining = [item for item in forbidden if item in clean]
+          if remaining:
+              raise SystemExit(f'Stale audited phrases remain: {remaining}')
+          PY
+
+      - name: Verify tracked wrappers still assemble from shared fragments
+        run: |
+          grep -q 'tracked_revision/common_06.tex' paper/article_v1_0_blue_changes.tex
+          grep -q 'tracked_revision/common_06.tex' paper/article_v1_0_red_blue_changes.tex
+
+      - name: Commit corrections
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add paper/main.tex paper/tracked_revision/common_02.tex paper/tracked_revision/common_05.tex paper/tracked_revision/common_06.tex paper/graphical_abstract.tex paper/references.bib
+          git diff --cached --check
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix audited manuscript consistency issues [skip ci]'
+          git push origin HEAD:funsd-external-validation
