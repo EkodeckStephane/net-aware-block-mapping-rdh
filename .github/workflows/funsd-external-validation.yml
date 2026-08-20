@@ -1,0 +1,81 @@
+name: FUNSD external validation
+
+on:
+  push:
+    branches:
+      - funsd-external-validation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-funsd:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Run core round-trip tests
+        run: |
+          python -m pytest -q tests/test_abm_rdh.py tests/test_auxiliary_serialization.py tests/test_ml_candidate_ranker.py
+
+      - name: Download official FUNSD dataset
+        run: |
+          mkdir -p datasets/funsd
+          curl -L --fail --retry 3 --retry-delay 2 \
+            https://guillaumejaume.github.io/FUNSD/dataset.zip \
+            -o datasets/funsd/dataset.zip
+          unzip -q datasets/funsd/dataset.zip -d datasets/funsd
+          test -d datasets/funsd/dataset/training_data/images
+          test -d datasets/funsd/dataset/testing_data/images
+          echo "FUNSD image count: $(find datasets/funsd/dataset -path '*/images/*.png' | wc -l)"
+
+      - name: Frozen validation with fixed threshold 128
+        run: |
+          python evaluate_funsd_external.py \
+            --dataset datasets/funsd/dataset \
+            --threshold-mode fixed128 \
+            --output-dir outputs/funsd_external/fixed128
+
+      - name: Frozen validation with Otsu binarization sensitivity
+        run: |
+          python evaluate_funsd_external.py \
+            --dataset datasets/funsd/dataset \
+            --threshold-mode otsu \
+            --output-dir outputs/funsd_external/otsu
+
+      - name: Build compact audit summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          out = {}
+          for mode in ('fixed128', 'otsu'):
+              path = Path('outputs/funsd_external') / mode / 'funsd_external_summary.json'
+              out[mode] = json.loads(path.read_text(encoding='utf-8'))
+          Path('outputs/funsd_external/combined_summary.json').write_text(
+              json.dumps(out, indent=2), encoding='utf-8'
+          )
+          print(json.dumps(out, indent=2))
+          PY
+
+      - name: Upload external-validation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: funsd-external-validation-results
+          path: outputs/funsd_external/
+          retention-days: 30
+          if-no-files-found: error
