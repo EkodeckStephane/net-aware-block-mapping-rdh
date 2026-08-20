@@ -1,13 +1,23 @@
 name: FUNSD external validation
 
 on:
+  # Run automatically only when experimental code, tests, dependencies,
+  # or the frozen ranker change on the experiment branch. Editorial files
+  # (paper, letters, PDFs, highlights, etc.) must not rerun this expensive job.
   push:
     branches:
       - funsd-external-validation
-  pull_request:
-    branches:
-      - main
+    paths:
+      - '**/*.py'
+      - 'requirements*.txt'
+      - 'ml_ranker_results/**'
   workflow_dispatch:
+
+# Only one FUNSD validation should consume a runner at a time. A newer
+# relevant run supersedes an older one.
+concurrency:
+  group: funsd-external-validation
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -86,7 +96,6 @@ jobs:
           if-no-files-found: error
 
       - name: Persist auditable result tables on experiment branch
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: |
           rm -rf external_validation_results/funsd
           mkdir -p external_validation_results/funsd
