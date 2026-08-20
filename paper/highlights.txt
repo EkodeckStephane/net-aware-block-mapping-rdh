@@ -1,5 +1,5 @@
-Serialization-aware activation selects mappings by exact wire cost.
-Enumerative side information charges every recovery bit.
+Serialization-aware activation selects mappings by exact serialized cost.
+Enumerative side information charges every bit needed for exact recovery.
 Central ablation raises mean net payload from 2139 to 2245 bits.
-Ranker, runtime, channel, and detectability ablations define scope.
-Common protocol compares ABM, Dong, Huynh-Nguyen, and PPOCP.
+Frozen validation on 199 scanned forms confirms exact recovery without retraining.
+External scans show metadata dominates net payload at targets up to 512 bits.
