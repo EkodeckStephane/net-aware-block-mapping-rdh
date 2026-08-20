@@ -1,0 +1,312 @@
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[expansion=false]{microtype}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\PassOptionsToPackage{compatibility=false}{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{ragged2e}
+\usepackage{placeins}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{tikz}
+
+\usetikzlibrary{
+    arrows.meta,
+    positioning,
+    shapes.geometric,
+    shapes.misc,
+    calc
+}
+
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+
+
+\definecolor{revisionblue}{RGB}{0,0,180}
+\definecolor{revisionred}{RGB}{180,0,0}
+\newcommand{\RevisionAddBegin}{\begingroup\color{revisionblue}}
+\newcommand{\RevisionAddEnd}{\endgroup}
+\newenvironment{RevisionDeletion}{%
+  \par\begingroup\color{revisionred}\footnotesize\ttfamily
+  \setlength{\parindent}{0pt}\setlength{\parskip}{1pt}\obeyspaces
+}{\par\endgroup}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Net-Aware Learned Block Mapping for Binary-Image RDH}
+\shortauthors{Ekodeck \textit{et al.}}
+
+\title[mode=title]{Net-Aware Learned Block Mapping for Reversible Data Hiding in Binary Images}
+
+\author[1,2,3]{St\'ephane Ga\"el R. Ekodeck}[
+  orcid=0000-0002-8094-8832]
+\cormark[1]
+\ead{stephane-gael.ekodeck@facsciences-uy1.cm}
+\credit{Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Visualization, Writing -- original draft}
+
+\author[4,5]{Vivien Beyala Kamgang}[
+  orcid=0000-0002-3644-1866]
+\ead{vivsxx@univ-bertoua.cm}
+\credit{Conceptualization, Methodology, Writing -- review and editing}
+
+\author[1,2,3]{Serge Alain Eb\'el\'e}[
+  orcid=0000-0001-7036-7068]
+\ead{serge-alain.ebele@facsciences-uy1.cm}
+\credit{Conceptualization, Methodology, Validation, Writing -- review and editing}
+
+\author[5,4]{Julius Marcellin Nkenlifack}[
+  orcid=0000-0003-3322-4687]
+\ead{marcellin.nkenlifack@gmail.com}
+\credit{Supervision, Project administration, Writing -- review and editing}
+
+\affiliation[1]{
+  organization={Department of Computer Science, LIRIMA, TEAM GRIMCAPE, University of Yaound\'e I},
+  addressline={P.O. Box 812},
+  city={Yaound\'e},
+  country={Cameroon}
+}
+\affiliation[2]{
+  organization={IRD, UMI 209 UMMISCO, IRD France Nord},
+  city={Bondy},
+  postcode={F-93143},
+  country={France}
+}
+\affiliation[3]{
+  organization={Sorbonne Universit\'e, UMI 209 UMMISCO},
+  city={Paris},
+  postcode={F-75005},
+  country={France}
+}
+\affiliation[4]{
+  organization={RTU Mathematics and Computer Science, The University of Bertoua},
+  addressline={P.O. Box 416},
+  city={Bertoua},
+  country={Cameroon}
+}
+\affiliation[5]{
+  organization={RUFCEA (UR-IFIA), University of Dschang},
+  addressline={P.O. Box 96},
+  city={Dschang},
+  country={Cameroon}
+}
+
+\cortext[1]{Corresponding author}
+
+\begin{abstract}
+This paper presents a reversible data hiding scheme for plaintext binary
+images under an explicit synchronization model. Its technical contribution is
+serialization-aware net-capacity-driven activation of reversible PEAK/ZERO
+$3\times3$ mappings: the active mapping configuration is selected by usable
+mapping capacity after charging the exact serialized description required for
+deterministic recovery. The implementation represents the active
+PEAK subset by a combinatorial rank and the distance-one flip positions by
+base-9 digits; a convolutional neural network (CNN) supplies the learned
+distortion ranking for admissible ZERO candidates. On eight $512\times512$
+\RevisionAddBegin
+document images, this activation raises mean net payload from 2139 to 2245 bits
+relative to an otherwise identical wire-charged gross-selection variant and
+preserves exact round-trip reversibility. Frozen external validation on all 199
+scanned FUNSD documents, with no training or tuning on FUNSD, preserves exact
+message and cover recovery for every available run under both fixed-threshold
+and Otsu binarization. Relative to all-feasible wire-charged activation, the
+serialization-aware variant saves about 239--241 auxiliary bits per paired
+image and is never worse in delivered net payload, although positive net
+payload remains uncommon at targets up to 512 bits. In a common executable
+protocol on 100 disjoint thresholded BOSSbase images, the proposed adaptive
+block-mapping method (ABM), Dong, Huynh--Nguyen, and the opposite-center-pair
+method (PPOCP) are compared with identical messages, payload targets,
+distance-reciprocal distortion (DRD) computation, auxiliary-bit accounting,
+and reversibility checks. The proposed method achieves the highest useful
+capacity among the evaluated implementations, while PPOCP retains the
+lowest-distortion and most favorable detectability profile. Logistic detector
+AUC reaches 0.900 and 0.957 at 256 and 512 bits, placing the validated operating
+region in capacity-oriented reversible annotation over a lossless channel with
+detectability-aware payload selection.
+\RevisionAddEnd
+\end{abstract}
+
+\begin{keywords}
+\textcolor{revisionblue}{Binary-image reversible data hiding \sep PEAK/ZERO block mapping \sep}
+\textcolor{revisionblue}{Serialization-aware mapping selection \sep Auxiliary-information coding \sep}
+\textcolor{revisionblue}{Learned distortion ranking}
+\end{keywords}
+
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+
+The proliferation of digital archives has increased the need to associate
+authentication data, annotations, and integrity evidence with images while
+preserving the original content. Cryptography protects message content
+\RevisionAddBegin
+\cite{Rivest1978RSA}, whereas steganography conceals its presence
+\cite{Johnson2001InformationHiding}. Reversible data hiding (RDH) combines these objectives with
+\RevisionAddEnd
+exact cover restoration, a property that is especially valuable for medical,
+legal, and administrative binary documents.
+
+\RevisionAddBegin
+Binary images have two pixel states, so every modification can alter
+\RevisionAddEnd
+stroke continuity, topology, or local readability. Specialized RDH methods
+therefore rely on pattern statistics, overlapping neighborhoods, or reversible
+block substitutions rather than direct grayscale-domain operations
+\cite{Chhajed2023BlockDiagonal,Huynh2025BlockMapping,Yang2023Large,
+Ren2023Sliding,Dong2020Adaptive,Zhang2019Magnification,Yin2020PPOCP,
+Yin2020SymmetricFlipping,Ren2019Encrypted,Feng2015Secure,Xuan2008RunLength}. Their practical performance depends
+on three coupled quantities: visual distortion, the side information required
+for exact synchronization, and the statistical footprint visible to a
+steganalyst.
+
+\RevisionAddBegin
+Existing methods occupy complementary parts of the capacity--distortion space.
+Magnification-based embedding provides low distortion by increasing image size
+\cite{Zhang2019Magnification}; PPOCP
+\RevisionAddEnd
+uses overlapping opposite-center pairs for perceptually selective changes
+\cite{Yin2020PPOCP}; Huynh--Nguyen exploit the combinatorial capacity of
+$3\times3$ block mapping \cite{Huynh2025BlockMapping}; and Dong et al.\ adapt
+overlapping patterns to image statistics \cite{Dong2020Adaptive}. These
+contributions motivate a unified evaluation in
+which useful payload is measured after serialized metadata and all methods use
+\RevisionAddBegin
+the same messages, cover images, and distortion metric.
+\RevisionAddEnd
+
+\RevisionAddBegin
+This work builds on established net-capacity accounting. The distinguishing
+algorithmic decision is that the exact serialized description cost of the
+reversible mapping configuration participates in deciding which PEAK/ZERO
+tables remain active. A convolutional neural network ranks
+distance-one ZERO candidates by predicted perceptual cost, while the
+reversible mechanism remains a deterministic PEAK/ZERO substitution with an
+enumerative auxiliary stream. Gaussian-process threshold exploration and the
+Random Forest uniform-block agent are reported as diagnostic ablations; the
+deployed distance-one codec consists of the deterministic PEAK/ZERO mapping,
+CNN ranking, serialization-aware activation, and enumerative auxiliary stream.
+\RevisionAddEnd
+
+The main scientific contributions of this paper are:
+\begin{enumerate}
+\RevisionAddBegin
+    \item Serialization-aware net-capacity-driven activation of reversible
+    PEAK/ZERO mappings, where active tables are selected by usable mapping capacity
+    after the exact serialized description cost required for deterministic
+    recovery.
+    \item An executable enumerative wire representation for the active PEAK
+    subset and the associated distance-one flip positions, yielding a decoder
+    contract $(I',A_{\mathrm{wire}})\mapsto(I,M)$.
+    \item A learned candidate-cost ranker evaluated against Hamming-index,
+    direct DRD-cost, transition-preserving, and connectivity-aware rankers, plus
+    a CNN architecture ablation.
+    \item A common executable protocol comparing the proposed adaptive
+    block-mapping method (ABM), the opposite-center-pair method (PPOCP),
+    Huynh--Nguyen, and Dong with identical
+    covers, messages, payload targets, reversibility checks,
+    distance-reciprocal distortion (DRD) implementation, auxiliary-bit
+    accounting, paired statistics, resources, and grouped steganalysis.
+    \item Frozen external validation of the deployed CNN-ranked codec on all
+    199 real scanned FUNSD documents under fixed-128 and Otsu binarization,
+    without retraining or tuning, including exact round-trip, availability,
+    auxiliary-cost, net-payload, DRD, and paired A1/A2 activation analyses.
+\RevisionAddEnd
+\end{enumerate}
+
+Section~\ref{sec:relatedwork} positions the work in binary RDH and
+steganalysis. Section~\ref{sec:proposedmethod} defines the reversible mapping,
+learned ranking, and net-capacity codec. Section~\ref{sec:experimental}
+\RevisionAddBegin
+describes the common protocol and reports document-image, BOSSbase, and FUNSD
+results. Section~\ref{sec:discussion} synthesizes the practical operating
+region, validity conditions, and remaining limitations, and
+Section~\ref{sec:conclusion} concludes the study.
+\RevisionAddEnd
+
+
+\section{Related Work}
+\label{sec:relatedwork}
+
+\RevisionAddBegin
+Binary-image RDH is constrained by the lack of grayscale redundancy: each
+pixel flip can break strokes, isolate components, or change local topology.
+The relevant literature therefore centers on pattern substitution, distortion
+control, and the side information required to restore the cover exactly.
+\RevisionAddEnd
+
+\RevisionAddBegin
+\subsection{Binary Pattern and Block Substitution}
+\RevisionAddEnd
+
+\RevisionAddBegin
+Early binary-image RDH uses logical operations and run-length or pattern
+statistics \cite{Xuan2008RunLength}. Ho et al.\ \cite{Ho2009PatternSubstitution} established
+high-capacity reversible pattern substitution by exchanging frequent and
+eligible replacement patterns. Dong et al.\ \cite{Dong2020Adaptive} refine this
+line through adaptive overlapping patterns, PF/PFR handling, and a compressed
+location map. Yin et al.\ \cite{Yin2020PPOCP} select opposite-center pattern
+pairs (PPOCP), yielding a low-distortion profile. Zhang et al.\
+\cite{Zhang2019Magnification} obtain very low distortion through image
+magnification, but the carrier dimensions change. Huynh and Nguyen
+\cite{Huynh2025BlockMapping} are the closest direct block-mapping reference:
+they use non-overlapping $3\times3$ blocks, frequent PEAK patterns,
+zero-frequency replacement patterns, and Hamming-distance-limited mappings.
+These works establish pattern substitution, $3\times3$ PEAK/ZERO block
+mapping, and Hamming-distance control as the relevant technical foundation.
+\RevisionAddEnd
+
+\RevisionAddBegin
+Other binary-image variants expand the design space. Chhajed and Garg
+\cite{Chhajed2023BlockDiagonal} use block-diagonal partition patterns, Ren
+et al.\ \cite{Ren2023Sliding} use sliding windows, and Yang
+\cite{Yang2023Large} prioritizes mixed black-white regions. They are useful
+contextual comparators, with executable wire models left open for a direct
+net-payload benchmark under the protocol used here.
+\RevisionAddEnd
+
+\RevisionAddBegin
+\subsection{Distortion, Coding, and Reconstruction Information}
+\RevisionAddEnd
+
+\RevisionAddBegin
+Binary document quality is measured with DRD because it accounts for spatially
+non-uniform perceptual sensitivity \cite{Lu2004DRD}. Feng, Lu, and Sun
+\cite{Feng2015Secure} further show that run continuity and connectivity are
+important when choosing flippable pixels. These results motivate the ranker
+ablations in Section~\ref{subsec:component-ablations}: Hamming ordering alone
+is compared with direct DRD-cost, transition-preserving, connectivity-aware,
+and CNN-based rankings.
+\RevisionAddEnd
+
+\RevisionAddBegin
+Coding-based RDH for binary covers also predates this work. Zhang et al.\
+\cite{Zhang2012OptimalCodes} improve binary-cover RDH schemes using optimal
+codes, and Zhang et al.\ \cite{Zhang2015OptimalTransition} study optimal
+transition probabilities under general distortion metrics. Xiao et al.\
+\cite{Xiao2022BinaryCovers} propose a general-distortion RDH framework for
+binary covers using reconstruction information and matrix embedding; Li et
+al.\ \cite{Li2023MultiEmbedding} extend this line with multi-embedding.
+These studies establish distortion-aware binary-cover coding and
+reconstruction information as important conceptual prior art. Their
+contribution is complementary to the plaintext $3\times3$ PEAK/ZERO
+block-mapping codec developed here, where the serialized mapping description
+itself determines which reversible mappings remain active.
+\RevisionAddEnd
+

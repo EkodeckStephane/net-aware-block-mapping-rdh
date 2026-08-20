@@ -1,0 +1,304 @@
+\RevisionAddBegin
+\subsection{Encrypted, Halftone, and Learned Neighbors}
+\RevisionAddEnd
+
+\RevisionAddBegin
+Encrypted-domain binary RDH uses a different carrier model, but it is relevant
+to the treatment of side information. Ren, Lu, and Chen
+\cite{Ren2019Encrypted} use prediction in encrypted binary images, and recent
+encrypted-domain work includes adaptive block coding for grayscale carriers
+\cite{Xiao2024AdaptiveBlock}. Halftone RDH also records dynamic embedding-state
+information \cite{Yin2021HalftoneDESG}. These neighboring methods confirm
+that side information and compression are established tools; the distinction
+in this paper is their use as an exact serialized cost inside the active
+mapping-selection rule.
+\RevisionAddEnd
+
+\RevisionAddBegin
+Learning serves here as candidate-cost ranking, while the reversible encoder
+remains deterministic and table based. Learned RDH and steganalysis show why
+such ranking and detection analyses are relevant \cite{Li2021LearnedRDH,Boroumand2019SRNet,
+Yedroudj2018Net,Zhang2019SRNet}. Because PEAK/ZERO substitution changes local
+pattern histograms and transition rates, the experiments include grouped
+detectors to delimit the payload region where marked images become
+statistically separable from covers.
+\RevisionAddEnd
+
+\RevisionAddBegin
+\subsection{Research Gap}
+\RevisionAddEnd
+
+\RevisionAddBegin
+Table~\ref{tab:modern_comparison} consolidates the direct and conceptual
+neighbors. The relevant gap is an executable plaintext binary-image PEAK/ZERO
+method in which the active reversible mapping configuration is selected by
+usable mapping capacity after the exact serialized description cost needed for
+deterministic recovery. Within the reviewed corpus, this study contributes the
+joint treatment of serialization-aware activation, an enumerative
+PEAK/flip-position wire representation, and a common executable comparison
+against representative binary-image baselines.
+\RevisionAddEnd
+
+\begin{table*}[t]
+\centering
+\caption{Comparative overview of binary RDH and related systems}
+\label{tab:modern_comparison}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+\textbf{Method (Year)} & \textbf{EC (bits)} & \textbf{Net accounting} &
+\textbf{PSNR (dB)} & \textbf{DRD} & \textbf{Adaptive} &
+\textbf{Uniform blocks} & \textbf{Steg. eval.} \\
+\midrule
+Ho et al. 2009 \cite{Ho2009PatternSubstitution} & Published & Open & -- & -- & Yes & Pattern-dependent & Not extracted \\
+Zhang et al. 2012 \cite{Zhang2012OptimalCodes} & Code-dependent & Reconstruction info & -- & Distortion bound & Yes & Binary cover sequence & Not extracted \\
+Yin et al. 2020 \cite{Yin2020PPOCP} & 1157 & Open & 27.17 & 0.23 & Fixed & Reserved & Not extracted \\
+Dong et al. 2020 \cite{Dong2020Adaptive} & $\sim$1500 & Open & $\sim$25 & $<$0.5 & Yes & Reserved & Not extracted \\
+Xiao et al. 2022 \cite{Xiao2022BinaryCovers} & Variable & Reconstruction info & High & Optimized & Yes & Pixel sequence & Not extracted \\
+Li et al. 2023 \cite{Li2023MultiEmbedding} & 1000 example & Reconstruction info & 49.45 & -- & Yes & Pixel sequence & Not extracted \\
+Ren et al. 2023 \cite{Ren2023Sliding} & $\sim$2000 & Open & $\sim$24 & $<$1 & Fixed & Reserved & Not extracted \\
+Zhang et al. 2019 \cite{Zhang2019Magnification} & 369 & Open & 32.31 & 0.08 & Fixed & Reserved & Not extracted \\
+Chhajed \& Garg 2023 \cite{Chhajed2023BlockDiagonal} & $<$2000 & Open & $\sim$25 & $<$1 & Fixed & Reserved & Not extracted \\
+Yang 2023 \cite{Yang2023Large} & $>$2000 & Open & $\sim$23 & $<$1 & Partial & Reserved & Not extracted \\
+Huynh \& Nguyen 2025 \cite{Huynh2025BlockMapping} & 2070 & Open & 24.13 & 0.55 & Fixed & Reserved & Not extracted \\
+\textbf{Proposed} & \textbf{2874 gross} & \textbf{2245 net} & \textbf{--} & \textbf{0.76} & \textbf{Yes} & \textbf{Evaluated} & \textbf{Yes} \\
+\bottomrule
+\end{tabular}
+}
+\RevisionAddBegin
+\vspace{2pt}
+{\footnotesize\RaggedRight EC: capacity reported by the cited study on its stated
+$512\times512$ protocol. Values provide cross-protocol context because
+datasets, payload definitions, and side-information accounting differ.
+``Steg. eval.'': whether a steganalysis result was extracted for this overview
+table; Section~\ref{subsec:steganalysis} reports the common-protocol detector
+evaluation. For the proposed method, DRD is the reported common-protocol
+distortion summary; per-image PSNR and changed-pixel outputs are included in
+the reproducibility artifacts.\par}
+\RevisionAddEnd
+\end{table*}
+
+
+
+\section{Net-Aware Learned Distance-One Block Mapping}
+\label{sec:proposedmethod}
+
+\subsection{Overview and Design Rationale}
+
+This section specifies the complete system evaluated in
+Section~\ref{sec:experimental}. The design uses the established
+$3\times3$ PEAK/ZERO block-mapping family, but the active mapping tables are
+chosen by usable mapping capacity after the exact serialized mapping description is
+charged. The encoder and decoder are therefore defined as the pair of maps
+\begin{equation}
+\mathrm{Enc}(I,M)\rightarrow(I',A_{\mathrm{wire}})
+\label{eq:encoder-contract}
+\end{equation}
+and
+\begin{equation}
+\mathrm{Dec}(I',A_{\mathrm{wire}})\rightarrow(I,M).
+\label{eq:decoder-contract}
+\end{equation}
+The auxiliary stream $A_{\mathrm{wire}}$ is stored or transmitted alongside the
+marked binary image $I'$ as explicit synchronization metadata. The
+unconstrained adaptive threshold is retained as an ablation that characterizes
+the broader capacity--distortion landscape; the deployed codec uses globally
+disjoint Hamming-distance-one substitutions. Consequently, each active block
+carries one bit and changes at most one pixel.
+
+\RevisionAddBegin
+The evaluated system proceeds in four deterministic steps:
+\RevisionAddEnd
+\begin{itemize}
+    \item learns a perceptual ordering of absent distance-one patterns;
+    \item enforces a globally injective PEAK/ZERO assignment;
+\RevisionAddBegin
+    \item selects the frequency-ordered table prefix that maximizes map-level
+    net capacity; and
+\RevisionAddEnd
+    \item serializes the payload length, active PEAK subset, and flip positions
+    with an enumerative codec.
+\end{itemize}
+
+The embedding and extraction workflows are illustrated in
+Figures~\ref{fig:embedding-flow} and~\ref{fig:extraction-flow} and formalized
+in Algorithms~\ref{alg:embedding} and~\ref{alg:extraction}.
+
+\subsection{Reversible Mapping Construction}
+
+\subsubsection*{Block representation and pattern histogram}
+
+Let $I$ be a binary image of size $M\times N$. Complete non-overlapping
+$3\times3$ blocks are visited in raster order:
+\begin{equation}
+B_k=\{b_{i,j}\},\quad i,j\in\{0,1,2\},\quad
+k=1,\ldots,\left\lfloor\frac{M}{3}\right\rfloor
+\left\lfloor\frac{N}{3}\right\rfloor .
+\label{eq:block-index}
+\end{equation}
+The resulting block count is the product of the two complete-block counts:
+\begin{equation}
+B=\left\lfloor\frac{M}{3}\right\rfloor
+  \left\lfloor\frac{N}{3}\right\rfloor .
+\label{eq:block-count}
+\end{equation}
+
+Each block is mapped to a decimal index:
+\begin{equation}
+d_k = \sum_{i=0}^{8} b_i 2^{8-i},
+\label{eq:pattern-index}
+\end{equation}
+where $b_i \in \{0,1\}$ follows a fixed row-major ordering shared by both
+embedding and extraction; the first row-major bit is the most significant bit.
+Rows with indices at least $3\lfloor M/3\rfloor$ and columns with indices at
+least $3\lfloor N/3\rfloor$ are copied unchanged and never participate in
+capacity or extraction.
+
+Uniform blocks ($d_k = 0$ and $d_k = 511$) are reserved for the separately
+evaluated Random Forest layer in Section~\ref{subsec:rf-layer}; the core
+block-mapping histogram uses $d\in\{1,\ldots,510\}$.
+A histogram $H(d)$ is constructed for $d \in \{1,\ldots,510\}$.
+
+\subsubsection*{Pattern sets}
+
+The implementation considers every non-uniform pattern occurring at least
+twice as an initial PEAK candidate. Candidates are sorted by decreasing
+frequency and then by numerical index. The pattern space is divided into:
+\begin{itemize}
+    \item \textbf{PEAK candidates} $\mathcal{P}_0=\{d:H(d)\geq2,\,
+    d\notin\{0,511\}\}$,
+    \item \textbf{Unused patterns (ZEROs)} $\mathcal{Z}$: patterns such that $H(d)=0$,
+\RevisionAddBegin
+    \item \textbf{Residual patterns}: patterns outside the embedding tables.
+\RevisionAddEnd
+\end{itemize}
+
+The final active set $\mathcal{P}\subseteq\mathcal{P}_0$ is selected by the
+\RevisionAddBegin
+explicit map-level net-capacity rule defined below.
+\RevisionAddEnd
+
+\subsubsection*{Pattern distance analysis}
+
+For each frequent pattern $P_i \in \mathcal{P}$ and each unused pattern $Z_j \in \mathcal{Z}$,
+the Hamming distance between their $3 \times 3$ representations is computed:
+\begin{equation}
+D_{i,j} = \sum_{p=1}^{9} \delta(P_i[p], Z_j[p]),
+\label{eq:hamming-distance}
+\end{equation}
+where $\delta(a,b)=1$ if $a\neq b$ and $0$ otherwise.
+
+The set $\{D_{i,j}\}$ characterizes the distortion cost associated with mapping $P_i$ to available unused patterns.
+
+\subsubsection*{Adaptive candidate selection}
+
+Candidate patterns for each frequent pattern are selected adaptively.
+Let $\mu_i$ and $\sigma_i$ denote the empirical mean and standard deviation of $\{D_{i,j}\}$.
+The adaptive Hamming threshold and candidate set are
+\begin{equation}
+H_{T,i}=\mu_i+\alpha\sigma_i
+\label{eq:adaptive-threshold}
+\end{equation}
+and
+\begin{equation}
+\mathcal{Z}_i = \{ Z_j \in \mathcal{Z} \mid D_{i,j} \le H_{T,i} \},
+\label{eq:adaptive-candidate-set}
+\end{equation}
+where $\alpha$ controls the capacity--distortion trade-off.
+
+\RevisionAddBegin
+This formulation uses empirical distance statistics rather than a parametric
+model for the observed distance values.
+\RevisionAddEnd
+
+\subsubsection{Globally Injective Mapping Construction}
+
+For the unconstrained ablation, let $k_i=|\mathcal{Z}_i|$ and define
+\begin{equation}
+L_i = \left\lfloor \log_2 (k_i + 1) \right\rfloor
+\label{eq:bits-per-occurrence}
+\end{equation}
+bits per occurrence. Exactly $2^{L_i}-1$ candidates are retained:
+\begin{equation}
+\widetilde{\mathcal Z}_i\subseteq\mathcal Z_i,\qquad
+|\widetilde{\mathcal Z}_i|=2^{L_i}-1,
+\label{eq:retained-zero-set}
+\end{equation}
+which makes the mapping
+\begin{equation}
+T_i:\{0,1\}^{L_i}\longleftrightarrow
+\{P_i\}\cup\widetilde{\mathcal Z}_i
+\label{eq:local-bijection}
+\end{equation}
+a genuine bijection. After a ZERO is assigned, it is removed from the
+available pool; therefore the ranges of all $T_i$ are globally disjoint.
+
+The deployed distance-one policy restricts $L_i=1$. Symbol 0 preserves
+$P_i$, while symbol 1 uses the lowest predicted-cost unassigned ZERO satisfying
+$D(P_i,Z)=1$. Thus every modified block flips exactly one pixel.
+
+\subsubsection*{Deterministic block traversal order}
+\label{subsec:order}
+
+To ensure reproducibility and unambiguous extraction, a deterministic block traversal order is enforced.
+
+The image is traversed in raster-scan order (left-to-right, top-to-bottom) at the block level.
+Each block is visited exactly once during both embedding and extraction.
+
+During embedding, frequent patterns are processed in descending order of occurrence.
+However, the spatial traversal order of blocks remains unchanged.
+\RevisionAddBegin
+Each block is modified at most once, and block decisions are spatially local
+once the mapping tables are fixed.
+\RevisionAddEnd
+
+\subsubsection*{Multi-pattern embedding strategy}
+\label{subsec:multi_pattern}
+
+Embedding scans spatial blocks once in raster order. When a block pattern is
+an active PEAK, the next bit selects either the unchanged PEAK or its assigned
+ZERO. The last symbol is truncated to the declared payload length during
+\RevisionAddBegin
+extraction; for the deployed one-bit codec, the payload boundary is
+unambiguous.
+\RevisionAddEnd
+
+The total embedding capacity is:
+\begin{equation}
+C_{\text{gross}} = \sum_{P_i \in \mathcal{P}} n_i L_i,
+\label{eq:gross-capacity}
+\end{equation}
+where $n_i$ denotes the number of occurrences of $P_i$.
+
+\subsection{Embedding Procedure}
+\RevisionAddBegin
+The embedding procedure operationalizes the mapping construction above as a
+deterministic encoder that constructs a single marked image. It first freezes
+the spatial support: complete non-overlapping $3\times3$ blocks are processed
+in raster order, while border pixels are copied unchanged.
+This convention is used for two reasons. First, it gives the decoder the same
+block sequence with coordinate-free synchronization. Second, it prevents boundary
+handling from becoming hidden auxiliary information that would distort the net
+payload comparison.
+
+The next stage builds the reversible alphabet available in the current cover.
+Patterns with at least two occurrences are eligible PEAKs, absent patterns are
+ZEROs, and all-white/all-black uniform patterns are kept in the reserved
+uniform-block pool because changing them tends to create isolated specks or holes in
+document backgrounds and strokes. For each PEAK, admissible replacements are
+restricted to distance-one ZEROs. This restriction makes every embedded symbol a
+single-pixel block modification, keeps the restoration rule local, and allows
+the auxiliary stream to store only one base-9 flip position per active table.
+At this point, the CNN ranks admissible ZEROs by predicted perceptual cost;
+a global disjointness check then prevents two PEAKs from sharing the same
+stego pattern.
+
+The final selection stage is the serialization-aware part of the method. After
+candidate assignments have been fixed, the encoder considers frequency-ordered
+prefixes of active mappings and selects the prefix that maximizes usable mapping capacity
+after charging the exact serialized description of that prefix. The message bits
+are then embedded during one raster scan: a payload bit 0 leaves an active PEAK
+block unchanged, while a payload bit 1 replaces it by the assigned ZERO. The
+declared message length $q$ is serialized with the active table description,
+giving the decoder an explicit stopping point.
+

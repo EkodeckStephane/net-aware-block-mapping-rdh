@@ -1,0 +1,174 @@
+\RevisionAddBegin
+The present measurements define the operating envelope. The tested settings
+are interpreted as detectability-characterized annotation operating points
+rather than covert-security thresholds. At 256 and 512 bits, logistic AUC
+values of 0.900 and 0.957 place the current ABM configuration in a
+capacity-oriented reversible-annotation regime, despite its positive net
+payload and exact reversibility. At 64 bits, AUC 0.706 reflects lower
+detectability, although metadata overhead dominates useful capacity. PPOCP remains the
+\RevisionAddEnd
+preferred evaluated method for security-prioritized operation, whereas ABM
+addresses applications in which useful reversible capacity is primary and
+the stego channel itself is access-controlled.
+
+\RevisionAddBegin
+The RF uniform-block experiment points to a second optimization path:
+\RevisionAddEnd
+coordinate coding can use enumerative subset coding conditioned on the
+deterministic block order. Its grouped classification metrics show that
+location selection is reliable; compressing the selected subset targets the
+measured source of overhead.
+
+\subsection{Experimental Scope}
+\label{subsec:scope}
+
+\RevisionAddBegin
+The eight document images provide continuity with the binary block-mapping
+literature, the disjoint BOSSbase protocol adds 100 external test images with a
+four-method common evaluation, and FUNSD adds a separate frozen external test
+on all 199 real scanned documents under two binarization rules. The latter
+removes the earlier absence of a sizeable real scanned-document benchmark as a
+primary limitation of the evidence: exact recovery and the A2-over-A1
+serialization benefit are now observed without retraining on that corpus.
+
+\paragraph{Conditions of validity.}
+The exact-reversibility guarantee is conditional on a matched stego image and
+its valid auxiliary stream being preserved through a lossless storage or
+transmission path. The encoder may reject a requested payload when the binary
+cover does not offer sufficient active mapping capacity; such rejection is an
+availability outcome, not a recovery failure. A stress test on table1-3 at 256
+bits confirms exact recovery after PNG and TIFF round trips, while JPEG
+recompression at quality 5 and a one-pixel perturbation produce mismatched
+stego/auxiliary pairs (Table~\ref{tab:channel-stress}). Applications requiring
+lossy, noisy, or geometrically transformed channels therefore require an
+external synchronization or error-control layer before the present exact
+recovery contract applies.
+
+\paragraph{Operating characteristics.}
+Auxiliary overhead is amortized differently across image distributions and
+payload sizes. On BOSSbase matched cohorts, mean net payload becomes positive
+between 128 and 256 bits, whereas on FUNSD the fixed and mapping-dependent
+serialization cost dominates through the tested 512-bit target. FUNSD
+availability remains 98.99--100\% depending on binarization, activation, and
+payload, and every available run is exact. DRD and detectability also increase
+with payload. These are measured properties of the operating envelope rather
+than failures of the reversible contract.
+
+\paragraph{Remaining limitations.}
+Three limitations remain material. First, the high logistic AUC at larger
+BOSSbase payloads limits claims for covert or security-prioritized use under the
+tested detector. Second, cross-method net-payload rankings remain partly
+protocol-dependent because the baseline publications do not completely specify
+standalone serialized synchronization formats. Third, although FUNSD provides
+substantially stronger real-document evidence, it is one external scanned-form
+corpus; generalization across additional independent document collections,
+scanner pipelines, languages, and acquisition conditions remains unverified.
+The present evidence also does not establish positive-net efficiency for real
+scanned FUNSD documents at payloads up to 512 bits.
+
+\RevisionAddEnd
+
+\begin{table}[t]
+\centering
+\caption{Channel stress test for ABM with the same auxiliary stream.}
+\label{tab:channel-stress}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Channel} & \textbf{Stego} &
+\textbf{Message} & \textbf{Cover} \\
+\midrule
+PNG & Yes & Yes & Yes \\
+TIFF & Yes & Yes & Yes \\
+JPEG q=5 & Altered & Mismatch & Mismatch \\
+One-pixel noise & Altered & Mismatch & Mismatch \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\RevisionAddBegin
+This work develops and evaluates serialization-aware activation for
+net-capacity-driven PEAK/ZERO block mapping in binary-image RDH. The
+enumerative codec makes the active mapping description executable and charged;
+the CNN ranker improves candidate placement on held-out images as a secondary
+cost-ordering component. The complete system delivers 2245 net bits on average
+on eight document images and 292.5 net bits on 100 BOSSbase images. A frozen
+external validation on all 199 FUNSD scanned documents further shows that every
+available run restores both message and binary cover exactly without training
+or tuning on FUNSD.
+
+On FUNSD, serialization-aware A2 activation reduces auxiliary cost by about
+239--241 bits relative to A1 on paired available images and is never worse in
+net payload under either fixed-128 or Otsu binarization. This is strong evidence
+that exact reversibility and the activation benefit transfer to real scanned
+documents. It is not evidence of positive net efficiency in the tested FUNSD
+payload range: mean net payload remains negative through 512 bits and the
+largest positive-net fraction is 2.02\%.
+
+Under the BOSSbase common protocol, ABM obtains mean net payloads of $-57$,
+$-7$, $93$, and $309$ bits at targets 64, 128, 256, and 512 bits on matched
+images. Its paired net advantage is significant against every baseline after
+Holm correction; at 256 bits, all adjusted $p$-values are below
+$6.7\times10^{-13}$. Together, availability, binarization, runtime, memory,
+and two-classifier steganalysis make this result a reproducible practical
+profile beyond a single capacity number.
+
+Under the stated implementations and wire-level accounting, the combined
+evidence identifies ABM as the highest useful-capacity curve in the evaluated
+common protocol, while PPOCP retains the lowest measured distortion and most
+favorable detectability profile. The validity of exact recovery is conditional
+on matched stego/auxiliary data over a lossless path; metadata-dominated
+low-payload behavior is an operating characteristic; and the remaining true
+limitations concern high-payload detectability, protocol dependence of baseline
+serialization, and external breadth beyond the single FUNSD document corpus.
+
+\RevisionAddEnd
+
+\section*{Acknowledgements}
+\RevisionAddBegin
+This work was supported by the authors' institutions.
+\RevisionAddEnd
+
+\printcredits
+
+\section*{Declarations}
+\noindent\textbf{Ethics approval.}
+This study does not involve human participants, animals, personal data, or
+clinical interventions. It uses publicly available image data and offline
+computational experiments.
+
+\medskip
+\noindent\textbf{Competing interests.}
+The authors declare that they have no known competing financial interests or
+\RevisionAddBegin
+personal relationships that could have appeared to influence the work reported
+in this paper.
+\RevisionAddEnd
+
+\medskip
+\noindent\textbf{Funding.}
+This research received no external funding.
+
+\medskip
+\noindent\textbf{Data availability.}
+\RevisionAddBegin
+BOSSbase is publicly available from its original distributor at
+\url{https://dde.binghamton.edu/download/ImageDB/BOSSbase_1.01.zip} under its
+applicable terms. FUNSD is publicly available from the dataset provider at
+\url{https://guillaumejaume.github.io/FUNSD/dataset.zip}. The eight document
+images used for block-mapping validation, derived aggregate results, per-image
+evaluation artefacts, and the fixed-128/Otsu FUNSD external-validation
+summaries and paired/per-image result tables accompany the reproducibility
+package.
+\RevisionAddEnd
+
+\medskip
+\noindent\textbf{Code availability.}
+The reproducibility package contains the ABM implementation, independently
+implemented comparison methods, evaluation scripts, tests, trained model
+weights, CSV/JSON result tables, plotting code, and exact random seeds. It is
+publicly available at
+\url{https://github.com/EkodeckStephane/net-aware-block-mapping-rdh}.
+

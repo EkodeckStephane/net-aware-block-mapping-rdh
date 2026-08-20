@@ -1,0 +1,283 @@
+\RevisionAddBegin
+The requested application payload is the message length $q=|M|$. Gross mapping
+capacity is $C_{\mathrm{gross}}$, auxiliary bits are the exact serialized wire
+length $C_{\mathrm{aux}}=|A_{\mathrm{wire}}|_2$, and delivered net payload is
+$P_{\mathrm{net}}=q-C_{\mathrm{aux}}$. The main text reports DRD
+\cite{Lu2004DRD} as the primary distortion metric; changed-pixel and PSNR
+outputs are retained in the reproducibility artifacts. Availability is the
+fraction of test images that carry the target and complete the exact round trip.
+\RevisionAddEnd
+
+Primary per-payload comparisons use common available images. A secondary fixed
+cohort contains the 46 images on which all four methods are available at all
+four payloads. ABM is paired with each baseline for net bits and DRD using the
+Wilcoxon signed-rank test and Holm correction within each payload. Mean net
+payload is accompanied by a 95\% percentile bootstrap interval with 10,000
+\RevisionAddBegin
+image-level resamples and seed 20260608. Median DRD uses the analogous 95\%
+percentile bootstrap interval computed from the same image-level resamples.
+Runtime includes embedding,
+\RevisionAddEnd
+serialization, extraction, and verification. Memory is peak process RSS minus
+pre-call RSS, sampled every 2 ms. Experiments used Python 3.13.5, NumPy 2.2.6,
+PyTorch 2.8.0 CPU, scikit-learn 1.7.2, and SciPy 1.17.1 on 64-bit Windows with
+12 logical processors.
+
+\subsection{Serialization-Aware Activation Ablation}
+\label{subsec:component-ablations}
+
+Table~\ref{tab:activation-ablation} isolates the central algorithmic decision.
+All variants use the same CNN distance-one candidate assignment; only active
+table selection and exact wire charging differ. A0 reports gross payload before
+wire cost and is therefore a gross-reporting diagnostic reference point. A1
+charges the wire after activating all feasible tables. A2 is the proposed
+serialization-aware activation, which selects the frequency-ordered prefix that
+maximizes Equation~\ref{eq:net-capacity}. Relative to A1, A2 reduces auxiliary
+information by 180 bits on average and raises mean net payload by 105.9 bits
+(4.95\%) while preserving exact reversibility on all eight document images.
+
+\begin{table*}[t]
+\centering
+\caption{Central ablation of serialization-aware mapping activation on the
+eight document images. Values are means in bits except DRD; the post-hoc value
+in A0 is the net payload obtained when the exact wire is charged after the
+gross-only selection.}
+\label{tab:activation-ablation}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{@{}llcrrrrr@{}}
+\toprule
+\textbf{Variant} & \textbf{Active-table selection} & \textbf{Wire charged} &
+\textbf{Gross cap.} & \textbf{Payload} & \textbf{Aux.} &
+\textbf{Net payload} & \textbf{Mean DRD} \\
+\midrule
+A0 & all feasible; gross reported & Gross only & 3932 & 2948 & 0
+& 2948 (2139 post hoc) & 0.771 \\
+A1 & all feasible; wire charged & Charged & 3932 & 2948 & 809
+& 2139 & 0.778 \\
+A2 proposed & serialized-net prefix & Charged & 3832 & 2874 & 629
+& 2245 & 0.761 \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\subsection{Candidate Ranking and CNN Architecture}
+
+Table~\ref{tab:ranker-ablation} compares the learned ranker with simple
+non-learning alternatives under the same admissible distance-one ZERO set and
+common payload per image. The CNN is close to the direct DRD-cost ranker and
+improves mean DRD by about 5\% relative to Hamming-index ordering. The
+reversible mechanism remains the deterministic, globally injective PEAK/ZERO
+substitution defined in
+Section~\ref{sec:proposedmethod}.
+
+\begin{table}[t]
+\centering
+\caption{Ranker ablation with identical distance-one candidates and common
+payloads.}
+\label{tab:ranker-ablation}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Ranker} & \textbf{Mean net} & \textbf{Mean DRD} &
+\textbf{Round trip} \\
+\midrule
+Hamming index & 2141 & 0.822 & Exact \\
+Direct DRD cost & 2139 & 0.778 & Exact \\
+Transition preserving & 2140 & 0.829 & Exact \\
+Connectivity aware & 2140 & 0.820 & Exact \\
+CNN & 2137 & 0.780 & Exact \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:cnn-architecture-ablation} gives the controlled CNN
+architecture diagnostic. All configurations use 20 epochs, AdamW with learning
+rate $10^{-3}$, Smooth-L1 loss, batch size 128, the same two-image
+train/validation split, and deterministic seeds. The deployed two-layer
+w16 $9\times9$ model is retained as a compact compromise: it is close to the
+lowest-MAE wider model, faster at inference, and keeps held-out placement DRD
+within the same practical range.
+
+\begin{table*}[t]
+\centering
+\caption{CNN architecture diagnostic on the two-image detailed split. Inference
+time is measured on 4323 held-out candidates. Held-out DRD is the mean DRD
+after model-ranked placement on the diagnostic held-out images. All
+configurations share the reversible mapping and auxiliary stream.}
+\label{tab:cnn-architecture-ablation}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrrr@{}}
+\toprule
+\textbf{Configuration} & \textbf{Params} & \textbf{Train s} &
+\textbf{Inf. $\mu$s} & \textbf{MAE} & \textbf{Pearson} &
+\textbf{Held-out DRD} \\
+\midrule
+1 conv., $9\times9$, w24 & 14625 & 6.97 & 7.18 & 0.0716 & 0.962 & 0.848 \\
+2 conv., $9\times9$, w24 & 38865 & 23.62 & 27.19 & 0.0339 & 0.991 & 0.830 \\
+3 conv., $9\times9$, w24 & 44073 & 27.80 & 38.21 & 0.0347 & 0.991 & 0.848 \\
+2 conv., $7\times7$, w24 & 38865 & 18.11 & 19.51 & 0.0383 & 0.989 & 0.845 \\
+2 conv., $11\times11$, w24 & 38865 & 27.77 & 56.13 & 0.0485 & 0.985 & 0.825 \\
+2 conv., $9\times9$, w16 (deployed) & 23649 & 15.16 & 24.86 & 0.0379 & 0.990 & 0.839 \\
+2 conv., $9\times9$, w32 & 56385 & 27.27 & 40.62 & 0.0303 & 0.992 & 0.847 \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+\subsection{Serialization Sensitivity for Baselines}
+
+The original descriptions of PPOCP, Dong, and Huynh--Nguyen specify the
+reversible principles while leaving the complete standalone byte stream partly
+unspecified. The common protocol therefore uses conservative executable
+synchronization. We also ran a header-credit sensitivity check: for each
+baseline, the method-identifying header, version field, and image-shape fields
+are removed from the charged cost, giving a 104-bit credit while retaining the
+payload-critical maps, states, locations, and payload length. With this
+credited accounting, ABM retains the highest mean net payload on every
+all-method matched cohort: $-57$ vs.\ $-120$ bits at 64, $-7$ vs.\ $-72$ bits
+at 128, $93$ vs.\ $23$ bits at 256, and $309$ vs.\ $200$ bits at 512 for the
+best credited baseline. This fixed-header variation leaves the useful-capacity
+ordering unchanged for the tested executable representations.
+
+\subsection{Machine-Learning Validation}
+
+Image-wise leave-one-out (LOSO) validation trains eight independent CNNs, each
+on seven document images and tests it on the remaining complete image. Across
+13,808 held-out candidates, pooled mean absolute error is 0.0367 and pooled
+Pearson correlation is 0.9893; per-image correlations range from 0.9861 to
+0.9939. A separate LOSO placement experiment applies each fold model to its
+held-out image at an identical 75\% distance-one payload. Mean DRD decreases
+from 0.8054 with deterministic Hamming-index ordering to 0.7663 with CNN
+ordering, a 4.85\% reduction. All eight images improve, with per-image
+reductions from 2.83\% to 7.94\%, while every message and cover is recovered
+\RevisionAddBegin
+exactly. The separate two-image architecture diagnostic in
+Table~\ref{tab:cnn-architecture-ablation} evaluates 4323 held-out candidates
+under the fixed 20-epoch protocol. Thus, regression accuracy and operational
+DRD impact are evaluated separately, with fold-level regression and placement
+results provided with the reproducibility artifacts.
+\RevisionAddEnd
+
+The uniform-block Random Forest is evaluated by source-image-grouped
+cross-validation on 14,798 samples. It reaches ROC AUC 0.995, precision 0.897,
+\RevisionAddBegin
+recall 0.970, and flip-position accuracy 0.971. In the combined reversible
+pipeline, the layer adds 181.4 gross bits per document image on average, while
+its current coordinate representation uses 2691.0 auxiliary bits. The
+resulting combined net payload is therefore $-264.6$ bits on average, compared
+with 2245.0 bits for the base enumerative block-mapping layer. This identifies
+coordinate coding as a concrete optimization opportunity and keeps the Random
+Forest layer as a diagnostic component.
+\RevisionAddEnd
+
+\subsection{Document-Image and External Net Capacity}
+
+Table~\ref{tab:document-net} reports the integrated CNN-ranked mapping layer at
+a 75\% payload budget. Auxiliary sizes are measured from serialized bytes, and
+all eight messages and covers are recovered exactly.
+
+\begin{table}[t]
+\centering
+\caption{Net-aware results on the eight binary document images.}
+\label{tab:document-net}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Image} & \textbf{Gross} & \textbf{Aux.} & \textbf{Net} & \textbf{DRD} \\
+\midrule
+circuit-2 & 1576 & 592 & 984 & 0.583 \\
+formula-5 & 3692 & 672 & 3020 & 0.900 \\
+graph1-5 & 1978 & 632 & 1346 & 0.662 \\
+handwr2-8 & 2351 & 632 & 1719 & 0.768 \\
+large-8 & 1138 & 488 & 650 & 0.616 \\
+symbol-6 & 2367 & 672 & 1695 & 0.897 \\
+table1-3 & 4161 & 656 & 3505 & 0.789 \\
+french-4 & 5729 & 688 & 5041 & 0.864 \\
+\midrule
+\textbf{Average} & \textbf{2874} & \textbf{629} & \textbf{2245} & \textbf{0.760} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\RevisionAddBegin
+On the 100 BOSSbase test images, net-aware table selection gives 669.6 gross,
+377.1 auxiliary, and 292.5 net bits on average. Median net capacity is 159
+bits, 75 images are net positive, mean DRD is 0.300, and every evaluated
+message and cover is recovered exactly. Disabling net-aware table selection on
+the same sample yields 832.5 gross, 731.4 auxiliary, and 101.1 net bits on
+average, showing that the active-prefix decision also improves the external
+transfer setting.
+\RevisionAddEnd
+
+\RevisionAddBegin
+\subsection{Frozen External Validation on FUNSD}
+\label{subsec:funsd-external}
+
+Table~\ref{tab:funsd-external} reports the frozen external validation on all
+199 FUNSD scanned documents. The existing CNN ranker is used without retraining
+or tuning. Two independently generated binary inputs are tested per source page:
+fixed threshold 128 and Otsu. A1 activates all feasible tables and charges the
+resulting wire, whereas A2 applies the proposed serialization-aware prefix
+selection. Means are computed over available runs for each variant.
+\RevisionAddEnd
+
+\begin{table*}[t]
+\RevisionAddBegin
+\centering
+\caption{Frozen external validation on 199 FUNSD scanned documents. Auxiliary
+and net values are mean bits over available runs; DRD and positive-net counts
+refer to A2. Availability is shown as available/199.}
+\label{tab:funsd-external}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{@{}lrrrrrrrrr@{}}
+\toprule
+\textbf{Binarization} & \textbf{$q$} & \textbf{A1 avail.} & \textbf{A2 avail.} &
+\textbf{A1 aux.} & \textbf{A2 aux.} & \textbf{A1 net} & \textbf{A2 net} &
+\textbf{A2 DRD} & \textbf{A2 net$>0$} \\
+\midrule
+Fixed 128 & 64  & 199/199 & 199/199 & 965.7 & 725.4 & $-901.7$ & $-661.4$ & 0.01049 & 0/199 \\
+Fixed 128 & 128 & 199/199 & 199/199 & 965.7 & 725.4 & $-837.7$ & $-597.4$ & 0.02082 & 0/199 \\
+Fixed 128 & 256 & 199/199 & 199/199 & 965.7 & 725.4 & $-709.7$ & $-469.4$ & 0.04124 & 1/199 \\
+Fixed 128 & 512 & 198/199 & 198/199 & 969.3 & 727.8 & $-457.3$ & $-215.8$ & 0.08255 & 4/198 \\
+\midrule
+Otsu & 64  & 199/199 & 198/199 & 985.9 & 750.9 & $-921.9$ & $-686.9$ & 0.01015 & 0/198 \\
+Otsu & 128 & 199/199 & 198/199 & 985.9 & 750.9 & $-857.9$ & $-622.9$ & 0.02008 & 0/198 \\
+Otsu & 256 & 198/199 & 198/199 & 989.8 & 750.9 & $-733.8$ & $-494.9$ & 0.03981 & 0/198 \\
+Otsu & 512 & 197/199 & 197/199 & 993.2 & 753.4 & $-481.2$ & $-241.4$ & 0.07928 & 3/197 \\
+\bottomrule
+\end{tabular}}
+\RevisionAddEnd
+\end{table*}
+
+\RevisionAddBegin
+Every available FUNSD run recovers the payload exactly and restores the binary
+cover bit-for-bit. On paired available images, A2 is never worse than A1 in
+net payload: the fraction $P_{\mathrm{net}}^{A2}\geq P_{\mathrm{net}}^{A1}$ is
+1.0 at every payload under both binarizations. For fixed-128, mean A2 net gains
+(and equal auxiliary savings) are 240.3, 240.3, 240.3, and 241.4 bits at 64,
+128, 256, and 512 bits, respectively; for Otsu they are 238.9, 238.9, 238.9,
+and 239.8 bits. The median gain is 232 bits in every condition. The associated
+mean DRD differences $\mathrm{DRD}_{A2}-\mathrm{DRD}_{A1}$ remain small,
+ranging from $6.66\times10^{-5}$ to $7.99\times10^{-4}$ across the eight
+binarization/payload conditions.
+
+The external result therefore supports two transfer claims that are distinct
+from net-efficiency claims. First, exact reversible operation generalizes to a
+large real scanned-document corpus without retraining. Second, the proposed
+serialization-aware activation continues to reduce synchronization overhead on
+every paired operating point. By contrast, the delivered net payload remains
+metadata-dominated throughout the tested FUNSD range: mean net payload is
+negative through 512 bits, and the largest observed positive-net fraction is
+4/198 (2.02\%). Thus FUNSD validates reversibility and the A2 activation
+benefit, but it does not establish positive net efficiency for scanned
+documents at these payload sizes.
+\RevisionAddEnd
+
+\subsection{Multi-Payload Common-Protocol Results}
+
+\RevisionAddBegin
+Table~\ref{tab:multiload} and Figure~\ref{fig:multiload} summarize the
+all-method matched BOSSbase subsets. ABM moves from metadata-dominated operation
+at 64 bits to a near break-even 128-bit point: the payload-specific matched
+cohort has a $-7$-bit mean, while the fixed 46-image cohort has an 8-bit mean.
+It reaches positive mean net payload at 256 and 512 bits on these BOSSbase
+cohorts. PPOCP defines the lowest-DRD curve, while ABM defines the highest-net
+curve.
+\RevisionAddEnd
+

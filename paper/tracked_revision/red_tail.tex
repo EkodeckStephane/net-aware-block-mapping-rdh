@@ -1,0 +1,88 @@
+% Preserve all deletion evidence from the pre-FUNSD tracked revision without
+% duplicating the pre-FUNSD current manuscript body.
+\makeatletter
+\CatchFileDef{\LegacyTrackedSource}{tracked_revision/legacy_red_blue_pre_funsd.tex}{}
+\long\def\ExtractLegacyDeletionBody#1\clearpage#2\bibliographystyle#3\TrackedEnd{#2}
+
+\expandafter\ExtractLegacyDeletionBody\LegacyTrackedSource\TrackedEnd
+
+\begin{RevisionDeletion}
+FUNSD update -- replaced abstract material\par
+document images, this activation\par
+raises mean net payload from 2139 to 2245 bits relative to an otherwise\par
+identical wire-charged gross-selection variant and preserves exact round-trip\par
+reversibility. In a common executable protocol on 100 disjoint thresholded\par
+BOSSbase images, the proposed adaptive block-mapping method (ABM), Dong,\par
+Huynh--Nguyen, and the opposite-center-pair method (PPOCP) are compared with\par
+identical messages, payload targets, distance-reciprocal distortion (DRD)\par
+computation, auxiliary-bit accounting, and reversibility checks. The proposed\par
+method achieves the highest useful\par
+capacity among the evaluated implementations, while PPOCP retains the\par
+lowest-distortion and most favorable detectability profile. Logistic detector AUC reaches\par
+0.900 and 0.957 at 256 and 512 bits, placing the validated operating region in\par
+capacity-oriented reversible annotation over a lossless channel with\par
+detectability-aware payload selection.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+FUNSD update -- replaced roadmap material\par
+describes the common protocol and reports document-image and BOSSbase results.\par
+Section~\textbackslash{}ref\{sec:discussion\} synthesizes the practical operating region, and\par
+Section~\textbackslash{}ref\{sec:conclusion\} concludes the study.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+FUNSD update -- replaced dataset/protocol material\par
+The evaluation has two complementary scales. The eight standard\par
+512-by-512 binary document images used by Huynh--Nguyen support direct\par
+validation against the block-mapping literature, while BOSSbase supplies the\par
+disjoint profile/test transfer protocol. Test images are binarized at threshold\par
+128 and the CNN ranker is transferred directly to BOSSbase.\par
+The four-method protocol embeds identical pseudorandom messages at targets 64,\par
+128, 256, and 512 bits.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+FUNSD update -- replaced BOSSbase interpretation\par
+all-method matched subsets. ABM moves from metadata-dominated operation at\par
+64 bits to a near break-even 128-bit point and reaches positive mean net\par
+payload at 256 and 512 bits.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+FUNSD update -- replaced experimental-scope material\par
+The eight document images provide continuity with the binary block-mapping\par
+literature, and the disjoint BOSSbase protocol adds 100 external test images,\par
+four payloads, paired inference, resources, and steganalysis. BOSSbase\par
+binarization should be read as a transfer test, with a large scanned document\par
+corpus remaining a natural next benchmark. The 512-bit all-method cohort\par
+contains 46 images, so both availability and fixed-cohort results are reported.\par
+The reversible channel assumes lossless storage and transmission; geometric,\par
+noisy, or lossy transformations require an external synchronization or\par
+error-control layer.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+FUNSD update -- replaced conclusion material\par
+The complete system delivers 2245 net bits on average on eight document images\par
+and 292.5 net bits on 100 BOSSbase images. Every reported available experiment\par
+restores the message and cover exactly. Under the common protocol, ABM obtains\par
+mean net payloads of -57, -7, 93, and 309 bits at targets 64, 128, 256, and\par
+512 bits on matched images. The evidence adds a concrete net-capacity benchmark\par
+and an exactly reversible reference implementation, with local-distribution\par
+preservation as the main optimization target.\par
+\end{RevisionDeletion}
+
+\begin{RevisionDeletion}
+FUNSD update -- replaced data-availability material\par
+BOSSbase is publicly available from its original distributor under its\par
+applicable terms. The eight document images used for block-mapping validation,\par
+derived aggregate results, and per-image evaluation artefacts accompany the\par
+reproducibility package.\par
+\end{RevisionDeletion}
+\makeatother
+
+\bibliographystyle{cas-model1-num-names}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,293 @@
+\RevisionAddEnd
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    node distance=1.15cm and 1.35cm,
+    every node/.style={font=\small},
+    process/.style={rectangle, draw, rounded corners, align=center,
+      minimum width=3.15cm, minimum height=0.82cm, fill=blue!4},
+    decision/.style={diamond, draw, aspect=2.2, align=center,
+      inner sep=1pt, fill=orange!8},
+    data/.style={rectangle, draw, double, align=center,
+      minimum width=3.0cm, minimum height=0.82cm, fill=green!6},
+    arrow/.style={-{Latex[length=2.3mm]}, thick}
+]
+\node[data] (input) {Binary cover $I$};
+\node[process, right=of input] (partition) {Complete $3\times3$ blocks\\raster order; preserve borders};
+\node[process, right=of partition] (hist) {Histogram $H$\\PEAKs $H(d)\ge2$; absent ZEROs};
+\node[process, below=of hist] (rank) {For each PEAK, rank unassigned\\distance-one ZEROs with the CNN};
+\node[process, left=of rank] (inject) {Assign one ZERO per PEAK\\and enforce global disjointness};
+\node[process, left=of inject] (net) {Sort PEAKs by frequency\\select prefix maximizing\\$C_{\rm net}^{\rm map}$};
+\node[data, below=of net] (message) {Payload $M$ and declared length $q$};
+\node[process, right=of message] (embed) {Raster scan: $0\mapsto P_i$\\$1\mapsto Z_i$};
+\node[data, right=of embed] (stego) {Stego image $I'$};
+\node[data, below=of inject, yshift=-2.0cm] (wire) {Enumerative auxiliary stream\\$A_{\rm wire}=(q,r(\mathcal P),s_1,\ldots,s_t)$};
+
+\draw[arrow] (input) -- (partition);
+\draw[arrow] (partition) -- (hist);
+\draw[arrow] (hist) -- (rank);
+\draw[arrow] (rank) -- (inject);
+\draw[arrow] (inject) -- (net);
+\draw[arrow] (net) -- (message);
+\draw[arrow] (message) -- (embed);
+\draw[arrow] (embed) -- (stego);
+\draw[arrow] (embed.south) -- (wire.north);
+\end{tikzpicture}
+}
+\caption{Evaluated embedding pipeline. Learned distance-one assignment is
+followed by explicit net-capacity optimization and enumerative serialization
+within a reversible-data-hiding synchronization model.}
+\label{fig:embedding-flow}
+\end{figure*}
+
+\begin{algorithm*}[t]
+\caption{Net-Aware CNN-Ranked Distance-One Embedding}
+\label{alg:embedding}
+\begin{algorithmic}[1]
+\Require Binary image $I$, payload $M=(m_1,\ldots,m_q)$, trained ranker $f_\theta$
+\Ensure Stego image $I'$, serialized auxiliary stream $A_{\rm wire}$
+\State Enumerate complete $3\times3$ blocks and compute $H(d)$
+\State $\mathcal P_0\gets\{d:H(d)\ge2,\ d\notin\{0,511\}\}$; sort by $(-H(d),d)$
+\State $\mathcal Z\gets\{d:H(d)=0\}$; $\mathcal U\gets\emptyset$; $\mathcal T\gets\emptyset$
+\For{each $P_i\in\mathcal P_0$}
+    \State $\mathcal C_i\gets\{Z\in\mathcal Z\setminus\mathcal U:D(P_i,Z)=1\}$
+    \If{$\mathcal C_i\neq\emptyset$}
+        \State $Z_i\gets\arg\min_{Z\in\mathcal C_i}(f_\theta(I,P_i,Z),Z)$
+        \State $\mathcal T[P_i]\gets\{0\mapsto P_i,1\mapsto Z_i\}$;
+        $\mathcal U\gets\mathcal U\cup\{Z_i\}$
+    \EndIf
+\EndFor
+\State Select the frequency-ordered prefix $\mathcal T^\star$ maximizing
+\RevisionAddBegin
+$C_{\rm net}^{\rm map}(\mathcal S)=
+\sum_{P_i\in\mathcal S}H(P_i)-|A_{\rm wire}(\mathcal S)|_2$
+\RevisionAddEnd
+\If{$q>\sum_{P_i\in\mathcal T^\star}H(P_i)$}
+    \State reject the requested payload
+\EndIf
+\State $I'\gets I$; $j\gets1$
+\For{each complete block of $I$ in raster order}
+    \If{its pattern is $P_i\in\mathcal T^\star$ and $j\le q$}
+        \State replace it by $\mathcal T^\star[P_i][m_j]$; $j\gets j+1$
+    \EndIf
+\EndFor
+\State Serialize $q$, the active PEAK subset rank, and base-9 flip positions
+\State \Return $I'$, $A_{\rm wire}$
+\end{algorithmic}
+\end{algorithm*}
+
+\subsection{Efficient Extraction and Restoration}
+\RevisionAddBegin
+Extraction is designed as the exact inverse of the embedding contract, using
+the marked image and the serialized auxiliary stream. The auxiliary stream
+is decoded first because it fixes three pieces of synchronization information:
+the payload length, the active PEAK subset, and the single flip position that
+reconstructs each assigned ZERO. The decoder uses the serialized tables
+directly, making the transmitted synchronization contract the source of
+recovery decisions.
+
+Once the active tables are reconstructed, they are collapsed into a single
+inverse dictionary. This is possible because the encoder enforces global
+injectivity: every stego pattern used by the codec belongs to at most one active
+mapping. Therefore, observing a PEAK pattern decodes bit 0 and restores the same
+PEAK, while observing its assigned ZERO decodes bit 1 and is also restored to
+the PEAK. Patterns outside the dictionary are copied unchanged. This dictionary
+view turns extraction into one linear raster scan with constant-time lookup.
+
+The serialized payload length provides the stopping condition. After $q$ bits
+have been recovered, remaining blocks are left unchanged because embedding used
+the same declared stopping point. If the scan finishes before $q$ bits
+are recovered, the pair $(I',A_{\rm wire})$ is rejected as inconsistent. This
+explicit rejection rule is necessary because exact reversibility is guaranteed
+for matched marked-image and auxiliary-stream pairs transmitted over a lossless
+channel.
+
+\RevisionAddEnd
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    node distance=1.15cm and 1.35cm,
+    every node/.style={font=\small},
+    process/.style={rectangle, draw, rounded corners, align=center,
+      minimum width=3.15cm, minimum height=0.82cm, fill=blue!4},
+    decision/.style={diamond, draw, aspect=2.2, align=center,
+      inner sep=1pt, fill=orange!8},
+    data/.style={rectangle, draw, double, align=center,
+      minimum width=3.0cm, minimum height=0.82cm, fill=green!6},
+    arrow/.style={-{Latex[length=2.3mm]}, thick}
+]
+\node[data] (stego) {Stego image $I'$};
+\node[data, below=of stego] (wire) {Auxiliary stream $A_{\rm wire}$};
+\node[process, right=of wire] (decode) {Decode $q$, PEAK subset rank,\\and base-9 flip positions};
+\node[process, above=of decode] (inverse) {Build globally injective inverse\\$P_i\mapsto(0,P_i)$, $Z_i\mapsto(1,P_i)$};
+\node[process, right=of inverse] (scan) {Scan complete $3\times3$ blocks\\in raster order};
+\node[decision, below=of scan] (done) {$q$ bits\\recovered?};
+\node[process, right=of done] (lookup) {If pattern is in inverse:\\append bit and restore $P_i$};
+\node[data, below=of lookup] (outputs) {Recovered payload $M$\\and exact cover $I$};
+\draw[arrow] (stego) -- (inverse);
+\draw[arrow] (wire) -- (decode);
+\draw[arrow] (decode) -- (inverse);
+\draw[arrow] (inverse) -- (scan);
+\draw[arrow] (scan) -- (done);
+\draw[arrow] (done) -- node[above]{Continue} (lookup);
+\draw[arrow] (lookup) |- (scan);
+\draw[arrow] (done.south) |- node[pos=0.25,left]{Yes} (outputs.west);
+\end{tikzpicture}
+}
+\caption{Extraction and restoration pipeline. The serialized payload length
+provides an unambiguous stopping condition, and incomplete border blocks remain
+untouched.}
+\label{fig:extraction-flow}
+\end{figure*}
+
+To reduce extraction complexity, all mapping tables are merged into a single inverse dictionary:
+\begin{equation}
+\mathcal{D} : p \mapsto (m, P_i),
+\label{eq:inverse-dictionary}
+\end{equation}
+where $p$ is a stego pattern, $m\in\{0,1\}$ the extracted bit, and $P_i$ the
+original pattern.
+
+\begin{algorithm*}[t]
+\caption{Deterministic Extraction and Exact Restoration}
+\label{alg:extraction}
+\begin{algorithmic}[1]
+\Require Stego image $I'$, serialized auxiliary stream $A_{\rm wire}$
+\Ensure Extracted message $M$, restored image $I$
+\State Decode payload length $q$, active PEAKs, and their flip positions
+\State Reconstruct all tables $T_i=\{0\mapsto P_i,1\mapsto Z_i\}$
+\State Build $\mathcal D[P_i]=(0,P_i)$ and $\mathcal D[Z_i]=(1,P_i)$
+\State $I\gets I'$; $M\gets\emptyset$
+\For{each complete block of $I'$ in raster order}
+    \If{$|M|=q$}
+        \State \textbf{break}
+    \EndIf
+    \State Compute pattern index $d$
+    \If{$d \in \mathcal{D}$}
+        \State Append the decoded bit to $M$ and replace the block by its PEAK
+    \EndIf
+\EndFor
+\If{$|M|\neq q$}
+    \State reject the inconsistent stego/auxiliary pair
+\EndIf
+\State \Return $M$, $I$
+\end{algorithmic}
+\end{algorithm*}
+
+\subsection{Learned Ranking, Ablations, and Wire Accounting}
+
+\subsubsection*{Distortion characteristics}
+
+For each embedded block mapped from $P_i$ to $\mathcal{Z}_i$, the number of flipped pixels is bounded by:
+\begin{equation}
+\max_{Z_j \in \mathcal{Z}_i} D_{i,j},
+\label{eq:distortion-bound}
+\end{equation}
+ensuring pattern-specific distortion control.
+
+\subsubsection*{Gaussian-process diagnostic}
+\label{subsec:param_optim}
+
+The parameter $\alpha$ is explored by Gaussian-process Bayesian optimization.
+For every evaluated value, the implementation records capacity, PSNR, DRD, and
+the normalized objective
+\begin{equation}
+J(\alpha)=\lambda\left(1-\frac{C_{\text{total}}(\alpha)}{C_{\mathrm{ref}}}\right)
++(1-\lambda)\mathrm{DRD}(\alpha).
+\label{eq:gp-objective}
+\end{equation}
+Expected Improvement selects the next value of $\alpha$
+\cite{Frazier2018Bayesian}. The equal weighting
+$\lambda=0.5$ gives the two normalized diagnostic terms identical influence;
+\RevisionAddBegin
+it serves only the exploratory scalarization of the unconstrained diagnostic.
+A $\lambda$ sweep therefore characterizes the exploration stage, whereas all
+final tables use the independently specified distance-one policy. Optimizing
+$\alpha$ alone provides incomplete control of
+\RevisionAddEnd
+$\mathrm{DRD}<1$, motivating the constrained distance-one policy used by the
+\RevisionAddBegin
+integrated system. The adaptive-threshold parameter $\alpha$ belongs to this
+unconstrained diagnostic; the deployed codec fixes the policy to Hamming
+distance one, and the final operating tables are governed by that fixed policy.
+The exploratory search uses
+\RevisionAddEnd
+$\alpha\in[0,1.5]$, initial points $\{0,0.5,1,1.5\}$, six EI iterations on a
+\RevisionAddBegin
+151-point grid, $\lambda=0.5$, exploration 0.01, and a Mat\'ern-$5/2$ kernel
+\RevisionAddEnd
+with a white-noise term. The random seed is 20260607.
+
+\subsubsection*{CNN-based candidate ranking}
+
+For a PEAK pattern and each distance-one ZERO candidate, the CNN receives three
+\RevisionAddBegin
+$9\times9$ channels: the centered PEAK, the centered candidate, and the average
+\RevisionAddEnd
+spatial context of all PEAK occurrences. It regresses the empirical
+reciprocal-distance replacement cost. The candidate with the smallest predicted
+\RevisionAddBegin
+cost is assigned to symbol 1, while symbol 0 preserves the PEAK.
+\RevisionAddEnd
+
+The $9\times9$ support covers the central $3\times3$ block and a three-pixel
+margin in every direction. It contains the complete $5\times5$ DRD support
+around each of the nine possible flipped pixels, including pixels outside the
+\RevisionAddBegin
+embedding block; a $7\times7$ patch covers corner flips only partially.
+Larger patches add context beyond the local training target.
+\RevisionAddEnd
+
+The network contains two $3\times3$ convolutional layers with 16 and 32
+channels and ReLU activations, adaptive $3\times3$ average pooling, and a
+$288\rightarrow64\rightarrow1$ regressor with ReLU and Softplus. Training uses
+Smooth-L1 loss, AdamW with learning rate $10^{-3}$, batch size 128, 20 epochs,
+\RevisionAddBegin
+and seed 20260607. Complete source images define the train/validation split at
+image level.
+\RevisionAddEnd
+
+Figure~\ref{fig:cnn-architecture} summarizes the evaluated architecture and
+its scalar candidate-cost output.
+
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+  node distance=0.7cm,
+  layer/.style={rectangle,draw,rounded corners,align=center,
+    minimum height=0.75cm,minimum width=2.3cm,fill=blue!5},
+  arrow/.style={-{Latex[length=2mm]},thick}
+]
+\node[layer] (input) {Three $9\times9$ channels\\PEAK, ZERO, mean context};
+\node[layer, right=of input] (conv1) {$3\times3$ Conv\\3$\rightarrow$16, ReLU};
+\node[layer, right=of conv1] (conv2) {$3\times3$ Conv\\16$\rightarrow$32, ReLU};
+\node[layer, right=of conv2] (pool) {Adaptive average pool\\$32\times3\times3$};
+\node[layer, right=of pool] (reg) {Flatten, FC 288$\rightarrow$64\\ReLU, FC 64$\rightarrow$1, Softplus};
+\draw[arrow] (input) -- (conv1);
+\draw[arrow] (conv1) -- (conv2);
+\draw[arrow] (conv2) -- (pool);
+\draw[arrow] (pool) -- (reg);
+\end{tikzpicture}}
+\caption{Candidate-cost CNN used to rank globally available distance-one ZERO
+patterns. The scalar output estimates reciprocal-distance replacement cost.}
+\label{fig:cnn-architecture}
+\end{figure*}
+
+\subsubsection*{Random-Forest uniform-block ablation}
+\label{subsec:rf-layer}
+
+Uniform blocks are processed by a second reversible layer. A Random Forest
+classifier predicts whether a block admits a low-cost single-pixel flip from
+its $9\times9$ context, and a second forest predicts the pixel position. The
+\RevisionAddBegin
+safety label uses a local reciprocal-distance cost at most 0.5.
+\RevisionAddEnd
+Selected coordinates and positions are compactly serialized for exact
+extraction and restoration. The experiment shows that the classifier
+identifies reliable locations, while the coordinate stream defines the next
+compression target. The final net-aware configuration therefore assigns its
+bit budget to the enumerative block-mapping layer.
+
