@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate-funsd:
@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout experiment branch
         uses: actions/checkout@v4
+        with:
+          ref: funsd-external-validation
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -82,3 +84,16 @@ jobs:
           path: outputs/funsd_external/
           retention-days: 30
           if-no-files-found: error
+
+      - name: Persist auditable result tables on experiment branch
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: |
+          rm -rf external_validation_results/funsd
+          mkdir -p external_validation_results/funsd
+          cp -r outputs/funsd_external/* external_validation_results/funsd/
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add external_validation_results/funsd
+          git diff --cached --quiet && exit 0
+          git commit -m 'Record FUNSD external validation results [skip ci]'
+          git push origin HEAD:funsd-external-validation
