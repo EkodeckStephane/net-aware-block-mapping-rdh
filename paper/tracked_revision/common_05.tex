@@ -28,9 +28,12 @@ PyTorch 2.8.0 CPU, scikit-learn 1.7.2, and SciPy 1.17.1 on 64-bit Windows with
 
 Table~\ref{tab:activation-ablation} isolates the central algorithmic decision.
 All variants use the same CNN distance-one candidate assignment; only active
-table selection and exact wire charging differ. A0 reports gross payload before
-wire cost and is therefore a gross-reporting diagnostic reference point. A1
-charges the wire after activating all feasible tables. A2 is the proposed
+table selection and exact wire charging differ. A0 is the gross-only selection
+reference: it activates all feasible tables without charging the wire in the
+selection decision; the table separately reports gross mapping capacity, the
+75\% application payload, and the post-hoc net payload after exact wire
+charging. A1 charges the wire after activating all feasible tables. A2 is the
+proposed
 serialization-aware activation, which selects the frequency-ordered prefix that
 maximizes Equation~\ref{eq:net-capacity}. Relative to A1, A2 reduces auxiliary
 information by 180 bits on average and raises mean net payload by 105.9 bits

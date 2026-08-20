@@ -1026,8 +1026,10 @@ Hamming-distance control are established foundations, while the evaluated
 change is serialization-aware activation. The same reversible mapping family is
 retained when its exact encoded description leaves usable mapping capacity after
 Equation~\ref{eq:net-capacity}. On the eight document benchmarks, the proposed
-implementation provides 2874 gross bits and 2245 net bits on average after 629
-auxiliary bits are charged. Huynh--Nguyen report 2070 gross bits under their
+implementation provides a mean gross mapping capacity of 3832 bits, embeds a
+mean application payload of 2874 bits at the 75\% budget, and delivers 2245
+net bits after 629 auxiliary bits are charged. Huynh--Nguyen report 2070 gross
+bits under their
 own protocol; this published value is contextual because
 their serialized auxiliary cost remains open.
 \RevisionAddEnd
@@ -1242,9 +1244,12 @@ PyTorch 2.8.0 CPU, scikit-learn 1.7.2, and SciPy 1.17.1 on 64-bit Windows with
 
 Table~\ref{tab:activation-ablation} isolates the central algorithmic decision.
 All variants use the same CNN distance-one candidate assignment; only active
-table selection and exact wire charging differ. A0 reports gross payload before
-wire cost and is therefore a gross-reporting diagnostic reference point. A1
-charges the wire after activating all feasible tables. A2 is the proposed
+table selection and exact wire charging differ. A0 is the gross-only selection
+reference: it activates all feasible tables without charging the wire in the
+selection decision; the table separately reports gross mapping capacity, the
+75\% application payload, and the post-hoc net payload after exact wire
+charging. A1 charges the wire after activating all feasible tables. A2 is the
+proposed
 serialization-aware activation, which selects the frequency-ordered prefix that
 maximizes Equation~\ref{eq:net-capacity}. Relative to A1, A2 reduces auxiliary
 information by 180 bits on average and raises mean net payload by 105.9 bits
