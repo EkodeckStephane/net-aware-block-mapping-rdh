@@ -1,0 +1,186 @@
+name: Build revision submission package
+
+on:
+  push:
+    branches:
+      - funsd-external-validation
+    paths:
+      - '.github/workflows/build-revision-package.yml'
+      - 'paper/main.tex'
+      - 'paper/references.bib'
+      - 'paper/cover_letter.tex'
+      - 'paper/revision_cover_letter.tex'
+      - 'paper/response_to_reviewers.tex'
+      - 'paper/graphical_abstract.tex'
+      - 'paper/figure_captions_and_alt_text.txt'
+      - 'paper/highlights.txt'
+      - 'paper/*.sty'
+      - 'paper/*.cls'
+      - 'paper/*.bst'
+      - 'paper/figures/**'
+      - 'paper/images/**'
+  workflow_dispatch:
+
+concurrency:
+  group: build-revision-submission-package
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout revision branch with history
+        uses: actions/checkout@v4
+        with:
+          ref: funsd-external-validation
+          fetch-depth: 0
+
+      - name: Install LaTeX and latexdiff
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            latexdiff latexmk texlive-latex-extra texlive-science \
+            texlive-fonts-recommended texlive-bibtex-extra poppler-utils zip
+
+      - name: Recover submitted baseline manuscript
+        run: |
+          git fetch origin main
+          git show origin/main:paper/main.tex > /tmp/article_submitted.tex
+          test -s /tmp/article_submitted.tex
+
+      - name: Generate red-blue tracked manuscript
+        run: |
+          latexdiff --type=CFONT --flatten /tmp/article_submitted.tex paper/main.tex \
+            > paper/article_v1_0_red_blue_changes.tex
+
+      - name: Generate blue-only tracked manuscript
+        run: |
+          cp paper/article_v1_0_red_blue_changes.tex paper/article_v1_0_blue_changes.tex
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('paper/article_v1_0_blue_changes.tex')
+          s = p.read_text(encoding='utf-8')
+          marker = r'\\begin{document}'
+          override = r'''
+% Blue-only revision view: additions remain blue; submitted deletions are hidden.
+\\makeatletter
+\\renewcommand{\\DIFdel}[1]{}
+\\renewcommand{\\DIFdelbegin}{}
+\\renewcommand{\\DIFdelend}{}
+\\renewcommand{\\DIFmodbegin}{}
+\\renewcommand{\\DIFmodend}{}
+\\makeatother
+'''
+          if marker not in s:
+              raise SystemExit('Could not locate \\begin{document} in latexdiff output')
+          s = s.replace(marker, override + '\n' + marker, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Compile all PDFs
+        working-directory: paper
+        run: |
+          set -euxo pipefail
+          compile_tex () {
+            f="$1"
+            latexmk -pdf -interaction=nonstopmode -halt-on-error "$f"
+          }
+          compile_tex main.tex
+          cp main.pdf article_v1_0_clean.pdf
+
+          compile_tex article_v1_0_blue_changes.tex
+          cp article_v1_0_blue_changes.pdf article_v1_0_blue_changes_updated.pdf
+
+          compile_tex article_v1_0_red_blue_changes.tex
+          cp article_v1_0_red_blue_changes.pdf article_v1_0_red_blue_changes_updated.pdf
+
+          compile_tex cover_letter.tex
+          compile_tex revision_cover_letter.tex
+          compile_tex response_to_reviewers.tex
+
+          if [ -f graphical_abstract.tex ]; then
+            compile_tex graphical_abstract.tex
+          fi
+
+      - name: Basic PDF preflight
+        working-directory: paper
+        run: |
+          set -euxo pipefail
+          files=(
+            main.pdf
+            article_v1_0_clean.pdf
+            article_v1_0_blue_changes_updated.pdf
+            article_v1_0_red_blue_changes.pdf
+            article_v1_0_red_blue_changes_updated.pdf
+            cover_letter.pdf
+            revision_cover_letter.pdf
+            response_to_reviewers.pdf
+          )
+          if [ -f graphical_abstract.pdf ]; then files+=(graphical_abstract.pdf); fi
+          for f in "${files[@]}"; do
+            test -s "$f"
+            pdfinfo "$f" | grep -E '^(Pages|Page size):'
+          done
+          ! grep -R -nE 'LaTeX Warning:.*undefined|Citation .* undefined|Reference .* undefined|Overfull \\hbox \\([1-9][0-9]*\.[0-9]+pt too wide\\)' *.log || {
+            echo 'LaTeX warnings requiring manual audit were found.' >&2
+            exit 1
+          }
+
+      - name: Rebuild revised LaTeX source ZIP
+        working-directory: paper
+        run: |
+          rm -f latex_source_v1_0_revised.zip
+          zip -r latex_source_v1_0_revised.zip . \
+            -x '*.aux' '*.log' '*.out' '*.fls' '*.fdb_latexmk' '*.synctex.gz' \
+               'latex_source_v1_0_revised.zip' \
+               'article_v1_0_clean.pdf' 'article_v1_0_blue_changes_updated.pdf' \
+               'article_v1_0_red_blue_changes.pdf' 'article_v1_0_red_blue_changes_updated.pdf' \
+               'main.pdf' 'cover_letter.pdf' 'revision_cover_letter.pdf' \
+               'response_to_reviewers.pdf' 'graphical_abstract.pdf'
+
+      - name: Commit regenerated submission artifacts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            paper/article_v1_0_blue_changes.tex \
+            paper/article_v1_0_red_blue_changes.tex \
+            paper/article_v1_0_clean.pdf \
+            paper/article_v1_0_blue_changes_updated.pdf \
+            paper/article_v1_0_red_blue_changes.pdf \
+            paper/article_v1_0_red_blue_changes_updated.pdf \
+            paper/main.pdf \
+            paper/cover_letter.pdf \
+            paper/revision_cover_letter.pdf \
+            paper/response_to_reviewers.pdf \
+            paper/latex_source_v1_0_revised.zip
+          if [ -f paper/graphical_abstract.pdf ]; then git add paper/graphical_abstract.pdf; fi
+          git diff --cached --quiet && exit 0
+          git commit -m 'Regenerate tracked-change sources and submission PDFs [skip ci]'
+          git push origin HEAD:funsd-external-validation
+
+      - name: Upload submission package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: revision-submission-package
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            paper/main.pdf
+            paper/article_v1_0_clean.pdf
+            paper/article_v1_0_blue_changes_updated.pdf
+            paper/article_v1_0_red_blue_changes.pdf
+            paper/article_v1_0_red_blue_changes_updated.pdf
+            paper/cover_letter.pdf
+            paper/revision_cover_letter.pdf
+            paper/response_to_reviewers.pdf
+            paper/graphical_abstract.pdf
+            paper/article_v1_0_blue_changes.tex
+            paper/article_v1_0_red_blue_changes.tex
+            paper/latex_source_v1_0_revised.zip
+            paper/highlights.txt
+            paper/figure_captions_and_alt_text.txt
