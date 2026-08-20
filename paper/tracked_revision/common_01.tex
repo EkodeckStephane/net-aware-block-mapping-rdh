@@ -35,11 +35,17 @@
 \newtheorem{definition}{Definition}[section]
 \newtheorem{example}{Example}[section]
 
-
-\definecolor{revisionblue}{RGB}{0,0,180}
-\definecolor{revisionred}{RGB}{180,0,0}
-\newcommand{\RevisionAddBegin}{\begingroup\color{revisionblue}}
-\newcommand{\RevisionAddEnd}{\endgroup}
+\ifdefined\CleanRevisionView
+  \definecolor{revisionblue}{RGB}{0,0,0}
+  \definecolor{revisionred}{RGB}{0,0,0}
+  \newcommand{\RevisionAddBegin}{\begingroup}
+  \newcommand{\RevisionAddEnd}{\endgroup}
+\else
+  \definecolor{revisionblue}{RGB}{0,0,180}
+  \definecolor{revisionred}{RGB}{180,0,0}
+  \newcommand{\RevisionAddBegin}{\begingroup\color{revisionblue}}
+  \newcommand{\RevisionAddEnd}{\endgroup}
+\fi
 \newenvironment{RevisionDeletion}{%
   \par\begingroup\color{revisionred}\footnotesize\ttfamily
   \setlength{\parindent}{0pt}\setlength{\parskip}{1pt}\obeyspaces
